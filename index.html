@@ -38,12 +38,47 @@
         
         /* Loading Overlay */
         #loading-overlay { background: rgba(255,255,255,0.8); backdrop-filter: blur(4px); z-index: 50; }
+
+        /* Toast message */
+        #toast-message {
+            position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%);
+            background: #16a34a; color: white; padding: 10px 20px; border-radius: 50px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15); z-index: 100; font-weight: 500;
+            transition: opacity 0.3s; max-width: 300px; text-align: center;
+        }
+
+        /* Banner slider */
+        .slider-container { position: relative; width: 100%; overflow: hidden; border-radius: 1rem; }
+        .slider-track { display: flex; transition: transform 0.4s ease; }
+        .slide { flex: 0 0 100%; aspect-ratio: 16/7; }
+        .slide img { width: 100%; height: 100%; object-fit: cover; }
+        .slider-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.4); color: white; border: none; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; }
+        .slider-prev { left: 8px; } .slider-next { right: 8px; }
+        .slider-dots { position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); display: flex; gap: 6px; }
+        .dot { width: 8px; height: 8px; background: rgba(255,255,255,0.6); border-radius: 50%; cursor: pointer; }
+        .dot.active { background: white; }
+
+        /* Modal */
+        #details-modal {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 100; display: flex; align-items: center; justify-content: center;
+        }
+        .modal-content { background: white; border-radius: 20px; max-width: 360px; width: 90%; padding: 24px; animation: fadeInUp 0.3s; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Form animations */
+        .fade-up { animation: fadeUp 0.5s ease forwards; opacity: 0; }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* admin cards */
+        .admin-card { transition: all 0.2s; }
+        .admin-card:hover { transform: translateY(-2px); box-shadow: 0 10px 20px -10px rgba(0,0,0,0.2); }
     </style>
 </head>
 <body>
 
 <div class="app-container">
 
+    <!-- Splash Screen -->
     <div id="splash-screen" class="absolute inset-0 z-50 flex flex-col items-center justify-center">
         <div id="splash-text" class="flex space-x-1">
             <span class="letter">পা</span><span class="letter">র</span><span class="letter">খা</span><span class="letter">লী</span>
@@ -51,41 +86,43 @@
         <p class="text-white mt-4 opacity-80 text-sm">আমাদের আদর্শ গ্রাম</p>
     </div>
 
+    <!-- Loading Overlay -->
     <div id="loading-overlay" class="hidden-section absolute inset-0 flex items-center justify-center">
         <i class="fas fa-spinner fa-spin text-primary text-4xl"></i>
     </div>
 
-    <div id="auth-section" class="hidden-section flex flex-col items-center justify-center min-h-screen px-6 bg-gray-50">
-        <div class="text-center mb-8">
-            <div class="w-20 h-20 bg-primary text-white rounded-full flex items-center justify-center text-4xl mx-auto mb-4 shadow-lg"><i class="fas fa-leaf"></i></div>
+    <!-- Toast message -->
+    <div id="toast-message" class="hidden-section"></div>
+
+    <!-- Auth Section (no Google) -->
+    <div id="auth-section" class="hidden-section flex flex-col items-center justify-center min-h-screen px-6 bg-gradient-to-b from-green-50 to-white">
+        <div class="text-center mb-8 fade-up" style="animation-delay: 0.1s;">
+            <div class="w-20 h-20 bg-primary text-white rounded-full flex items-center justify-center text-4xl mx-auto mb-4 shadow-lg animate-bounce"><i class="fas fa-leaf"></i></div>
             <h1 class="text-3xl font-bold text-gray-800">পারখালী</h1>
             <p class="text-gray-500">আপনার একাউন্টে প্রবেশ করুন</p>
         </div>
-        <div class="w-full space-y-4">
-            <button id="btn-google-login" class="w-full flex items-center justify-center bg-white border border-gray-300 rounded-lg py-3 shadow-sm hover:bg-gray-50 transition font-semibold">
-                <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" class="w-5 h-5 mr-3">
-                Google দিয়ে লগইন করুন
-            </button>
-            <div class="flex items-center my-4">
-                <div class="flex-grow border-t border-gray-300"></div><span class="px-3 text-gray-400 text-sm">অথবা</span><div class="flex-grow border-t border-gray-300"></div>
-            </div>
-            <input type="email" id="auth-email" placeholder="ইমেইল এড্রেস" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:border-primary">
-            <input type="password" id="auth-password" placeholder="পাসওয়ার্ড" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:border-primary">
-            <div class="flex space-x-2">
-                <button id="btn-login" class="w-1/2 bg-primary text-white rounded-lg py-3 font-semibold hover:bg-secondary transition">লগইন</button>
-                <button id="btn-register" class="w-1/2 bg-white text-primary border border-primary rounded-lg py-3 font-semibold hover:bg-gray-50 transition">রেজিস্ট্রেশন</button>
+        <div class="w-full space-y-4 fade-up" style="animation-delay: 0.2s;">
+            <input type="email" id="auth-email" placeholder="ইমেইল এড্রেস" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-primary focus:ring-2 focus:ring-green-100 transition">
+            <input type="password" id="auth-password" placeholder="পাসওয়ার্ড" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-primary focus:ring-2 focus:ring-green-100 transition">
+            <input type="tel" id="auth-phone" placeholder="মোবাইল নম্বর (রেজিস্ট্রেশনের জন্য)" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-primary focus:ring-2 focus:ring-green-100 transition">
+            <div class="flex space-x-2 pt-2">
+                <button id="btn-login" class="w-1/2 bg-primary text-white rounded-xl py-3 font-semibold hover:bg-secondary transition shadow-md">লগইন</button>
+                <button id="btn-register" class="w-1/2 bg-white text-primary border border-primary rounded-xl py-3 font-semibold hover:bg-green-50 transition shadow-md">রেজিস্ট্রেশন</button>
             </div>
         </div>
+        <p class="text-xs text-gray-400 mt-6 text-center">রেজিস্ট্রেশনের সময় মোবাইল নম্বর দিন, এটি প্রোফাইলে সংরক্ষিত হবে</p>
     </div>
 
-    <div id="setup-section" class="hidden-section flex flex-col min-h-screen px-6 pt-12 bg-gray-50">
+    <!-- Profile Setup Section (added occupation) -->
+    <div id="setup-section" class="hidden-section flex flex-col min-h-screen px-6 pt-12 bg-gradient-to-b from-white to-gray-50">
         <h2 class="text-2xl font-bold text-gray-800 mb-2">প্রোফাইল সেটআপ</h2>
         <p class="text-gray-500 mb-6">অ্যাপ ব্যবহার করার আগে আপনার তথ্য দিন</p>
-        <div class="space-y-4">
-            <div><label class="block text-gray-700 text-sm mb-1">আপনার নাম</label><input type="text" id="setup-name" class="w-full px-4 py-3 rounded-lg border border-gray-300" placeholder="যেমন: মো: ওয়ালিদ"></div>
+        <div class="space-y-4 bg-white p-6 rounded-2xl shadow-sm">
+            <div><label class="block text-gray-700 text-sm mb-1">আপনার নাম</label><input type="text" id="setup-name" class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-primary" placeholder="যেমন: মো: ওয়ালিদ"></div>
+            <div><label class="block text-gray-700 text-sm mb-1">পেশা / চাকুরী</label><input type="text" id="setup-occupation" class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-primary" placeholder="যেমন: কৃষক, শিক্ষক"></div>
             <div>
                 <label class="block text-gray-700 text-sm mb-1">রক্তের গ্রুপ</label>
-                <select id="setup-blood" class="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white">
+                <select id="setup-blood" class="w-full px-4 py-3 rounded-lg border border-gray-200 bg-white">
                     <option value="">নির্বাচন করুন</option>
                     <option value="A+">A+</option><option value="A-">A-</option>
                     <option value="B+">B+</option><option value="B-">B-</option>
@@ -93,12 +130,13 @@
                     <option value="AB+">AB+</option><option value="AB-">AB-</option>
                 </select>
             </div>
-            <div><label class="block text-gray-700 text-sm mb-1">মোবাইল নম্বর</label><input type="tel" id="setup-phone" class="w-full px-4 py-3 rounded-lg border border-gray-300" placeholder="01XXX-XXXXXX"></div>
-            <div><label class="block text-gray-700 text-sm mb-1">পাড়ার নাম</label><input type="text" id="setup-para" class="w-full px-4 py-3 rounded-lg border border-gray-300" placeholder="যেমন: পূর্ব পাড়া"></div>
+            <div><label class="block text-gray-700 text-sm mb-1">মোবাইল নম্বর</label><input type="tel" id="setup-phone" class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-primary" placeholder="01XXX-XXXXXX"></div>
+            <div><label class="block text-gray-700 text-sm mb-1">পাড়ার নাম</label><input type="text" id="setup-para" class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-primary" placeholder="যেমন: পূর্ব পাড়া"></div>
             <button id="btn-save-profile" class="w-full bg-primary text-white rounded-lg py-3 mt-4 font-semibold shadow-lg hover:bg-secondary transition">তথ্য সেভ করুন</button>
         </div>
     </div>
 
+    <!-- Main App -->
     <div id="main-app" class="hidden-section h-full flex flex-col">
         <header class="absolute top-0 w-full bg-primary text-white px-4 py-3 flex items-center justify-between z-40 shadow-md">
             <h2 class="text-xl font-bold">পারখালী</h2>
@@ -109,11 +147,21 @@
         </header>
 
         <main class="content-area bg-gray-50 relative">
+            <!-- Home Tab with Banner Slider -->
             <div id="tab-home" class="p-4 page-tab">
-                <div class="bg-gradient-to-r from-primary to-secondary rounded-xl p-5 text-white shadow-lg mb-6">
+                <div class="bg-gradient-to-r from-primary to-secondary rounded-xl p-5 text-white shadow-lg mb-4">
                     <h3 class="text-xl font-bold mb-1" id="welcome-name">স্বাগতম, ---</h3>
                     <p class="text-sm opacity-90">আপনার স্বপ্নের পারখালী গ্রামে</p>
                 </div>
+
+                <!-- Banner Slider 16:7 -->
+                <div class="slider-container mb-6 shadow-md" id="banner-slider">
+                    <div class="slider-track" id="slider-track"></div>
+                    <button class="slider-btn slider-prev" id="prev-slide"><i class="fas fa-chevron-left"></i></button>
+                    <button class="slider-btn slider-next" id="next-slide"><i class="fas fa-chevron-right"></i></button>
+                    <div class="slider-dots" id="slider-dots"></div>
+                </div>
+
                 <h4 class="font-bold text-gray-800 mb-3 text-lg">গ্রামের আপডেট</h4>
                 <div class="grid grid-cols-2 gap-4 mb-6">
                     <div class="bg-white p-4 rounded-xl shadow-sm text-center border border-gray-100"><i class="fas fa-users text-primary text-3xl mb-2"></i><h5 class="font-semibold text-gray-700">সর্বমোট সদস্য</h5><p id="total-users-count" class="text-xl font-bold text-primary">0</p></div>
@@ -121,15 +169,18 @@
                 </div>
             </div>
 
+            <!-- Villagers Tab (improved list, clickable) -->
             <div id="tab-villagers" class="hidden-section p-4 page-tab">
                 <div class="relative mb-4">
                     <input type="text" id="search-villager" placeholder="নাম বা নম্বর দিয়ে খুঁজুন..." class="w-full px-4 py-2 pl-10 rounded-lg border border-gray-300 focus:border-primary">
                     <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
                 </div>
                 <div id="villagers-list" class="space-y-3">
-                    </div>
+                    <!-- dynamic -->
+                </div>
             </div>
 
+            <!-- Services Tab (unchanged) -->
             <div id="tab-services" class="hidden-section p-4 page-tab">
                 <h3 class="text-xl font-bold text-gray-800 mb-4 text-center mt-4">জরুরী সেবাসমূহ</h3>
                 <div class="grid grid-cols-2 gap-4">
@@ -140,6 +191,7 @@
                 </div>
             </div>
 
+            <!-- Notice Tab (unchanged) -->
             <div id="tab-notice" class="hidden-section p-4 page-tab">
                 <h3 class="font-bold text-gray-800 mb-4 text-lg">সকল নোটিশ</h3>
                 <div class="bg-white p-4 rounded-lg shadow-sm border-l-4 border-primary mb-3">
@@ -148,11 +200,13 @@
                 </div>
             </div>
 
+            <!-- Profile Tab (unchanged) -->
             <div id="tab-profile" class="hidden-section p-4 page-tab">
                 <div class="bg-white rounded-xl shadow-sm p-6 text-center">
                     <div class="w-24 h-24 bg-gray-200 rounded-full mx-auto mb-4 flex items-center justify-center text-4xl text-gray-400"><i class="fas fa-user"></i></div>
                     <h2 id="prof-name" class="text-2xl font-bold text-gray-800">---</h2>
-                    <p id="prof-para" class="text-gray-500 mb-4">---</p>
+                    <p id="prof-para" class="text-gray-500 mb-2">---</p>
+                    <p id="prof-occupation" class="text-sm text-gray-400 mb-4">পেশা: ---</p>
                     <div class="grid grid-cols-2 gap-4 text-left mb-6">
                         <div class="bg-gray-50 p-3 rounded"><p class="text-xs text-gray-500">রক্তের গ্রুপ</p><p id="prof-blood" class="font-semibold text-red-500">---</p></div>
                         <div class="bg-gray-50 p-3 rounded"><p class="text-xs text-gray-500">মোবাইল</p><p id="prof-phone" class="font-semibold text-gray-800">---</p></div>
@@ -161,19 +215,44 @@
                 </div>
             </div>
 
+            <!-- Admin Panel (Redesigned) -->
             <div id="tab-admin" class="hidden-section p-4 page-tab">
-                <div class="bg-dark text-white rounded-xl shadow-sm p-6 text-center mb-4">
-                    <i class="fas fa-user-shield text-4xl mb-2 text-yellow-400"></i>
+                <div class="bg-gradient-to-r from-dark to-primary rounded-2xl shadow-xl p-6 text-white mb-6">
+                    <i class="fas fa-user-shield text-5xl mb-3 text-yellow-300"></i>
                     <h2 class="text-2xl font-bold">এডমিন প্যানেল</h2>
-                    <p class="text-sm opacity-80">অ্যাপ কন্ট্রোল সেন্টার</p>
+                    <p class="opacity-90">গ্রাম পরিচালনা ও কন্ট্রোল</p>
                 </div>
-                <div class="grid gap-3">
-                    <button class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 text-left font-semibold text-gray-700 hover:bg-gray-50"><i class="fas fa-bullhorn text-primary w-6"></i> নতুন নোটিশ দিন</button>
-                    <button class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 text-left font-semibold text-gray-700 hover:bg-gray-50"><i class="fas fa-users-cog text-primary w-6"></i> সদস্য ম্যানেজ করুন</button>
+
+                <div class="grid gap-5">
+                    <!-- Banner Add Card -->
+                    <div class="bg-white rounded-2xl shadow-md p-5 admin-card border border-gray-100">
+                        <h3 class="font-bold text-gray-800 mb-3 flex items-center"><i class="fas fa-images text-primary mr-2"></i>নতুন ব্যানার যোগ করুন</h3>
+                        <div class="space-y-3">
+                            <input type="url" id="banner-image-url" placeholder="ছবির URL (ইমেজ লিংক)" class="w-full px-4 py-2 rounded-lg border border-gray-200 text-sm">
+                            <input type="url" id="banner-link-url" placeholder="লিংক URL (ক্লিক করে যাবে)" class="w-full px-4 py-2 rounded-lg border border-gray-200 text-sm">
+                            <button id="btn-add-banner" class="bg-primary text-white px-4 py-2 rounded-lg text-sm hover:bg-secondary w-full">ব্যানার যুক্ত করুন</button>
+                        </div>
+                    </div>
+
+                    <!-- Existing Banners List -->
+                    <div class="bg-white rounded-2xl shadow-md p-5 admin-card border border-gray-100">
+                        <h3 class="font-bold text-gray-800 mb-3 flex items-center"><i class="fas fa-list text-primary mr-2"></i>বর্তমান ব্যানার</h3>
+                        <div id="admin-banner-list" class="space-y-2 max-h-60 overflow-y-auto">
+                            <!-- dynamic -->
+                        </div>
+                    </div>
+
+                    <!-- Other admin controls (placeholder) -->
+                    <div class="bg-white rounded-2xl shadow-md p-5 admin-card border border-gray-100">
+                        <h3 class="font-bold text-gray-800 mb-2"><i class="fas fa-bullhorn text-primary mr-2"></i>নতুন নোটিশ</h3>
+                        <textarea placeholder="নোটিশ লিখুন..." class="w-full border rounded-lg p-2 text-sm"></textarea>
+                        <button class="mt-2 bg-gray-100 text-gray-700 px-4 py-2 rounded-lg text-sm">প্রকাশ করুন</button>
+                    </div>
                 </div>
             </div>
         </main>
 
+        <!-- Bottom Navigation (admin button hidden by default) -->
         <nav class="absolute bottom-0 w-full bg-white shadow-[0_-2px_10px_rgba(0,0,0,0.05)] flex justify-around items-center px-2 py-2 z-40 rounded-t-xl">
             <button onclick="switchTab('home')" class="nav-btn flex flex-col items-center text-gray-400 hover:text-primary w-1/5" data-target="tab-home">
                 <i class="fas fa-home text-xl mb-1"></i><span class="text-[10px] font-semibold">হোম</span>
@@ -199,45 +278,60 @@
             </button>
         </nav>
     </div>
+
+    <!-- Details Modal for Villager -->
+    <div id="details-modal" class="hidden-section">
+        <div class="modal-content">
+            <div class="flex justify-between items-start mb-4">
+                <h3 class="text-xl font-bold text-gray-800" id="modal-name">---</h3>
+                <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="space-y-3">
+                <p><i class="fas fa-map-marker-alt text-primary w-6"></i> পাড়া: <span id="modal-para"></span></p>
+                <p><i class="fas fa-briefcase text-primary w-6"></i> পেশা: <span id="modal-occ"></span></p>
+                <p><i class="fas fa-tint text-red-500 w-6"></i> রক্তের গ্রুপ: <span id="modal-blood"></span></p>
+                <p><i class="fas fa-phone text-primary w-6"></i> মোবাইল: <span id="modal-phone"></span></p>
+                <p><i class="fas fa-envelope text-primary w-6"></i> ইমেইল: <span id="modal-email"></span></p>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script type="module">
-    // Firebase Modular SDK V10 Imports
+    // Firebase Modular SDK V10
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-    import { getAuth, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
-    import { getFirestore, doc, setDoc, getDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+    import { getFirestore, doc, setDoc, getDoc, collection, getDocs, addDoc, deleteDoc, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-    // Your Firebase Configuration
     const firebaseConfig = {
       apiKey: "AIzaSyAuqcDRrtuQi2tdWXA2E_UWyq7pCrGpoy4",
       authDomain: "parkhali-village.firebaseapp.com",
       projectId: "parkhali-village",
       storageBucket: "parkhali-village.firebasestorage.app",
       messagingSenderId: "645968583344",
-      appId: "1:645968583344:web:89a049e6ffaba4af33b975",
-      measurementId: "G-WD2LSS97KC"
+      appId: "1:645968583344:web:89a049e6ffaba4af33b975"
     };
 
-    // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
-    const provider = new GoogleAuthProvider();
 
     let currentUserData = null;
     let allVillagers = [];
+    let currentBanners = [];
 
-    // Global UI helper
+    // UI helpers
     const showLoader = (show) => document.getElementById('loading-overlay').style.display = show ? 'flex' : 'none';
+    const toast = (msg) => {
+        const t = document.getElementById('toast-message');
+        t.innerText = msg; t.classList.remove('hidden-section');
+        setTimeout(() => t.classList.add('hidden-section'), 2500);
+    };
 
-    // 1. Splash Screen Logic
+    // Splash & auth state
     window.onload = () => {
         const letters = document.querySelectorAll('.letter');
-        letters.forEach((letter, index) => {
-            setTimeout(() => { letter.classList.add('animate-letter'); }, index * 200);
-        });
-
-        // Check Auth Status after Splash
+        letters.forEach((letter, index) => setTimeout(() => letter.classList.add('animate-letter'), index * 200));
         setTimeout(() => {
             onAuthStateChanged(auth, async (user) => {
                 document.getElementById('splash-screen').classList.add('hidden-section');
@@ -247,20 +341,14 @@
         }, 2000);
     };
 
-    // UI Navigation
     function showSection(sectionId) {
-        ['auth-section', 'setup-section', 'main-app'].forEach(id => {
-            document.getElementById(id).classList.add('hidden-section');
-        });
+        ['auth-section', 'setup-section', 'main-app'].forEach(id => document.getElementById(id).classList.add('hidden-section'));
         document.getElementById(sectionId).classList.remove('hidden-section');
     }
 
-    // Tab Switching Logic (Made global so onClick works)
     window.switchTab = function(tabName) {
         document.querySelectorAll('.page-tab').forEach(tab => tab.classList.add('hidden-section'));
         document.getElementById(`tab-${tabName}`).classList.remove('hidden-section');
-        
-        // Active color for icons
         document.querySelectorAll('.nav-btn').forEach(btn => {
             if(!btn.classList.contains('nav-center')) btn.classList.remove('text-primary');
             if(!btn.classList.contains('nav-center')) btn.classList.add('text-gray-400');
@@ -270,37 +358,51 @@
             activeBtn.classList.remove('text-gray-400');
             activeBtn.classList.add('text-primary');
         }
-
         if(tabName === 'villagers') loadVillagers();
+        if(tabName === 'home') loadBanners();
+        if(tabName === 'admin') loadAdminBanners();
     };
 
-    // Profile Check
+    window.closeModal = () => document.getElementById('details-modal').classList.add('hidden-section');
+
     async function checkProfileAndRedirect(user) {
         showLoader(true);
         const docRef = doc(db, "users", user.uid);
         const docSnap = await getDoc(docRef);
         showLoader(false);
-
         if (docSnap.exists()) {
             currentUserData = docSnap.data();
             setupMainApp(user, currentUserData);
             showSection('main-app');
             switchTab('home');
         } else {
+            // If no profile, but user exists (e.g., just registered with phone), go to setup
+            // Prefill phone if available from auth? We saved phone in registration.
             showSection('setup-section');
         }
     }
 
-    // Authentication Functions
-    document.getElementById('btn-google-login').addEventListener('click', () => {
-        signInWithPopup(auth, provider).catch(err => alert(err.message));
-    });
-
-    document.getElementById('btn-register').addEventListener('click', () => {
+    // Registration: create user then save phone to firestore
+    document.getElementById('btn-register').addEventListener('click', async () => {
         const email = document.getElementById('auth-email').value;
         const pass = document.getElementById('auth-password').value;
-        if(email && pass) createUserWithEmailAndPassword(auth, email, pass).catch(err => alert(err.message));
-        else alert("ইমেইল এবং পাসওয়ার্ড দিন");
+        const phone = document.getElementById('auth-phone').value;
+        if (!email || !pass || !phone) return alert("ইমেইল, পাসওয়ার্ড এবং মোবাইল নম্বর দিন");
+        showLoader(true);
+        try {
+            const userCred = await createUserWithEmailAndPassword(auth, email, pass);
+            // Save phone immediately to Firestore (other fields empty)
+            await setDoc(doc(db, "users", userCred.user.uid), {
+                uid: userCred.user.uid,
+                email: email,
+                phone: phone,
+                name: '', blood: '', para: '', occupation: '',
+                joined: new Date().toISOString()
+            });
+            toast("রেজিস্ট্রেশন সফল! এখন প্রোফাইল সেটআপ করুন।");
+            showSection('setup-section');
+        } catch(e) { alert(e.message); }
+        showLoader(false);
     });
 
     document.getElementById('btn-login').addEventListener('click', () => {
@@ -310,100 +412,178 @@
         else alert("ইমেইল এবং পাসওয়ার্ড দিন");
     });
 
-    document.getElementById('btn-logout').addEventListener('click', () => {
-        signOut(auth).then(() => { window.location.reload(); });
-    });
+    document.getElementById('btn-logout').addEventListener('click', () => signOut(auth).then(() => location.reload()));
 
-    // Save Profile Data
+    // Save profile (including occupation)
     document.getElementById('btn-save-profile').addEventListener('click', async () => {
         const name = document.getElementById('setup-name').value;
+        const occupation = document.getElementById('setup-occupation').value;
         const blood = document.getElementById('setup-blood').value;
         const phone = document.getElementById('setup-phone').value;
         const para = document.getElementById('setup-para').value;
-
-        if(!name || !phone || !para) return alert("দয়া করে সব তথ্য দিন!");
+        if(!name || !occupation || !phone || !para) return alert("দয়া করে সব তথ্য দিন!");
         
         showLoader(true);
         try {
             await setDoc(doc(db, "users", auth.currentUser.uid), {
                 uid: auth.currentUser.uid,
                 email: auth.currentUser.email,
-                name: name,
-                blood: blood,
-                phone: phone,
-                para: para,
+                name, occupation, blood, phone, para,
                 joined: new Date().toISOString()
-            });
-            alert("আপনার প্রোফাইল সফলভাবে তৈরি হয়েছে!");
+            }, { merge: true });
+            toast("🎉 আপনার প্রোফাইল সফলভাবে তৈরি হয়েছে! স্বাগতম পারখালীতে.");
             checkProfileAndRedirect(auth.currentUser);
-        } catch(e) {
-            console.error(e);
-            alert("তথ্য সেভ করতে সমস্যা হয়েছে। Firebase Rules চেক করুন।");
-        }
+        } catch(e) { alert("তথ্য সেভ করতে সমস্যা হয়েছে।"); }
         showLoader(false);
     });
 
-    // Set Data in Main App
     function setupMainApp(user, data) {
         document.getElementById('welcome-name').innerText = `স্বাগতম, ${data.name}`;
         document.getElementById('prof-name').innerText = data.name;
         document.getElementById('prof-para').innerText = data.para;
+        document.getElementById('prof-occupation').innerText = `পেশা: ${data.occupation || '—'}`;
         document.getElementById('prof-blood').innerText = data.blood || 'N/A';
         document.getElementById('prof-phone').innerText = data.phone;
 
-        // Admin Access Logic
         if(user.email === 'mdwld2005@gmail.com') {
             document.getElementById('admin-nav-btn').classList.remove('hidden-section');
-            // Adjust width of tabs if admin is visible
+            // Adjust nav widths
             document.querySelectorAll('.nav-btn').forEach(btn => {
-                if(!btn.classList.contains('hidden-section')) {
-                    btn.classList.replace('w-1/5', 'w-1/6');
-                }
+                if(!btn.classList.contains('hidden-section')) btn.style.width = '16.666%';
             });
         }
+        loadBanners();
     }
 
-    // Load and Search Villagers
-    async function loadVillagers() {
-        if(allVillagers.length === 0) {
-            showLoader(true);
-            const querySnapshot = await getDocs(collection(db, "users"));
-            allVillagers = [];
-            querySnapshot.forEach((doc) => { allVillagers.push(doc.data()); });
-            document.getElementById('total-users-count').innerText = allVillagers.length;
-            showLoader(false);
+    // Banner slider logic
+    async function loadBanners() {
+        const q = query(collection(db, "banners"), orderBy("timestamp", "desc"));
+        const snap = await getDocs(q);
+        currentBanners = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        renderSlider();
+    }
+
+    function renderSlider() {
+        const track = document.getElementById('slider-track');
+        const dotsContainer = document.getElementById('slider-dots');
+        if (!track) return;
+        if (currentBanners.length === 0) {
+            track.innerHTML = `<div class="slide flex items-center justify-center bg-gray-200 text-gray-500">কোন ব্যানার নেই</div>`;
+            dotsContainer.innerHTML = '';
+            return;
         }
+        track.innerHTML = currentBanners.map(b => `
+            <div class="slide" onclick="window.open('${b.linkUrl || '#'}', '_blank')">
+                <img src="${b.imageUrl}" alt="banner" onerror="this.src='https://via.placeholder.com/400x150?text=Image+Error'">
+            </div>
+        `).join('');
+        // simple dots
+        let dotsHtml = '';
+        currentBanners.forEach((_, i) => dotsHtml += `<span class="dot ${i===0?'active':''}" data-index="${i}"></span>`);
+        dotsContainer.innerHTML = dotsHtml;
+        attachSliderEvents();
+    }
+
+    function attachSliderEvents() {
+        let currentIndex = 0;
+        const track = document.getElementById('slider-track');
+        const dots = document.querySelectorAll('.dot');
+        const total = dots.length;
+        if (!total) return;
+        const updateSlide = (idx) => {
+            currentIndex = (idx + total) % total;
+            track.style.transform = `translateX(-${currentIndex * 100}%)`;
+            dots.forEach((d, i) => d.classList.toggle('active', i === currentIndex));
+        };
+        document.getElementById('prev-slide').onclick = () => updateSlide(currentIndex - 1);
+        document.getElementById('next-slide').onclick = () => updateSlide(currentIndex + 1);
+        dots.forEach((d, i) => d.onclick = () => updateSlide(i));
+    }
+
+    // Admin: add banner
+    document.getElementById('btn-add-banner')?.addEventListener('click', async () => {
+        const img = document.getElementById('banner-image-url').value;
+        const link = document.getElementById('banner-link-url').value;
+        if (!img) return alert('ছবির URL দিন');
+        showLoader(true);
+        try {
+            await addDoc(collection(db, "banners"), {
+                imageUrl: img,
+                linkUrl: link || '#',
+                timestamp: new Date()
+            });
+            toast('ব্যানার যুক্ত হয়েছে');
+            loadAdminBanners();
+            loadBanners();
+        } catch (e) { alert(e.message); }
+        showLoader(false);
+    });
+
+    async function loadAdminBanners() {
+        const q = query(collection(db, "banners"), orderBy("timestamp", "desc"));
+        const snap = await getDocs(q);
+        const list = document.getElementById('admin-banner-list');
+        list.innerHTML = snap.docs.map(doc => `
+            <div class="flex items-center justify-between bg-gray-50 p-2 rounded-lg text-sm">
+                <span class="truncate w-32">${doc.data().imageUrl.substring(0,30)}...</span>
+                <button class="text-red-500 delete-banner" data-id="${doc.id}"><i class="fas fa-trash"></i></button>
+            </div>
+        `).join('');
+        document.querySelectorAll('.delete-banner').forEach(btn => btn.addEventListener('click', async (e) => {
+            if (confirm('মুছবেন?')) {
+                await deleteDoc(doc(db, "banners", e.target.closest('button').dataset.id));
+                loadAdminBanners(); loadBanners();
+            }
+        }));
+    }
+
+    // Villagers list with click modal
+    async function loadVillagers() {
+        showLoader(true);
+        const querySnapshot = await getDocs(collection(db, "users"));
+        allVillagers = querySnapshot.docs.map(d => d.data());
+        document.getElementById('total-users-count').innerText = allVillagers.length;
         renderVillagers(allVillagers);
+        showLoader(false);
     }
 
     function renderVillagers(dataList) {
         const listContainer = document.getElementById('villagers-list');
         listContainer.innerHTML = '';
         dataList.forEach(v => {
-            listContainer.innerHTML += `
-                <div class="bg-white p-3 rounded-xl shadow-sm border border-gray-100 flex items-center">
-                    <div class="w-12 h-12 bg-gray-200 rounded-full flex-shrink-0 flex items-center justify-center text-gray-500 mr-4"><i class="fas fa-user"></i></div>
-                    <div class="flex-grow">
-                        <h4 class="font-bold text-gray-800">${v.name}</h4>
-                        <p class="text-xs text-gray-500"><i class="fas fa-map-marker-alt text-primary mr-1"></i>${v.para}</p>
-                    </div>
-                    <div class="text-right">
-                        <span class="text-xs font-bold bg-red-100 text-red-600 px-2 py-1 rounded-md">${v.blood || 'N/A'}</span>
-                        <p class="text-xs text-gray-500 mt-1">${v.phone}</p>
-                    </div>
+            const div = document.createElement('div');
+            div.className = 'bg-white p-3 rounded-xl shadow-sm border border-gray-100 flex items-center cursor-pointer hover:shadow-md transition';
+            div.innerHTML = `
+                <div class="w-12 h-12 bg-gray-200 rounded-full flex-shrink-0 flex items-center justify-center text-gray-500 mr-4"><i class="fas fa-user"></i></div>
+                <div class="flex-grow">
+                    <h4 class="font-bold text-gray-800">${v.name || 'অজানা'}</h4>
+                    <p class="text-xs text-gray-500"><i class="fas fa-map-marker-alt text-primary mr-1"></i>${v.para || ''}</p>
+                </div>
+                <div class="text-right">
+                    <span class="text-xs font-bold bg-red-100 text-red-600 px-2 py-1 rounded-md">${v.blood || 'N/A'}</span>
                 </div>
             `;
+            div.addEventListener('click', () => showVillagerDetails(v));
+            listContainer.appendChild(div);
         });
     }
 
+    function showVillagerDetails(v) {
+        document.getElementById('modal-name').innerText = v.name || '—';
+        document.getElementById('modal-para').innerText = v.para || '—';
+        document.getElementById('modal-occ').innerText = v.occupation || '—';
+        document.getElementById('modal-blood').innerText = v.blood || '—';
+        document.getElementById('modal-phone').innerText = v.phone || '—';
+        document.getElementById('modal-email').innerText = v.email || '—';
+        document.getElementById('details-modal').classList.remove('hidden-section');
+    }
+
+    // Search
     document.getElementById('search-villager').addEventListener('input', (e) => {
         const term = e.target.value.toLowerCase();
-        const filtered = allVillagers.filter(v => 
-            v.name.toLowerCase().includes(term) || v.phone.includes(term)
-        );
+        const filtered = allVillagers.filter(v => v.name?.toLowerCase().includes(term) || v.phone?.includes(term));
         renderVillagers(filtered);
     });
-
 </script>
 </body>
 </html>
