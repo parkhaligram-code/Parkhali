@@ -412,13 +412,14 @@
 
     const showLoader = (show) => document.getElementById('loading-overlay').style.display = show ? 'flex' : 'none';
 
-    // Cloudinary upload
+    // Cloudinary upload with progress simulation
     async function uploadToCloudinary(file) {
         const formData = new FormData();
         formData.append('file', file);
         formData.append('upload_preset', 'Parkhali');
         formData.append('cloud_name', 'dwnpdwnvc');
         const res = await fetch('https://api.cloudinary.com/v1_1/dwnpdwnvc/image/upload', { method: 'POST', body: formData });
+        if (!res.ok) throw new Error('Upload failed');
         const data = await res.json();
         return data.secure_url;
     }
@@ -432,8 +433,20 @@
         }
     }
 
-    // Splash Animation
-    window.onload = () => {
+    // Load theme from Firestore and apply
+    async function loadTheme() {
+        try {
+            const snap = await getDoc(doc(db, "settings", "appConfig"));
+            if (snap.exists() && snap.data().theme) {
+                const theme = snap.data().theme;
+                document.body.className = document.body.className.replace(/theme-\w+/, `theme-${theme}`);
+            }
+        } catch (e) { console.log("Theme load error", e); }
+    }
+
+    // Splash Animation & init
+    window.onload = async () => {
+        await loadTheme(); // load theme before anything
         const letters = document.querySelectorAll('.letter');
         letters.forEach((letter, index) => { setTimeout(() => { letter.classList.add('animate-letter'); }, index * 150); });
 
@@ -561,7 +574,7 @@
             document.getElementById('success-msg').innerText = "আপনি সফলতার সাথে একাউন্ট টি তৈরী করেছেন।";
             openModal('success-modal');
             setTimeout(() => { closeModal('success-modal'); checkProfileAndRedirect(auth.currentUser); }, 2500); 
-        } catch(e) { showLoader(false); alert("তথ্য সেভ করতে সমস্যা হয়েছে।"); }
+        } catch(e) { showLoader(false); alert("তথ্য সেভ করতে সমস্যা হয়েছে."); }
     });
 
     function setupMainApp(user, data) {
@@ -571,12 +584,16 @@
         document.getElementById('prof-para').innerText = data.para || 'ঠিকানা দেওয়া নেই';
         document.getElementById('prof-blood').innerText = data.blood || 'N/A';
         document.getElementById('prof-phone').innerText = data.phone;
-        if (data.profilePic) { document.getElementById('prof-pic').src = data.profilePic; document.getElementById('prof-pic').classList.remove('hidden'); document.getElementById('prof-pic').nextElementSibling.style.display = 'none'; }
+        if (data.profilePic) { 
+            document.getElementById('prof-pic').src = data.profilePic; 
+            document.getElementById('prof-pic').classList.remove('hidden'); 
+            document.getElementById('prof-pic').nextElementSibling.style.display = 'none'; 
+        }
         // social icons
         let socialHtml = '';
-        if (data.facebook) socialHtml += `<a href="${data.facebook.includes('http')?data.facebook:'https://facebook.com/'+data.facebook}" target="_blank" class="text-blue-600"><i class="fab fa-facebook"></i></a>`;
-        if (data.whatsapp) socialHtml += `<a href="https://wa.me/${data.whatsapp.replace(/^0+/,'+88')}" target="_blank" class="text-green-500"><i class="fab fa-whatsapp"></i></a>`;
-        if (data.telegram) socialHtml += `<a href="https://t.me/${data.telegram.replace('@','')}" target="_blank" class="text-blue-400"><i class="fab fa-telegram"></i></a>`;
+        if (data.facebook) socialHtml += `<a href="${data.facebook.includes('http')?data.facebook:'https://facebook.com/'+data.facebook}" target="_blank" rel="noopener noreferrer" class="text-blue-600"><i class="fab fa-facebook"></i></a>`;
+        if (data.whatsapp) socialHtml += `<a href="https://wa.me/${data.whatsapp.replace(/^0+/,'+88')}" target="_blank" rel="noopener noreferrer" class="text-green-500"><i class="fab fa-whatsapp"></i></a>`;
+        if (data.telegram) socialHtml += `<a href="https://t.me/${data.telegram.replace('@','')}" target="_blank" rel="noopener noreferrer" class="text-blue-400"><i class="fab fa-telegram"></i></a>`;
         document.getElementById('prof-social').innerHTML = socialHtml;
 
         if(user.email === 'mdwld2005@gmail.com' || data.phone === '01926642085') {
@@ -584,7 +601,7 @@
             document.querySelectorAll('.nav-btn').forEach(btn => { if(!btn.classList.contains('hidden-section')) btn.classList.replace('w-1/5', 'w-1/6'); });
         }
         loadBanners(); 
-        loadNotices(); // load notices on startup
+        loadNotices();
     }
 
     // Edit Profile
@@ -622,7 +639,6 @@
 
         showLoader(true);
         try {
-            // upload profile pic if new file selected
             const fileInput = document.getElementById('edit-pic-file');
             let profilePicUrl = currentUserData.profilePic || '';
             if (fileInput.files.length > 0) {
@@ -737,9 +753,9 @@
         users.forEach(u => {
             listDiv.innerHTML += `
                 <div class="bg-white p-3 rounded-xl shadow-sm border flex items-center justify-between">
-                    <div><span class="font-bold">${u.name}</span> (${u.phone})<br><span class="text-xs">${u.profession} | ${u.para}</span></div>
+                    <div><span class="font-bold">${u.name}</span> (${u.phone})<br><span class="text-xs">${u.profession || ''} | ${u.para || ''}</span></div>
                     <div class="flex space-x-2">
-                        <button onclick="toggleBan('${u.uid}', ${u.banned})" class="px-3 py-1 ${u.banned ? 'bg-green-500' : 'bg-yellow-500'} text-white rounded text-xs">${u.banned ? 'আনব্যান' : 'ব্যান'}</button>
+                        <button onclick="toggleBan('${u.uid}', ${u.banned ? 'true' : 'false'})" class="px-3 py-1 ${u.banned ? 'bg-green-500' : 'bg-yellow-500'} text-white rounded text-xs">${u.banned ? 'আনব্যান' : 'ব্যান'}</button>
                         <button onclick="deleteUser('${u.uid}')" class="px-3 py-1 bg-red-500 text-white rounded text-xs">ডিলিট</button>
                     </div>
                 </div>`;
@@ -748,31 +764,25 @@
 
     window.toggleBan = async (uid, currentBan) => {
         if (!confirm(`ব্যবহারকারীকে ${currentBan ? 'আনব্যান' : 'ব্যান'} করবেন?`)) return;
+        showLoader(true);
         await updateDoc(doc(db, "users", uid), { banned: !currentBan });
+        showLoader(false);
         loadAdminUsers();
     };
 
     window.deleteUser = async (uid) => {
         if (!confirm("পুরোপুরি ডিলিট করবেন? এটি অপরিবর্তনীয়।")) return;
+        showLoader(true);
         await deleteDoc(doc(db, "users", uid));
-        // optionally delete auth? not possible client side. but mark as banned or just remove doc.
+        showLoader(false);
         loadAdminUsers();
     };
 
     // Theme Management
     window.setTheme = async (theme) => {
         document.body.className = document.body.className.replace(/theme-\w+/, `theme-${theme}`);
-        // save to firestore settings
         await setDoc(doc(db, "settings", "appConfig"), { theme }, { merge: true });
     };
-
-    async function loadTheme() {
-        const snap = await getDoc(doc(db, "settings", "appConfig"));
-        if (snap.exists() && snap.data().theme) {
-            document.body.className = document.body.className.replace(/theme-\w+/, `theme-${snap.data().theme}`);
-        }
-    }
-    loadTheme();
 
     // Villagers
     async function loadVillagers() {
@@ -816,11 +826,15 @@
         document.getElementById('v-modal-phone').href = v.phone ? `tel:${v.phone}` : '#';
         document.getElementById('v-modal-call').href = v.phone ? `tel:${v.phone}` : '#';
         document.getElementById('v-modal-blood').innerText = v.blood || 'N/A';
-        if (v.profilePic) { document.getElementById('v-modal-pic').src = v.profilePic; document.getElementById('v-modal-pic').classList.remove('hidden'); document.getElementById('v-modal-pic').nextElementSibling.style.display = 'none'; }
+        if (v.profilePic) { 
+            document.getElementById('v-modal-pic').src = v.profilePic; 
+            document.getElementById('v-modal-pic').classList.remove('hidden'); 
+            document.getElementById('v-modal-pic').nextElementSibling.style.display = 'none'; 
+        }
         let socialHtml = '';
-        if (v.facebook) socialHtml += `<a href="${v.facebook.includes('http')?v.facebook:'https://facebook.com/'+v.facebook}" target="_blank" class="text-blue-600"><i class="fab fa-facebook"></i></a>`;
-        if (v.whatsapp) socialHtml += `<a href="https://wa.me/${v.whatsapp.replace(/^0+/,'+88')}" target="_blank" class="text-green-500"><i class="fab fa-whatsapp"></i></a>`;
-        if (v.telegram) socialHtml += `<a href="https://t.me/${v.telegram.replace('@','')}" target="_blank" class="text-blue-400"><i class="fab fa-telegram"></i></a>`;
+        if (v.facebook) socialHtml += `<a href="${v.facebook.includes('http')?v.facebook:'https://facebook.com/'+v.facebook}" target="_blank" rel="noopener noreferrer" class="text-blue-600"><i class="fab fa-facebook"></i></a>`;
+        if (v.whatsapp) socialHtml += `<a href="https://wa.me/${v.whatsapp.replace(/^0+/,'+88')}" target="_blank" rel="noopener noreferrer" class="text-green-500"><i class="fab fa-whatsapp"></i></a>`;
+        if (v.telegram) socialHtml += `<a href="https://t.me/${v.telegram.replace('@','')}" target="_blank" rel="noopener noreferrer" class="text-blue-400"><i class="fab fa-telegram"></i></a>`;
         document.getElementById('v-modal-social').innerHTML = socialHtml;
         openModal('villager-modal');
     }
