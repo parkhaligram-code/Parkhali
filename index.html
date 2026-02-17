@@ -425,7 +425,7 @@
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
     import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
-    import { getFirestore, doc, setDoc, updateDoc, getDoc, collection, getDocs, addDoc, query, orderBy, deleteDoc, where } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+    import { getFirestore, doc, setDoc, updateDoc, getDoc, collection, getDocs, addDoc, query, orderBy, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyAuqcDRrtuQi2tdWXA2E_UWyq7pCrGpoy4",
@@ -445,6 +445,12 @@
     const CLOUD_NAME = 'dwnpdwnvc';
     const UPLOAD_PRESET = 'Parkhali';
     
+    // Admin configuration – সহজেই এডমিন ইমেইল/ফোন যোগ করুন
+    const ADMIN_CONFIG = {
+        emails: ['mdwld2005@gmail.com'],        // এখানে এডমিন ইমেইল দিন
+        phones: ['01926642085']                  // এখানে এডমিন ফোন নম্বর দিন
+    };
+
     let currentUserData = null;
     let allVillagers = [];
 
@@ -676,8 +682,8 @@
         // Social icons in profile
         renderSocialIcons('profile-social-icons', data);
         
-        // Admin check
-        if(user.email === 'mdwld2005@gmail.com' || data.phone === '01926642085') {
+        // Admin check – এখন ADMIN_CONFIG ব্যবহার করা হচ্ছে
+        if (ADMIN_CONFIG.emails.includes(user.email) || ADMIN_CONFIG.phones.includes(data.phone)) {
             document.getElementById('admin-nav-btn').classList.remove('hidden-section');
             document.querySelectorAll('.nav-btn').forEach(btn => { if(!btn.classList.contains('hidden-section')) btn.classList.replace('w-1/5', 'w-1/6'); });
         }
@@ -961,4 +967,4 @@
     document.getElementById('btn-logout').addEventListener('click', () => { signOut(auth).then(() => { window.location.reload(); }); });
 </script>
 </body>
-</html>
+    </html>
