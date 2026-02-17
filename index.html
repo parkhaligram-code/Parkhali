@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>পারখালী গ্রাম</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { primary: '#16a34a', secondary: '#15803d', dark: '#14532d' },
+                    fontFamily: { sans: ['Hind Siliguri', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body { font-family: 'Hind Siliguri', sans-serif; background-color: #f3f4f6; margin: 0; padding: 0; overflow-x: hidden; }
+        .hidden-section { display: none !important; }
+        
+        /* Splash Screen Animation */
+        #splash-screen { background: linear-gradient(135deg, #16a34a, #14532d); }
+        .letter { display: inline-block; opacity: 0; transform: translateY(30px); font-size: 3rem; font-weight: bold; color: white; }
+        .animate-letter { animation: slideUp 0.6s ease forwards; }
+        @keyframes slideUp { to { opacity: 1; transform: translateY(0); } }
+
+        /* Bottom Nav Center Button */
+        .nav-center { transform: translateY(-25px); border: 4px solid #f3f4f6; }
+        
+        /* App Container */
+        .app-container { max-width: 480px; margin: 0 auto; background: white; min-height: 100vh; position: relative; box-shadow: 0 0 15px rgba(0,0,0,0.1); }
+        .content-area { padding-bottom: 80px; padding-top: 60px; height: 100vh; overflow-y: auto; }
+        
+        /* Loading Overlay */
+        #loading-overlay { background: rgba(255,255,255,0.8); backdrop-filter: blur(4px); z-index: 50; }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+
+    <div id="splash-screen" class="absolute inset-0 z-50 flex flex-col items-center justify-center">
+        <div id="splash-text" class="flex space-x-1">
+            <span class="letter">পা</span><span class="letter">র</span><span class="letter">খা</span><span class="letter">লী</span>
+        </div>
+        <p class="text-white mt-4 opacity-80 text-sm">আমাদের আদর্শ গ্রাম</p>
+    </div>
+
+    <div id="loading-overlay" class="hidden-section absolute inset-0 flex items-center justify-center">
+        <i class="fas fa-spinner fa-spin text-primary text-4xl"></i>
+    </div>
+
+    <div id="auth-section" class="hidden-section flex flex-col items-center justify-center min-h-screen px-6 bg-gray-50">
+        <div class="text-center mb-8">
+            <div class="w-20 h-20 bg-primary text-white rounded-full flex items-center justify-center text-4xl mx-auto mb-4 shadow-lg"><i class="fas fa-leaf"></i></div>
+            <h1 class="text-3xl font-bold text-gray-800">পারখালী</h1>
+            <p class="text-gray-500">আপনার একাউন্টে প্রবেশ করুন</p>
+        </div>
+        <div class="w-full space-y-4">
+            <button id="btn-google-login" class="w-full flex items-center justify-center bg-white border border-gray-300 rounded-lg py-3 shadow-sm hover:bg-gray-50 transition font-semibold">
+                <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" class="w-5 h-5 mr-3">
+                Google দিয়ে লগইন করুন
+            </button>
+            <div class="flex items-center my-4">
+                <div class="flex-grow border-t border-gray-300"></div><span class="px-3 text-gray-400 text-sm">অথবা</span><div class="flex-grow border-t border-gray-300"></div>
+            </div>
+            <input type="email" id="auth-email" placeholder="ইমেইল এড্রেস" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:border-primary">
+            <input type="password" id="auth-password" placeholder="পাসওয়ার্ড" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:border-primary">
+            <div class="flex space-x-2">
+                <button id="btn-login" class="w-1/2 bg-primary text-white rounded-lg py-3 font-semibold hover:bg-secondary transition">লগইন</button>
+                <button id="btn-register" class="w-1/2 bg-white text-primary border border-primary rounded-lg py-3 font-semibold hover:bg-gray-50 transition">রেজিস্ট্রেশন</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="setup-section" class="hidden-section flex flex-col min-h-screen px-6 pt-12 bg-gray-50">
+        <h2 class="text-2xl font-bold text-gray-800 mb-2">প্রোফাইল সেটআপ</h2>
+        <p class="text-gray-500 mb-6">অ্যাপ ব্যবহার করার আগে আপনার তথ্য দিন</p>
+        <div class="space-y-4">
+            <div><label class="block text-gray-700 text-sm mb-1">আপনার নাম</label><input type="text" id="setup-name" class="w-full px-4 py-3 rounded-lg border border-gray-300" placeholder="যেমন: মো: ওয়ালিদ"></div>
+            <div>
+                <label class="block text-gray-700 text-sm mb-1">রক্তের গ্রুপ</label>
+                <select id="setup-blood" class="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white">
+                    <option value="">নির্বাচন করুন</option>
+                    <option value="A+">A+</option><option value="A-">A-</option>
+                    <option value="B+">B+</option><option value="B-">B-</option>
+                    <option value="O+">O+</option><option value="O-">O-</option>
+                    <option value="AB+">AB+</option><option value="AB-">AB-</option>
+                </select>
+            </div>
+            <div><label class="block text-gray-700 text-sm mb-1">মোবাইল নম্বর</label><input type="tel" id="setup-phone" class="w-full px-4 py-3 rounded-lg border border-gray-300" placeholder="01XXX-XXXXXX"></div>
+            <div><label class="block text-gray-700 text-sm mb-1">পাড়ার নাম</label><input type="text" id="setup-para" class="w-full px-4 py-3 rounded-lg border border-gray-300" placeholder="যেমন: পূর্ব পাড়া"></div>
+            <button id="btn-save-profile" class="w-full bg-primary text-white rounded-lg py-3 mt-4 font-semibold shadow-lg hover:bg-secondary transition">তথ্য সেভ করুন</button>
+        </div>
+    </div>
+
+    <div id="main-app" class="hidden-section h-full flex flex-col">
+        <header class="absolute top-0 w-full bg-primary text-white px-4 py-3 flex items-center justify-between z-40 shadow-md">
+            <h2 class="text-xl font-bold">পারখালী</h2>
+            <div class="relative w-1/2">
+                <input type="text" placeholder="অনুসন্ধান..." class="w-full bg-white/20 text-white placeholder-white/70 px-3 py-1 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-white">
+                <i class="fas fa-search absolute right-3 top-2 text-white/70 text-xs"></i>
+            </div>
+        </header>
+
+        <main class="content-area bg-gray-50 relative">
+            <div id="tab-home" class="p-4 page-tab">
+                <div class="bg-gradient-to-r from-primary to-secondary rounded-xl p-5 text-white shadow-lg mb-6">
+                    <h3 class="text-xl font-bold mb-1" id="welcome-name">স্বাগতম, ---</h3>
+                    <p class="text-sm opacity-90">আপনার স্বপ্নের পারখালী গ্রামে</p>
+                </div>
+                <h4 class="font-bold text-gray-800 mb-3 text-lg">গ্রামের আপডেট</h4>
+                <div class="grid grid-cols-2 gap-4 mb-6">
+                    <div class="bg-white p-4 rounded-xl shadow-sm text-center border border-gray-100"><i class="fas fa-users text-primary text-3xl mb-2"></i><h5 class="font-semibold text-gray-700">সর্বমোট সদস্য</h5><p id="total-users-count" class="text-xl font-bold text-primary">0</p></div>
+                    <div class="bg-white p-4 rounded-xl shadow-sm text-center border border-gray-100"><i class="fas fa-mosque text-primary text-3xl mb-2"></i><h5 class="font-semibold text-gray-700">মসজিদ</h5><p class="text-xl font-bold text-primary">৩ টি</p></div>
+                </div>
+            </div>
+
+            <div id="tab-villagers" class="hidden-section p-4 page-tab">
+                <div class="relative mb-4">
+                    <input type="text" id="search-villager" placeholder="নাম বা নম্বর দিয়ে খুঁজুন..." class="w-full px-4 py-2 pl-10 rounded-lg border border-gray-300 focus:border-primary">
+                    <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                </div>
+                <div id="villagers-list" class="space-y-3">
+                    </div>
+            </div>
+
+            <div id="tab-services" class="hidden-section p-4 page-tab">
+                <h3 class="text-xl font-bold text-gray-800 mb-4 text-center mt-4">জরুরী সেবাসমূহ</h3>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="bg-white p-4 rounded-xl shadow-sm text-center"><div class="w-12 h-12 bg-red-100 text-red-500 rounded-full flex items-center justify-center mx-auto mb-2 text-xl"><i class="fas fa-ambulance"></i></div><h5 class="font-semibold text-gray-700">অ্যাম্বুলেন্স</h5></div>
+                    <div class="bg-white p-4 rounded-xl shadow-sm text-center"><div class="w-12 h-12 bg-blue-100 text-blue-500 rounded-full flex items-center justify-center mx-auto mb-2 text-xl"><i class="fas fa-user-md"></i></div><h5 class="font-semibold text-gray-700">ডাক্তার</h5></div>
+                    <div class="bg-white p-4 rounded-xl shadow-sm text-center"><div class="w-12 h-12 bg-yellow-100 text-yellow-600 rounded-full flex items-center justify-center mx-auto mb-2 text-xl"><i class="fas fa-bolt"></i></div><h5 class="font-semibold text-gray-700">বিদ্যুৎ অফিস</h5></div>
+                    <div class="bg-white p-4 rounded-xl shadow-sm text-center"><div class="w-12 h-12 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-2 text-xl"><i class="fas fa-shield-alt"></i></div><h5 class="font-semibold text-gray-700">থানা পুলিশ</h5></div>
+                </div>
+            </div>
+
+            <div id="tab-notice" class="hidden-section p-4 page-tab">
+                <h3 class="font-bold text-gray-800 mb-4 text-lg">সকল নোটিশ</h3>
+                <div class="bg-white p-4 rounded-lg shadow-sm border-l-4 border-primary mb-3">
+                    <h4 class="font-bold text-gray-800">গ্রামের নতুন অ্যাপ চালু</h4>
+                    <p class="text-sm text-gray-500 mt-1">সবাইকে পারখালী গ্রামের নতুন অ্যাপে স্বাগতম। সবাই প্রোফাইল আপডেট করুন।</p>
+                </div>
+            </div>
+
+            <div id="tab-profile" class="hidden-section p-4 page-tab">
+                <div class="bg-white rounded-xl shadow-sm p-6 text-center">
+                    <div class="w-24 h-24 bg-gray-200 rounded-full mx-auto mb-4 flex items-center justify-center text-4xl text-gray-400"><i class="fas fa-user"></i></div>
+                    <h2 id="prof-name" class="text-2xl font-bold text-gray-800">---</h2>
+                    <p id="prof-para" class="text-gray-500 mb-4">---</p>
+                    <div class="grid grid-cols-2 gap-4 text-left mb-6">
+                        <div class="bg-gray-50 p-3 rounded"><p class="text-xs text-gray-500">রক্তের গ্রুপ</p><p id="prof-blood" class="font-semibold text-red-500">---</p></div>
+                        <div class="bg-gray-50 p-3 rounded"><p class="text-xs text-gray-500">মোবাইল</p><p id="prof-phone" class="font-semibold text-gray-800">---</p></div>
+                    </div>
+                    <button id="btn-logout" class="w-full bg-red-50 text-red-500 font-semibold py-3 rounded-lg border border-red-200 hover:bg-red-100">লগআউট করুন</button>
+                </div>
+            </div>
+
+            <div id="tab-admin" class="hidden-section p-4 page-tab">
+                <div class="bg-dark text-white rounded-xl shadow-sm p-6 text-center mb-4">
+                    <i class="fas fa-user-shield text-4xl mb-2 text-yellow-400"></i>
+                    <h2 class="text-2xl font-bold">এডমিন প্যানেল</h2>
+                    <p class="text-sm opacity-80">অ্যাপ কন্ট্রোল সেন্টার</p>
+                </div>
+                <div class="grid gap-3">
+                    <button class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 text-left font-semibold text-gray-700 hover:bg-gray-50"><i class="fas fa-bullhorn text-primary w-6"></i> নতুন নোটিশ দিন</button>
+                    <button class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 text-left font-semibold text-gray-700 hover:bg-gray-50"><i class="fas fa-users-cog text-primary w-6"></i> সদস্য ম্যানেজ করুন</button>
+                </div>
+            </div>
+        </main>
+
+        <nav class="absolute bottom-0 w-full bg-white shadow-[0_-2px_10px_rgba(0,0,0,0.05)] flex justify-around items-center px-2 py-2 z-40 rounded-t-xl">
+            <button onclick="switchTab('home')" class="nav-btn flex flex-col items-center text-gray-400 hover:text-primary w-1/5" data-target="tab-home">
+                <i class="fas fa-home text-xl mb-1"></i><span class="text-[10px] font-semibold">হোম</span>
+            </button>
+            <button onclick="switchTab('villagers')" class="nav-btn flex flex-col items-center text-gray-400 hover:text-primary w-1/5" data-target="tab-villagers">
+                <i class="fas fa-users text-xl mb-1"></i><span class="text-[10px] font-semibold">গ্রামবাসী</span>
+            </button>
+            
+            <div class="w-1/5 flex justify-center">
+                <button onclick="switchTab('services')" class="nav-btn nav-center w-14 h-14 bg-primary text-white rounded-full flex items-center justify-center shadow-lg hover:bg-secondary transition" data-target="tab-services">
+                    <i class="fas fa-th-large text-2xl"></i>
+                </button>
+            </div>
+            
+            <button onclick="switchTab('notice')" class="nav-btn flex flex-col items-center text-gray-400 hover:text-primary w-1/5" data-target="tab-notice">
+                <i class="fas fa-bell text-xl mb-1"></i><span class="text-[10px] font-semibold">নোটিশ</span>
+            </button>
+            <button onclick="switchTab('profile')" class="nav-btn flex flex-col items-center text-gray-400 hover:text-primary w-1/5" data-target="tab-profile">
+                <i class="fas fa-user text-xl mb-1"></i><span class="text-[10px] font-semibold">প্রোফাইল</span>
+            </button>
+            <button id="admin-nav-btn" onclick="switchTab('admin')" class="hidden-section nav-btn flex flex-col items-center text-dark hover:text-primary w-1/5" data-target="tab-admin">
+                <i class="fas fa-shield-alt text-xl mb-1"></i><span class="text-[10px] font-semibold">এডমিন</span>
+            </button>
+        </nav>
+    </div>
+</div>
+
+<script type="module">
+    // Firebase Modular SDK V10 Imports
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+    import { getAuth, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+    import { getFirestore, doc, setDoc, getDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+    // Your Firebase Configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyAuqcDRrtuQi2tdWXA2E_UWyq7pCrGpoy4",
+      authDomain: "parkhali-village.firebaseapp.com",
+      projectId: "parkhali-village",
+      storageBucket: "parkhali-village.firebasestorage.app",
+      messagingSenderId: "645968583344",
+      appId: "1:645968583344:web:89a049e6ffaba4af33b975",
+      measurementId: "G-WD2LSS97KC"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    const provider = new GoogleAuthProvider();
+
+    let currentUserData = null;
+    let allVillagers = [];
+
+    // Global UI helper
+    const showLoader = (show) => document.getElementById('loading-overlay').style.display = show ? 'flex' : 'none';
+
+    // 1. Splash Screen Logic
+    window.onload = () => {
+        const letters = document.querySelectorAll('.letter');
+        letters.forEach((letter, index) => {
+            setTimeout(() => { letter.classList.add('animate-letter'); }, index * 200);
+        });
+
+        // Check Auth Status after Splash
+        setTimeout(() => {
+            onAuthStateChanged(auth, async (user) => {
+                document.getElementById('splash-screen').classList.add('hidden-section');
+                if (user) { checkProfileAndRedirect(user); } 
+                else { showSection('auth-section'); }
+            });
+        }, 2000);
+    };
+
+    // UI Navigation
+    function showSection(sectionId) {
+        ['auth-section', 'setup-section', 'main-app'].forEach(id => {
+            document.getElementById(id).classList.add('hidden-section');
+        });
+        document.getElementById(sectionId).classList.remove('hidden-section');
+    }
+
+    // Tab Switching Logic (Made global so onClick works)
+    window.switchTab = function(tabName) {
+        document.querySelectorAll('.page-tab').forEach(tab => tab.classList.add('hidden-section'));
+        document.getElementById(`tab-${tabName}`).classList.remove('hidden-section');
+        
+        // Active color for icons
+        document.querySelectorAll('.nav-btn').forEach(btn => {
+            if(!btn.classList.contains('nav-center')) btn.classList.remove('text-primary');
+            if(!btn.classList.contains('nav-center')) btn.classList.add('text-gray-400');
+        });
+        const activeBtn = document.querySelector(`[data-target="tab-${tabName}"]`);
+        if(activeBtn && !activeBtn.classList.contains('nav-center')) {
+            activeBtn.classList.remove('text-gray-400');
+            activeBtn.classList.add('text-primary');
+        }
+
+        if(tabName === 'villagers') loadVillagers();
+    };
+
+    // Profile Check
+    async function checkProfileAndRedirect(user) {
+        showLoader(true);
+        const docRef = doc(db, "users", user.uid);
+        const docSnap = await getDoc(docRef);
+        showLoader(false);
+
+        if (docSnap.exists()) {
+            currentUserData = docSnap.data();
+            setupMainApp(user, currentUserData);
+            showSection('main-app');
+            switchTab('home');
+        } else {
+            showSection('setup-section');
+        }
+    }
+
+    // Authentication Functions
+    document.getElementById('btn-google-login').addEventListener('click', () => {
+        signInWithPopup(auth, provider).catch(err => alert(err.message));
+    });
+
+    document.getElementById('btn-register').addEventListener('click', () => {
+        const email = document.getElementById('auth-email').value;
+        const pass = document.getElementById('auth-password').value;
+        if(email && pass) createUserWithEmailAndPassword(auth, email, pass).catch(err => alert(err.message));
+        else alert("ইমেইল এবং পাসওয়ার্ড দিন");
+    });
+
+    document.getElementById('btn-login').addEventListener('click', () => {
+        const email = document.getElementById('auth-email').value;
+        const pass = document.getElementById('auth-password').value;
+        if(email && pass) signInWithEmailAndPassword(auth, email, pass).catch(err => alert(err.message));
+        else alert("ইমেইল এবং পাসওয়ার্ড দিন");
+    });
+
+    document.getElementById('btn-logout').addEventListener('click', () => {
+        signOut(auth).then(() => { window.location.reload(); });
+    });
+
+    // Save Profile Data
+    document.getElementById('btn-save-profile').addEventListener('click', async () => {
+        const name = document.getElementById('setup-name').value;
+        const blood = document.getElementById('setup-blood').value;
+        const phone = document.getElementById('setup-phone').value;
+        const para = document.getElementById('setup-para').value;
+
+        if(!name || !phone || !para) return alert("দয়া করে সব তথ্য দিন!");
+        
+        showLoader(true);
+        try {
+            await setDoc(doc(db, "users", auth.currentUser.uid), {
+                uid: auth.currentUser.uid,
+                email: auth.currentUser.email,
+                name: name,
+                blood: blood,
+                phone: phone,
+                para: para,
+                joined: new Date().toISOString()
+            });
+            alert("আপনার প্রোফাইল সফলভাবে তৈরি হয়েছে!");
+            checkProfileAndRedirect(auth.currentUser);
+        } catch(e) {
+            console.error(e);
+            alert("তথ্য সেভ করতে সমস্যা হয়েছে। Firebase Rules চেক করুন।");
+        }
+        showLoader(false);
+    });
+
+    // Set Data in Main App
+    function setupMainApp(user, data) {
+        document.getElementById('welcome-name').innerText = `স্বাগতম, ${data.name}`;
+        document.getElementById('prof-name').innerText = data.name;
+        document.getElementById('prof-para').innerText = data.para;
+        document.getElementById('prof-blood').innerText = data.blood || 'N/A';
+        document.getElementById('prof-phone').innerText = data.phone;
+
+        // Admin Access Logic
+        if(user.email === 'mdwld2005@gmail.com') {
+            document.getElementById('admin-nav-btn').classList.remove('hidden-section');
+            // Adjust width of tabs if admin is visible
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                if(!btn.classList.contains('hidden-section')) {
+                    btn.classList.replace('w-1/5', 'w-1/6');
+                }
+            });
+        }
+    }
+
+    // Load and Search Villagers
+    async function loadVillagers() {
+        if(allVillagers.length === 0) {
+            showLoader(true);
+            const querySnapshot = await getDocs(collection(db, "users"));
+            allVillagers = [];
+            querySnapshot.forEach((doc) => { allVillagers.push(doc.data()); });
+            document.getElementById('total-users-count').innerText = allVillagers.length;
+            showLoader(false);
+        }
+        renderVillagers(allVillagers);
+    }
+
+    function renderVillagers(dataList) {
+        const listContainer = document.getElementById('villagers-list');
+        listContainer.innerHTML = '';
+        dataList.forEach(v => {
+            listContainer.innerHTML += `
+                <div class="bg-white p-3 rounded-xl shadow-sm border border-gray-100 flex items-center">
+                    <div class="w-12 h-12 bg-gray-200 rounded-full flex-shrink-0 flex items-center justify-center text-gray-500 mr-4"><i class="fas fa-user"></i></div>
+                    <div class="flex-grow">
+                        <h4 class="font-bold text-gray-800">${v.name}</h4>
+                        <p class="text-xs text-gray-500"><i class="fas fa-map-marker-alt text-primary mr-1"></i>${v.para}</p>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-xs font-bold bg-red-100 text-red-600 px-2 py-1 rounded-md">${v.blood || 'N/A'}</span>
+                        <p class="text-xs text-gray-500 mt-1">${v.phone}</p>
+                    </div>
+                </div>
+            `;
+        });
+    }
+
+    document.getElementById('search-villager').addEventListener('input', (e) => {
+        const term = e.target.value.toLowerCase();
+        const filtered = allVillagers.filter(v => 
+            v.name.toLowerCase().includes(term) || v.phone.includes(term)
+        );
+        renderVillagers(filtered);
+    });
+
+</script>
+</body>
+</html>
