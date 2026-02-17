@@ -23,7 +23,7 @@
         body { font-family: 'Hind Siliguri', sans-serif; background-color: #f3f4f6; margin: 0; padding: 0; overflow-x: hidden; }
         .hidden-section { display: none !important; }
         
-        /* Splash Screen Animation */
+        /* Splash Animation */
         #splash-screen { background: linear-gradient(135deg, #16a34a, #14532d); }
         .letter { display: inline-block; opacity: 0; transform: scale(0.5); font-size: 3.5rem; font-weight: bold; color: white; text-shadow: 2px 2px 10px rgba(0,0,0,0.2); }
         .animate-letter { animation: popIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
@@ -44,7 +44,7 @@
         .auth-tab-active { border-bottom: 3px solid #16a34a; color: #16a34a; font-weight: bold; }
         .auth-tab-inactive { color: #6b7280; }
 
-        /* App Container & Bottom Nav */
+        /* Layout */
         .app-container { max-width: 480px; margin: 0 auto; background: white; min-height: 100vh; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.1); }
         .content-area { padding-bottom: 80px; padding-top: 60px; height: 100vh; overflow-y: auto; }
         .nav-center { transform: translateY(-25px); border: 5px solid #f3f4f6; }
@@ -83,18 +83,17 @@
             </div>
 
             <div id="auth-phone-div" class="space-y-4">
-                <div id="phone-input-step">
+                <div>
                     <label class="block text-gray-700 text-sm mb-1 font-semibold">আপনার মোবাইল নম্বর</label>
-                    <div class="flex">
-                        <span class="inline-flex items-center px-3 bg-gray-100 border border-r-0 border-gray-300 rounded-l-lg text-gray-600 font-bold">+88</span>
-                        <input type="tel" id="auth-phone" placeholder="01XXX-XXXXXX" class="w-full px-4 py-3 border border-gray-300 rounded-r-lg focus:outline-none focus:border-primary">
-                    </div>
-                    <button id="btn-send-otp" class="w-full bg-primary text-white rounded-lg py-3 mt-6 font-bold shadow-md hover:bg-secondary transition">OTP পাঠান</button>
+                    <input type="tel" id="auth-phone-num" placeholder="01XXXXXXXXX" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:border-primary">
                 </div>
-                <div id="otp-input-step" class="hidden-section">
-                    <label class="block text-gray-700 text-sm mb-1 font-semibold">OTP কোড দিন</label>
-                    <input type="number" id="auth-otp" placeholder="6-digit code" class="w-full px-4 py-3 rounded-lg border border-gray-300 text-center tracking-widest text-lg focus:outline-none focus:border-primary">
-                    <button id="btn-verify-otp" class="w-full bg-primary text-white rounded-lg py-3 mt-6 font-bold shadow-md hover:bg-secondary transition">ভেরিফাই করুন</button>
+                <div>
+                    <label class="block text-gray-700 text-sm mb-1 font-semibold">পাসওয়ার্ড</label>
+                    <input type="password" id="auth-phone-pass" placeholder="******" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:border-primary">
+                </div>
+                <div class="flex space-x-3 pt-2">
+                    <button id="btn-login-phone" class="w-1/2 bg-primary text-white rounded-lg py-3 font-bold shadow-md hover:bg-secondary transition">লগইন</button>
+                    <button id="btn-register-phone" class="w-1/2 bg-white text-primary border-2 border-primary rounded-lg py-3 font-bold hover:bg-gray-50 transition">রেজিস্ট্রেশন</button>
                 </div>
             </div>
 
@@ -107,7 +106,6 @@
                 </div>
             </div>
         </div>
-        <div id="recaptcha-container"></div>
     </div>
 
     <div id="setup-section" class="hidden-section flex flex-col min-h-screen bg-white">
@@ -181,17 +179,16 @@
                     <input type="text" id="search-villager" placeholder="নাম, পেশা বা নম্বর দিয়ে খুঁজুন..." class="w-full px-4 py-3 pl-11 rounded-xl border border-gray-200 shadow-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none">
                     <i class="fas fa-search absolute left-4 top-4 text-gray-400"></i>
                 </div>
-                <div id="villagers-list" class="space-y-3">
-                    </div>
+                <div id="villagers-list" class="space-y-3"></div>
             </div>
 
             <div id="tab-services" class="hidden-section p-4 page-tab">
                 <h3 class="text-xl font-bold text-gray-800 mb-5 text-center mt-2">জরুরী সেবাসমূহ</h3>
                 <div class="grid grid-cols-2 gap-4">
-                    <div class="bg-white p-5 rounded-xl shadow-sm text-center border border-gray-100 hover:shadow-md transition"><div class="w-14 h-14 bg-red-50 text-red-500 rounded-full flex items-center justify-center mx-auto mb-3 text-2xl"><i class="fas fa-ambulance"></i></div><h5 class="font-bold text-gray-700">অ্যাম্বুলেন্স</h5></div>
-                    <div class="bg-white p-5 rounded-xl shadow-sm text-center border border-gray-100 hover:shadow-md transition"><div class="w-14 h-14 bg-blue-50 text-blue-500 rounded-full flex items-center justify-center mx-auto mb-3 text-2xl"><i class="fas fa-user-md"></i></div><h5 class="font-bold text-gray-700">ডাক্তার</h5></div>
-                    <div class="bg-white p-5 rounded-xl shadow-sm text-center border border-gray-100 hover:shadow-md transition"><div class="w-14 h-14 bg-yellow-50 text-yellow-600 rounded-full flex items-center justify-center mx-auto mb-3 text-2xl"><i class="fas fa-bolt"></i></div><h5 class="font-bold text-gray-700">বিদ্যুৎ অফিস</h5></div>
-                    <div class="bg-white p-5 rounded-xl shadow-sm text-center border border-gray-100 hover:shadow-md transition"><div class="w-14 h-14 bg-green-50 text-green-600 rounded-full flex items-center justify-center mx-auto mb-3 text-2xl"><i class="fas fa-shield-alt"></i></div><h5 class="font-bold text-gray-700">থানা পুলিশ</h5></div>
+                    <div class="bg-white p-5 rounded-xl shadow-sm text-center border border-gray-100"><div class="w-14 h-14 bg-red-50 text-red-500 rounded-full flex items-center justify-center mx-auto mb-3 text-2xl"><i class="fas fa-ambulance"></i></div><h5 class="font-bold text-gray-700">অ্যাম্বুলেন্স</h5></div>
+                    <div class="bg-white p-5 rounded-xl shadow-sm text-center border border-gray-100"><div class="w-14 h-14 bg-blue-50 text-blue-500 rounded-full flex items-center justify-center mx-auto mb-3 text-2xl"><i class="fas fa-user-md"></i></div><h5 class="font-bold text-gray-700">ডাক্তার</h5></div>
+                    <div class="bg-white p-5 rounded-xl shadow-sm text-center border border-gray-100"><div class="w-14 h-14 bg-yellow-50 text-yellow-600 rounded-full flex items-center justify-center mx-auto mb-3 text-2xl"><i class="fas fa-bolt"></i></div><h5 class="font-bold text-gray-700">বিদ্যুৎ অফিস</h5></div>
+                    <div class="bg-white p-5 rounded-xl shadow-sm text-center border border-gray-100"><div class="w-14 h-14 bg-green-50 text-green-600 rounded-full flex items-center justify-center mx-auto mb-3 text-2xl"><i class="fas fa-shield-alt"></i></div><h5 class="font-bold text-gray-700">থানা পুলিশ</h5></div>
                 </div>
             </div>
 
@@ -243,16 +240,13 @@
         <nav class="absolute bottom-0 w-full bg-white shadow-[0_-5px_15px_rgba(0,0,0,0.05)] flex justify-around items-center px-2 py-2 z-40 rounded-t-2xl border-t border-gray-100">
             <button onclick="switchTab('home')" class="nav-btn flex flex-col items-center text-gray-400 hover:text-primary w-1/5" data-target="tab-home"><i class="fas fa-home text-xl mb-1"></i><span class="text-[10px] font-bold">হোম</span></button>
             <button onclick="switchTab('villagers')" class="nav-btn flex flex-col items-center text-gray-400 hover:text-primary w-1/5" data-target="tab-villagers"><i class="fas fa-users text-xl mb-1"></i><span class="text-[10px] font-bold">গ্রামবাসী</span></button>
-            
             <div class="w-1/5 flex justify-center relative">
                 <button onclick="switchTab('services')" class="nav-btn nav-center w-14 h-14 bg-gradient-to-br from-primary to-secondary text-white rounded-full flex items-center justify-center shadow-[0_5px_15px_rgba(22,163,74,0.4)] hover:scale-105 transition-transform" data-target="tab-services">
                     <i class="fas fa-th-large text-2xl"></i>
                 </button>
             </div>
-            
             <button onclick="switchTab('notice')" class="nav-btn flex flex-col items-center text-gray-400 hover:text-primary w-1/5" data-target="tab-notice"><i class="fas fa-bell text-xl mb-1"></i><span class="text-[10px] font-bold">নোটিশ</span></button>
             <button onclick="switchTab('profile')" class="nav-btn flex flex-col items-center text-gray-400 hover:text-primary w-1/5" data-target="tab-profile"><i class="fas fa-user text-xl mb-1"></i><span class="text-[10px] font-bold">প্রোফাইল</span></button>
-            
             <button id="admin-nav-btn" onclick="switchTab('admin')" class="hidden-section nav-btn flex flex-col items-center text-dark hover:text-primary w-1/5" data-target="tab-admin"><i class="fas fa-shield-alt text-xl mb-1"></i><span class="text-[10px] font-bold">এডমিন</span></button>
         </nav>
     </div>
@@ -268,19 +262,26 @@
     </div>
 </div>
 
+<div id="exist-modal" class="fixed inset-0 modal-overlay flex items-center justify-center px-4 z-[100]" onclick="if(event.target === this) closeModal('exist-modal')">
+    <div class="modal-content bg-white w-full max-w-sm rounded-2xl p-6 text-center shadow-2xl relative">
+        <button onclick="closeModal('exist-modal')" class="absolute top-3 right-3 w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center text-gray-600 hover:bg-gray-200 z-10"><i class="fas fa-times"></i></button>
+        <div class="w-20 h-20 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <i class="fas fa-exclamation-triangle text-4xl text-yellow-500"></i>
+        </div>
+        <h3 class="text-xl font-bold text-gray-800 mb-2">একাউন্ট ইতিমধ্যে রয়েছে!</h3>
+        <p class="text-gray-600 font-medium text-sm leading-relaxed">এই মোবাইল নম্বর দিয়ে আগে থেকেই একটি একাউন্ট তৈরি করা আছে। দয়া করে নম্বর এবং পাসওয়ার্ড দিয়ে লগইন করুন।</p>
+        <button onclick="closeModal('exist-modal')" class="w-full bg-primary text-white rounded-lg py-3 mt-5 font-bold shadow hover:bg-secondary transition">ঠিক আছে</button>
+    </div>
+</div>
+
 <div id="villager-modal" class="fixed inset-0 modal-overlay flex items-center justify-center px-4 z-[100]" onclick="if(event.target === this) closeModal('villager-modal')">
     <div class="modal-content bg-white w-full max-w-sm rounded-2xl overflow-hidden shadow-2xl relative">
-        
-        <button type="button" onclick="closeModal('villager-modal')" class="absolute top-3 right-3 w-8 h-8 bg-white border border-gray-200 rounded-full flex items-center justify-center text-gray-600 hover:bg-gray-100 z-50 shadow-sm cursor-pointer">
-            <i class="fas fa-times"></i>
-        </button>
-        
+        <button type="button" onclick="closeModal('villager-modal')" class="absolute top-3 right-3 w-8 h-8 bg-white border border-gray-200 rounded-full flex items-center justify-center text-gray-600 hover:bg-gray-100 z-50 shadow-sm cursor-pointer"><i class="fas fa-times"></i></button>
         <div class="bg-primary/10 h-24 w-full absolute top-0 left-0 z-0"></div>
         <div class="px-6 pt-12 pb-6 text-center relative z-10">
             <div class="w-20 h-20 bg-white border-4 border-white shadow-md rounded-full mx-auto mb-3 flex items-center justify-center text-3xl text-gray-400"><i class="fas fa-user"></i></div>
             <h3 id="v-modal-name" class="text-2xl font-bold text-gray-800">---</h3>
             <p id="v-modal-prof" class="text-primary font-semibold text-sm mb-4">---</p>
-            
             <div class="space-y-3 text-left bg-gray-50 p-4 rounded-xl border border-gray-100">
                 <div class="flex items-center"><i class="fas fa-map-marker-alt w-6 text-gray-400"></i> <span id="v-modal-para" class="text-gray-700 font-medium">---</span></div>
                 <div class="flex items-center"><i class="fas fa-phone-alt w-6 text-gray-400"></i> <a id="v-modal-phone" href="#" class="text-blue-600 font-bold">---</a></div>
@@ -295,7 +296,7 @@
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-    import { getAuth, RecaptchaVerifier, signInWithPhoneNumber, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
     import { getFirestore, doc, setDoc, getDoc, collection, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
     const firebaseConfig = {
@@ -314,7 +315,6 @@
 
     let currentUserData = null;
     let allVillagers = [];
-    let confirmationResult = null;
 
     const showLoader = (show) => document.getElementById('loading-overlay').style.display = show ? 'flex' : 'none';
 
@@ -344,7 +344,6 @@
     window.switchTab = function(tabName) {
         document.querySelectorAll('.page-tab').forEach(tab => tab.classList.add('hidden-section'));
         document.getElementById(`tab-${tabName}`).classList.remove('hidden-section');
-        
         document.querySelectorAll('.nav-btn').forEach(btn => {
             if(!btn.classList.contains('nav-center')) { btn.classList.remove('text-primary'); btn.classList.add('text-gray-400'); }
         });
@@ -355,7 +354,7 @@
         if(tabName === 'home') loadBanners();
     };
 
-    // Auth Toggle
+    // Auth UI Toggle
     document.getElementById('tab-phone-auth').addEventListener('click', (e) => {
         e.target.className = "w-1/2 py-3 auth-tab-active text-lg transition";
         document.getElementById('tab-email-auth').className = "w-1/2 py-3 auth-tab-inactive text-lg transition";
@@ -369,31 +368,54 @@
         document.getElementById('auth-phone-div').classList.add('hidden-section');
     });
 
-    // Phone Auth
-    window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', { 'size': 'invisible' });
+    // Helper: Convert Phone to Fake Email
+    const formatPhoneAsEmail = (phone) => `${phone}@parkhali.local`;
 
-    document.getElementById('btn-send-otp').addEventListener('click', () => {
-        let phone = document.getElementById('auth-phone').value;
-        if(phone.startsWith('0')) phone = phone.substring(1); 
-        const phoneNumber = "+880" + phone;
+    // --- NEW: Phone + Password Registration (NO OTP) ---
+    document.getElementById('btn-register-phone').addEventListener('click', () => {
+        const phone = document.getElementById('auth-phone-num').value.trim();
+        const pass = document.getElementById('auth-phone-pass').value;
         
+        if(phone.length < 11 || !phone.startsWith('01')) return alert("দয়া করে সঠিক ১১ ডিজিটের মোবাইল নম্বর দিন");
+        if(!pass || pass.length < 6) return alert("পাসওয়ার্ড অন্তত ৬ অক্ষরের হতে হবে");
+
         showLoader(true);
-        signInWithPhoneNumber(auth, phoneNumber, window.recaptchaVerifier)
-        .then((result) => {
-            confirmationResult = result;
+        const fakeEmail = formatPhoneAsEmail(phone);
+        
+        createUserWithEmailAndPassword(auth, fakeEmail, pass)
+        .then((userCredential) => {
             showLoader(false);
-            document.getElementById('phone-input-step').classList.add('hidden-section');
-            document.getElementById('otp-input-step').classList.remove('hidden-section');
-        }).catch((err) => { showLoader(false); alert("Error: " + err.message); });
+            // onAuthStateChanged will handle the redirect to Profile Setup
+        })
+        .catch((error) => {
+            showLoader(false);
+            if(error.code === 'auth/email-already-in-use') {
+                openModal('exist-modal'); // Show beautiful popup
+            } else {
+                alert("এরর: " + error.message);
+            }
+        });
     });
 
-    document.getElementById('btn-verify-otp').addEventListener('click', () => {
-        const code = document.getElementById('auth-otp').value;
+    // --- NEW: Phone + Password Login (NO OTP) ---
+    document.getElementById('btn-login-phone').addEventListener('click', () => {
+        const phone = document.getElementById('auth-phone-num').value.trim();
+        const pass = document.getElementById('auth-phone-pass').value;
+        
+        if(!phone || !pass) return alert("মোবাইল নম্বর এবং পাসওয়ার্ড দিন");
+
         showLoader(true);
-        confirmationResult.confirm(code).catch(err => { showLoader(false); alert("ভুল কোড!"); });
+        const fakeEmail = formatPhoneAsEmail(phone);
+        
+        signInWithEmailAndPassword(auth, fakeEmail, pass)
+        .then(() => { showLoader(false); })
+        .catch((error) => {
+            showLoader(false);
+            alert("ভুল নম্বর বা পাসওয়ার্ড! আবার চেষ্টা করুন।");
+        });
     });
 
-    // Email Auth
+    // Email Auth (Unchanged)
     document.getElementById('btn-register-email').addEventListener('click', () => {
         const email = document.getElementById('auth-email').value; const pass = document.getElementById('auth-password').value;
         if(email && pass) { showLoader(true); createUserWithEmailAndPassword(auth, email, pass).catch(err => {showLoader(false); alert(err.message)}); }
@@ -416,9 +438,13 @@
             showSection('main-app');
             switchTab('home');
         } else {
-            if(user.phoneNumber) {
-                document.getElementById('setup-phone').value = user.phoneNumber;
+            // Auto-fill phone if registered via Fake Email trick
+            if(user.email && user.email.includes('@parkhali.local')) {
+                document.getElementById('setup-phone').value = user.email.split('@')[0];
                 document.getElementById('setup-phone-container').classList.add('hidden-section'); 
+            } else {
+                document.getElementById('setup-phone').value = "";
+                document.getElementById('setup-phone-container').classList.remove('hidden-section'); 
             }
             showSection('setup-section');
         }
@@ -428,7 +454,12 @@
     document.getElementById('btn-save-profile').addEventListener('click', async () => {
         const name = document.getElementById('setup-name').value;
         let phone = document.getElementById('setup-phone').value;
-        if(auth.currentUser.phoneNumber) phone = auth.currentUser.phoneNumber; 
+        
+        // Extract phone if using the fake email trick
+        if(auth.currentUser.email && auth.currentUser.email.includes('@parkhali.local')) {
+            phone = auth.currentUser.email.split('@')[0];
+        }
+
         const profession = document.getElementById('setup-profession').value;
         const blood = document.getElementById('setup-blood').value;
         const para = document.getElementById('setup-para').value;
@@ -439,7 +470,7 @@
         try {
             await setDoc(doc(db, "users", auth.currentUser.uid), {
                 uid: auth.currentUser.uid,
-                email: auth.currentUser.email || "",
+                email: auth.currentUser.email && !auth.currentUser.email.includes('@parkhali.local') ? auth.currentUser.email : "",
                 name: name,
                 phone: phone,
                 profession: profession,
@@ -465,6 +496,7 @@
         document.getElementById('prof-blood').innerText = data.blood || 'N/A';
         document.getElementById('prof-phone').innerText = data.phone;
 
+        // Admin check (Use real email if authenticated via email tab, or hardcode)
         if(user.email === 'mdwld2005@gmail.com') {
             document.getElementById('admin-nav-btn').classList.remove('hidden-section');
             document.querySelectorAll('.nav-btn').forEach(btn => { if(!btn.classList.contains('hidden-section')) btn.classList.replace('w-1/5', 'w-1/6'); });
@@ -472,7 +504,7 @@
         loadBanners(); 
     }
 
-    // Banner Slider Logic
+    // Banner Slider
     let bannersLoaded = false;
     async function loadBanners() {
         if(bannersLoaded) return;
@@ -481,26 +513,19 @@
             const querySnapshot = await getDocs(collection(db, "banners"));
             let banners = [];
             querySnapshot.forEach((doc) => banners.push(doc.data()));
-            
             if(banners.length > 0) {
                 track.innerHTML = '';
-                banners.forEach(b => {
-                    track.innerHTML += `<img src="${b.imgUrl}" onclick="window.open('${b.linkUrl}', '_blank')" class="slide">`;
-                });
+                banners.forEach(b => { track.innerHTML += `<img src="${b.imgUrl}" onclick="window.open('${b.linkUrl}', '_blank')" class="slide">`; });
                 startSlider(banners.length);
             }
             bannersLoaded = true;
-        } catch(e) { console.log("Banner load error or no banners", e); }
+        } catch(e) { console.log(e); }
     }
-
     function startSlider(count) {
         if(count <= 1) return;
         const track = document.getElementById('banner-track');
         let index = 0;
-        setInterval(() => {
-            index = (index + 1) % count;
-            track.style.transform = `translateX(-${index * 100}%)`;
-        }, 3500); 
+        setInterval(() => { index = (index + 1) % count; track.style.transform = `translateX(-${index * 100}%)`; }, 3500); 
     }
 
     // Add Banner (Admin)
@@ -508,7 +533,6 @@
         const img = document.getElementById('admin-banner-img').value;
         const url = document.getElementById('admin-banner-url').value || '#';
         if(!img) return alert("ইমেজ URL দিন");
-        
         showLoader(true);
         try {
             await addDoc(collection(db, "banners"), { imgUrl: img, linkUrl: url, addedAt: new Date() });
@@ -519,7 +543,7 @@
         showLoader(false);
     });
 
-    // Villager List & Details
+    // Villager List
     async function loadVillagers() {
         if(allVillagers.length === 0) {
             showLoader(true);
@@ -545,15 +569,12 @@
                         <p class="text-[11px] font-semibold text-primary mb-0.5">${v.profession || 'সদস্য'}</p>
                         <p class="text-xs text-gray-500"><i class="fas fa-map-marker-alt text-gray-400 mr-1"></i>${v.para || 'ঠিকানা দেওয়া নেই'}</p>
                     </div>
-                    <div class="text-right">
-                        <i class="fas fa-chevron-right text-gray-300"></i>
-                    </div>
+                    <div class="text-right"><i class="fas fa-chevron-right text-gray-300"></i></div>
                 </div>
             `;
         });
     }
 
-    // FIXED: Show undefined handler
     window.showVillagerDetails = (encodedData) => {
         const v = JSON.parse(decodeURIComponent(encodedData));
         document.getElementById('v-modal-name').innerText = v.name || 'অজ্ঞাত';
