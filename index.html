@@ -11,150 +11,78 @@
         :root {
             --primary-blue: #1976d2;
             --primary-green: #2e7d32;
+            --blood-red: #d32f2f;
+            --emergency-orange: #ff9800;
             --accent-blue: #e3f2fd;
             --light-bg: #f0f4f7;
             --dark-text: #333;
             --light-text: #666;
         }
 
-        body {
-            font-family: 'Poppins', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: var(--light-bg);
-            color: var(--dark-text);
-        }
-
-        .container {
-            max-width: 480px;
-            margin: 0 auto;
-            background: var(--light-bg);
-            min-height: 100vh;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            position: relative;
-            overflow-x: hidden;
-            padding-bottom: 70px;
-        }
+        body { font-family: 'Poppins', sans-serif; margin: 0; padding: 0; background-color: var(--light-bg); color: var(--dark-text); }
+        .container { max-width: 480px; margin: 0 auto; background: var(--light-bg); min-height: 100vh; box-shadow: 0 4px 15px rgba(0,0,0,0.1); position: relative; overflow-x: hidden; padding-bottom: 75px; }
 
         /* Header */
-        header {
-            background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
-            color: white;
-            padding: 1.5rem 1.5rem 2.5rem;
-            border-bottom-left-radius: 25px;
-            border-bottom-right-radius: 25px;
-        }
-
+        header { background: linear-gradient(135deg, var(--primary-blue), var(--primary-green)); color: white; padding: 1.5rem 1.5rem 2.5rem; border-bottom-left-radius: 25px; border-bottom-right-radius: 25px; }
         .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
         .header-top h1 { font-size: 1.5rem; font-weight: 600; margin: 0; }
-
-        .logout-btn {
-            background: rgba(255,255,255,0.2);
-            color: white;
-            border: none;
-            padding: 6px 12px;
-            cursor: pointer;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            display: none; /* Hidden initially */
-            align-items: center;
-            gap: 5px;
-            font-family: inherit;
-        }
-
+        .logout-btn { background: rgba(255,255,255,0.2); color: white; border: none; padding: 6px 12px; cursor: pointer; border-radius: 20px; font-size: 0.9rem; display: none; align-items: center; gap: 5px; font-family: inherit; }
         .hero-section h2 { font-size: 1.8rem; margin: 0 0 0.5rem 0; }
         .hero-section p { font-size: 1rem; opacity: 0.9; margin: 0; }
 
         main { padding: 1.5rem; margin-top: -1.5rem; }
+        .section-card { background: white; padding: 1.5rem; border-radius: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); margin-bottom: 1.5rem; }
+        h3 { font-size: 1.2rem; color: var(--primary-blue); margin: 0 0 1rem 0; font-weight: 600; display: flex; align-items: center; gap: 8px;}
 
-        .section-card {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 15px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            margin-bottom: 1.5rem;
-        }
-
-        h3 { font-size: 1.2rem; color: var(--primary-blue); margin: 0 0 1rem 0; font-weight: 600; }
-
-        /* Form & Auth Styles */
-        .form-input {
-            width: 100%;
-            padding: 12px;
-            margin: 10px 0;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-family: inherit;
-            box-sizing: border-box;
-            background: #fafafa;
-        }
+        /* Forms */
+        .form-input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; font-family: inherit; box-sizing: border-box; background: #fafafa; }
         .form-input:focus { border-color: var(--primary-blue); outline: none; }
-
-        .btn-primary {
-            width: 100%;
-            padding: 12px;
-            background: linear-gradient(to right, var(--primary-blue), var(--primary-green));
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 1rem;
-            margin-top: 10px;
-            font-family: inherit;
-        }
+        .btn-primary { width: 100%; padding: 12px; background: linear-gradient(to right, var(--primary-blue), var(--primary-green)); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 1rem; margin-top: 10px; font-family: inherit; }
         .btn-primary:hover { opacity: 0.9; }
-
         .toggle-auth { text-align: center; margin-top: 15px; font-size: 0.9rem; color: var(--light-text); }
         .toggle-auth span { color: var(--primary-blue); font-weight: 600; cursor: pointer; }
         .msg { font-size: 0.85rem; margin-top: 10px; text-align: center; }
-        .error { color: #d32f2f; }
+        .error { color: var(--blood-red); }
         .success { color: #388e3c; }
 
         /* Services Grid */
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1rem;
-        }
+        .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
         .service-item { text-align: center; cursor: pointer; transition: transform 0.2s; }
         .service-item:hover { transform: translateY(-3px); }
-        .service-icon {
-            width: 55px; height: 55px; background: var(--accent-blue);
-            color: var(--primary-blue); border-radius: 15px;
-            display: flex; align-items: center; justify-content: center;
-            margin: 0 auto 0.5rem; font-size: 28px;
-        }
+        .service-icon { width: 55px; height: 55px; background: var(--accent-blue); color: var(--primary-blue); border-radius: 15px; display: flex; align-items: center; justify-content: center; margin: 0 auto 0.5rem; font-size: 28px; }
+        .service-icon.blood { background: #ffebee; color: var(--blood-red); }
+        .service-icon.emergency { background: #fff3e0; color: var(--emergency-orange); }
         .service-label { font-size: 0.8rem; font-weight: 500; color: var(--dark-text); }
 
         /* Notice Board */
-        .notice-item {
-            background: #fff;
-            padding: 1rem;
-            border-radius: 10px;
-            box-shadow: 0 1px 5px rgba(0,0,0,0.06);
-            margin-bottom: 1rem;
-            border-left: 4px solid var(--primary-green);
-            border-top: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;
-        }
+        .notice-item { background: #fff; padding: 1rem; border-radius: 10px; box-shadow: 0 1px 5px rgba(0,0,0,0.06); margin-bottom: 1rem; border-left: 4px solid var(--primary-green); border: 1px solid #eee; border-left: 4px solid var(--primary-green); }
         .notice-item h4 { margin: 0 0 0.5rem; color: var(--primary-blue); font-size: 1.1rem;}
         .notice-item p { margin: 0 0 0.5rem; font-size: 0.9rem; color: #444; line-height: 1.4; }
         .notice-date { font-size: 0.75rem; color: var(--light-text); display: flex; align-items: center; gap: 4px; margin:0;}
 
         /* Bottom Nav */
-        .bottom-nav {
-            position: fixed; bottom: 0; left: 0; right: 0;
-            max-width: 480px; margin: 0 auto;
-            background: white; display: none; /* Hidden initially */ justify-content: space-around;
-            padding: 0.8rem 0; box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
-            border-top-left-radius: 20px; border-top-right-radius: 20px; z-index: 10;
-        }
-        .nav-item {
-            color: var(--light-text); text-decoration: none; display: flex;
-            flex-direction: column; align-items: center; font-size: 0.75rem; font-weight: 500;
-        }
-        .nav-item.active { color: var(--primary-blue); }
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; max-width: 480px; margin: 0 auto; background: white; display: none; justify-content: space-around; padding: 0.5rem 0; box-shadow: 0 -2px 10px rgba(0,0,0,0.05); border-top-left-radius: 20px; border-top-right-radius: 20px; z-index: 10; }
+        .nav-item { color: var(--light-text); text-decoration: none; display: flex; flex-direction: column; align-items: center; font-size: 0.75rem; font-weight: 500; padding: 5px 10px; border-radius: 10px; cursor: pointer; }
+        .nav-item.active { color: var(--primary-blue); background: var(--accent-blue); }
         .nav-icon { font-size: 24px; margin-bottom: 2px; }
+
+        /* --- Modal Bottom Sheet --- */
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); z-index: 100; display: none; justify-content: center; align-items: flex-end; }
+        .modal-content { background: white; width: 100%; max-width: 480px; border-top-left-radius: 20px; border-top-right-radius: 20px; padding: 1.5rem; max-height: 85vh; overflow-y: auto; box-sizing: border-box; animation: slideUp 0.3s ease-out; }
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 15px;}
+        .modal-header h3 { margin: 0; display: flex; align-items: center; gap: 8px; }
+        .close-btn { background: none; border: none; font-size: 24px; cursor: pointer; color: var(--light-text); }
+        
+        /* Contact List Cards (Used for Donors & Emergency) */
+        .contact-card { background: #fff; padding: 12px; border-radius: 10px; margin-bottom: 10px; border: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .contact-info h5 { margin: 0 0 5px 0; font-size: 1rem; color: var(--dark-text); }
+        .contact-info p { margin: 0; font-size: 0.85rem; color: var(--light-text); }
+        .contact-badge { color: white; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-weight: bold; font-size: 1.2rem; }
+        .call-btn { background: #4caf50; color: white; border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; text-decoration: none; box-shadow: 0 2px 5px rgba(76, 175, 80, 0.4);}
+        
+        .add-donor-box { background: #ffebee; padding: 15px; border-radius: 10px; margin-bottom: 20px; border: 1px solid #ffcdd2;}
+        .add-donor-box h4 { color: var(--blood-red); margin: 0 0 10px 0; font-size: 1rem; }
     </style>
 </head>
 <body>
@@ -163,9 +91,7 @@
         <header>
             <div class="header-top">
                 <h1>পারখালী স্মার্ট গ্রাম</h1>
-                <button id="logout-btn" class="logout-btn">
-                    <span class="material-icons-round" style="font-size: 16px;">logout</span> লগআউট
-                </button>
+                <button id="logout-btn" class="logout-btn"><span class="material-icons-round" style="font-size: 16px;">logout</span> লগআউট</button>
             </div>
             <div class="hero-section" id="hero-text">
                 <h2>স্বাগতম!</h2>
@@ -175,7 +101,7 @@
 
         <main>
             <section id="auth-section" class="section-card">
-                <h3 id="form-title" style="text-align: center; color: var(--dark-text);">লগইন করুন</h3>
+                <h3 id="form-title" style="text-align: center; color: var(--dark-text); justify-content: center;">লগইন করুন</h3>
                 <input type="email" id="email" class="form-input" placeholder="আপনার ইমেইল" required>
                 <input type="password" id="password" class="form-input" placeholder="পাসওয়ার্ড" required>
                 <button id="auth-action-btn" class="btn-primary">লগইন</button>
@@ -183,73 +109,154 @@
                 <p id="auth-msg" class="msg error"></p>
             </section>
 
-            <div id="dashboard-section" style="display: none;">
-                
-                <section id="admin-panel" class="section-card" style="border: 2px solid var(--primary-blue); display: none;">
-                    <h3><span class="material-icons-round" style="vertical-align: middle; margin-right: 5px;">admin_panel_settings</span> অ্যাডমিন প্যানেল</h3>
-                    <p style="font-size: 0.85rem; color: var(--light-text); margin-bottom: 10px;">নতুন নোটিশ প্রকাশ করুন:</p>
-                    <input type="text" id="notice-title" class="form-input" placeholder="নোটিশের শিরোনাম">
-                    <textarea id="notice-desc" class="form-input" rows="3" placeholder="নোটিশের বিস্তারিত..."></textarea>
-                    <button id="publish-btn" class="btn-primary" style="background: var(--primary-blue);">নোটিশ পাবলিশ করুন</button>
-                    <p id="admin-msg" class="msg"></p>
-                </section>
-
+            <div id="home-view" style="display: none;">
                 <section class="section-card">
                     <h3>জনপ্রিয় সেবাসমূহ</h3>
                     <div class="services-grid">
-                        <div class="service-item">
-                            <div class="service-icon"><span class="material-icons-round">bloodtype</span></div>
+                        <div class="service-item" id="btn-blood-donor">
+                            <div class="service-icon blood"><span class="material-icons-round">bloodtype</span></div>
                             <div class="service-label">ব্লাড ডোনার</div>
                         </div>
-                        <div class="service-item">
-                            <div class="service-icon"><span class="material-icons-round">contact_phone</span></div>
+                        <div class="service-item" id="btn-emergency">
+                            <div class="service-icon emergency"><span class="material-icons-round">support_agent</span></div>
                             <div class="service-label">জরুরী সেবা</div>
                         </div>
                         <div class="service-item">
                             <div class="service-icon"><span class="material-icons-round">agriculture</span></div>
                             <div class="service-label">কৃষি তথ্য</div>
                         </div>
-                        <div class="service-item">
-                            <div class="service-icon"><span class="material-icons-round">school</span></div>
-                            <div class="service-label">শিক্ষা</div>
-                        </div>
-                        <div class="service-item">
-                            <div class="service-icon"><span class="material-icons-round">medical_services</span></div>
-                            <div class="service-label">ডাক্তার</div>
-                        </div>
-                        <div class="service-item">
-                            <div class="service-icon"><span class="material-icons-round">storefront</span></div>
-                            <div class="service-label">বাজার দর</div>
-                        </div>
                     </div>
                 </section>
 
                 <section class="section-card">
-                    <h3 style="display: flex; align-items: center; justify-content: space-between;">
-                        <span><span class="material-icons-round" style="vertical-align: middle; margin-right: 5px;">campaign</span> নোটিশ বোর্ড</span>
-                    </h3>
+                    <h3><span class="material-icons-round">campaign</span> নোটিশ বোর্ড</h3>
+                    <div id="notice-container"><p style="text-align: center; color: var(--light-text); font-size: 0.9rem;">নোটিশ লোড হচ্ছে...</p></div>
+                </section>
+            </div>
+
+            <div id="admin-view" style="display: none;">
+                <section class="section-card" style="border: 2px solid var(--primary-blue); background: #f8fbff;">
+                    <h3 style="color: var(--primary-blue);"><span class="material-icons-round">admin_panel_settings</span> অ্যাডমিন কন্ট্রোল রুম</h3>
+                    <p style="font-size: 0.85rem; color: var(--light-text); margin-bottom: 15px;">এখান থেকে গ্রামের সকল সেবা এবং নোটিশ কন্ট্রোল করুন।</p>
                     
-                    <div id="notice-container">
-                        <p style="text-align: center; color: var(--light-text); font-size: 0.9rem;">নোটিশ লোড হচ্ছে...</p>
+                    <div class="services-grid" style="grid-template-columns: repeat(2, 1fr); margin-bottom: 20px;">
+                        <div class="service-item" style="background: white; padding: 10px; border-radius: 10px; border: 1px solid #ddd;">
+                            <h2 style="margin: 0; color: var(--primary-blue);">৮</h2>
+                            <div class="service-label">মোট নোটিশ</div>
+                        </div>
+                        <div class="service-item" style="background: white; padding: 10px; border-radius: 10px; border: 1px solid #ddd;">
+                            <h2 style="margin: 0; color: var(--primary-green);">৪৫</h2>
+                            <div class="service-label">মোট ইউজার</div>
+                        </div>
+                    </div>
+
+                    <div style="background: white; padding: 15px; border-radius: 10px; border: 1px solid #ddd;">
+                        <h4 style="margin: 0 0 10px 0; color: var(--dark-text);">নতুন নোটিশ প্রকাশ করুন</h4>
+                        <input type="text" id="notice-title" class="form-input" placeholder="নোটিশের শিরোনাম">
+                        <textarea id="notice-desc" class="form-input" rows="3" placeholder="নোটিশের বিস্তারিত..."></textarea>
+                        <button id="publish-btn" class="btn-primary" style="background: var(--primary-blue);">পাবলিশ করুন</button>
+                        <p id="admin-msg" class="msg"></p>
                     </div>
                 </section>
             </div>
         </main>
 
         <nav class="bottom-nav" id="bottom-nav">
-            <a href="#" class="nav-item active">
+            <div class="nav-item active" id="nav-btn-home">
                 <span class="material-icons-round nav-icon">home</span> হোম
-            </a>
-            <a href="#" class="nav-item">
+            </div>
+            <div class="nav-item">
                 <span class="material-icons-round nav-icon">grid_view</span> সেবা
-            </a>
-            <a href="#" class="nav-item">
-                <span class="material-icons-round nav-icon">notifications</span> নোটিশ
-            </a>
-            <a href="#" class="nav-item">
+            </div>
+            <div class="nav-item" id="nav-btn-admin" style="display: none;">
+                <span class="material-icons-round nav-icon">admin_panel_settings</span> অ্যাডমিন
+            </div>
+            <div class="nav-item">
                 <span class="material-icons-round nav-icon">person</span> প্রোফাইল
-            </a>
+            </div>
         </nav>
+
+        <div id="blood-donor-modal" class="modal-overlay">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 style="color: var(--blood-red);"><span class="material-icons-round">bloodtype</span> রক্তদাতা তালিকা</h3>
+                    <button id="close-blood-modal" class="close-btn"><span class="material-icons-round">close</span></button>
+                </div>
+                
+                <div class="add-donor-box">
+                    <h4>নিজেকে ডোনার হিসেবে যুক্ত করুন</h4>
+                    <input type="text" id="donor-name" class="form-input" placeholder="আপনার পুরো নাম">
+                    <select id="donor-group" class="form-input">
+                        <option value="">রক্তের গ্রুপ...</option>
+                        <option value="A+">A+</option><option value="A-">A-</option>
+                        <option value="B+">B+</option><option value="B-">B-</option>
+                        <option value="O+">O+</option><option value="O-">O-</option>
+                        <option value="AB+">AB+</option><option value="AB-">AB-</option>
+                    </select>
+                    <input type="tel" id="donor-phone" class="form-input" placeholder="মোবাইল নম্বর (যেমন: 017...)">
+                    <button id="add-donor-btn" class="btn-primary" style="background: var(--blood-red);">লিস্টে যুক্ত করুন</button>
+                    <p id="donor-msg" class="msg"></p>
+                </div>
+
+                <div>
+                    <h4 style="color: var(--primary-blue); margin-bottom: 5px;">ডোনার খুঁজুন</h4>
+                    <select id="filter-group" class="form-input" style="border-color: var(--primary-blue);">
+                        <option value="All">সব গ্রুপের তালিকা</option>
+                        <option value="A+">A+</option><option value="A-">A-</option>
+                        <option value="B+">B+</option><option value="B-">B-</option>
+                        <option value="O+">O+</option><option value="O-">O-</option>
+                        <option value="AB+">AB+</option><option value="AB-">AB-</option>
+                    </select>
+                    <div id="donor-list-container" style="margin-top: 15px;"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="emergency-modal" class="modal-overlay">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 style="color: var(--emergency-orange);"><span class="material-icons-round">support_agent</span> জরুরী সেবা</h3>
+                    <button id="close-emergency-modal" class="close-btn"><span class="material-icons-round">close</span></button>
+                </div>
+                
+                <p style="font-size: 0.9rem; color: var(--light-text); margin-bottom: 15px;">প্রয়োজনে নিচের নম্বরগুলোতে সরাসরি কল করুন:</p>
+
+                <div id="emergency-list-container">
+                    <div class="contact-card">
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <div class="contact-badge" style="background: #e53935;"><span class="material-icons-round">local_police</span></div>
+                            <div class="contact-info"><h5>জাতীয় জরুরী সেবা</h5><p>পুলিশ, ফায়ার সার্ভিস, এম্বুলেন্স</p></div>
+                        </div>
+                        <a href="tel:999" class="call-btn"><span class="material-icons-round">call</span></a>
+                    </div>
+                    
+                    <div class="contact-card">
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <div class="contact-badge" style="background: var(--primary-blue);"><span class="material-icons-round">person</span></div>
+                            <div class="contact-info"><h5>ইউনিয়ন চেয়ারম্যান</h5><p>মোঃ আব্দুর রহমান</p></div>
+                        </div>
+                        <a href="tel:01700000000" class="call-btn"><span class="material-icons-round">call</span></a>
+                    </div>
+
+                    <div class="contact-card">
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <div class="contact-badge" style="background: var(--primary-green);"><span class="material-icons-round">health_and_safety</span></div>
+                            <div class="contact-info"><h5>গ্রামের ডাক্তার</h5><p>ডাঃ রফিকুল ইসলাম</p></div>
+                        </div>
+                        <a href="tel:01800000000" class="call-btn"><span class="material-icons-round">call</span></a>
+                    </div>
+
+                    <div class="contact-card">
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <div class="contact-badge" style="background: #fb8c00;"><span class="material-icons-round">electric_bolt</span></div>
+                            <div class="contact-info"><h5>পল্লী বিদ্যুৎ অফিস</h5><p>অভিযোগ কেন্দ্র</p></div>
+                        </div>
+                        <a href="tel:01900000000" class="call-btn"><span class="material-icons-round">call</span></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <script type="module">
@@ -257,164 +264,196 @@
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         import { getFirestore, collection, addDoc, getDocs, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        // Your Firebase Config
         const firebaseConfig = {
             apiKey: "AIzaSyAuqcDRrtuQi2tdWXA2E_UWyq7pCrGpoy4",
             authDomain: "parkhali-village.firebaseapp.com",
             projectId: "parkhali-village",
             storageBucket: "parkhali-village.firebasestorage.app",
             messagingSenderId: "645968583344",
-            appId: "1:645968583344:web:89a049e6ffaba4af33b975",
-            measurementId: "G-WD2LSS97KC"
+            appId: "1:645968583344:web:89a049e6ffaba4af33b975"
         };
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        // UI Elements
+        // Core Views & Nav
         const authSection = document.getElementById('auth-section');
-        const dashboardSection = document.getElementById('dashboard-section');
-        const adminPanel = document.getElementById('admin-panel');
-        const logoutBtn = document.getElementById('logout-btn');
+        const homeView = document.getElementById('home-view');
+        const adminView = document.getElementById('admin-view');
         const bottomNav = document.getElementById('bottom-nav');
-        const authMsg = document.getElementById('auth-msg');
-        const heroText = document.getElementById('hero-text');
+        const logoutBtn = document.getElementById('logout-btn');
+        
+        const navBtnHome = document.getElementById('nav-btn-home');
+        const navBtnAdmin = document.getElementById('nav-btn-admin');
         
         let isLogin = true;
         const adminEmail = "admin@parkhali.com";
 
-        // Toggle Login / Register UI
+        // Navigation Logic (Switching Views)
+        function switchView(viewName) {
+            navBtnHome.classList.remove('active');
+            navBtnAdmin.classList.remove('active');
+            homeView.style.display = 'none';
+            adminView.style.display = 'none';
+
+            if(viewName === 'home') {
+                homeView.style.display = 'block';
+                navBtnHome.classList.add('active');
+                document.getElementById('hero-text').innerHTML = `<h2>হ্যালো!</h2><p style="font-size:0.9rem;">${auth.currentUser ? auth.currentUser.email : ''}</p>`;
+            } else if(viewName === 'admin') {
+                adminView.style.display = 'block';
+                navBtnAdmin.classList.add('active');
+                document.getElementById('hero-text').innerHTML = `<h2>অ্যাডমিন প্যানেল</h2><p style="font-size:0.9rem;">কন্ট্রোল রুম</p>`;
+            }
+        }
+
+        navBtnHome.addEventListener('click', () => switchView('home'));
+        navBtnAdmin.addEventListener('click', () => switchView('admin'));
+
+        // Auth Logic
         document.getElementById('toggle-auth').addEventListener('click', () => {
             isLogin = !isLogin;
             document.getElementById('form-title').innerText = isLogin ? "লগইন করুন" : "রেজিস্ট্রেশন করুন";
             document.getElementById('auth-action-btn').innerText = isLogin ? "লগইন" : "রেজিস্টার";
             document.getElementById('toggle-auth').innerHTML = isLogin ? 'অ্যাকাউন্ট নেই? <span>রেজিস্ট্রেশন করুন</span>' : 'অ্যাকাউন্ট আছে? <span>লগইন করুন</span>';
-            authMsg.innerText = "";
         });
 
-        // Handle Login & Registration
         document.getElementById('auth-action-btn').addEventListener('click', () => {
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
-            authMsg.className = "msg error";
-            
-            if(!email || !password) return authMsg.innerText = "ইমেইল এবং পাসওয়ার্ড দিন!";
-            
-            authMsg.innerText = "অপেক্ষা করুন...";
-            authMsg.style.color = "var(--primary-blue)";
+            const msg = document.getElementById('auth-msg');
+            if(!email || !password) return msg.innerText = "ইমেইল এবং পাসওয়ার্ড দিন!";
+            msg.innerText = "অপেক্ষা করুন..."; msg.style.color = "blue";
 
             if(isLogin) {
-                signInWithEmailAndPassword(auth, email, password)
-                    .catch(e => { authMsg.className = "msg error"; authMsg.innerText = "লগইন ব্যর্থ: " + e.message; });
+                signInWithEmailAndPassword(auth, email, password).catch(e => { msg.className = "msg error"; msg.innerText = "লগইন ব্যর্থ!"; });
             } else {
-                createUserWithEmailAndPassword(auth, email, password)
-                    .catch(e => { authMsg.className = "msg error"; authMsg.innerText = "রেজিস্ট্রেশন ব্যর্থ: " + e.message; });
+                createUserWithEmailAndPassword(auth, email, password).catch(e => { msg.className = "msg error"; msg.innerText = "রেজিস্ট্রেশন ব্যর্থ!"; });
             }
         });
 
-        // Logout
         logoutBtn.addEventListener('click', () => signOut(auth));
 
-        // Manage UI based on Auth State
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                // User is signed in
                 authSection.style.display = "none";
-                dashboardSection.style.display = "block";
                 logoutBtn.style.display = "flex";
                 bottomNav.style.display = "flex";
-                heroText.innerHTML = `<h2>হ্যালো!</h2><p style="font-size:0.9rem;">${user.email}</p>`;
-
-                // Check Admin
-                adminPanel.style.display = (user.email === adminEmail) ? "block" : "none";
                 
-                loadNotices(); // Load notices from Firestore
+                // Show/Hide Admin Tab based on Email
+                if(user.email === adminEmail) {
+                    navBtnAdmin.style.display = "flex";
+                } else {
+                    navBtnAdmin.style.display = "none";
+                }
+                
+                switchView('home'); // Default view
+                loadNotices(); 
             } else {
-                // User is signed out
                 authSection.style.display = "block";
-                dashboardSection.style.display = "none";
+                homeView.style.display = "none";
+                adminView.style.display = "none";
                 logoutBtn.style.display = "none";
                 bottomNav.style.display = "none";
-                heroText.innerHTML = `<h2>স্বাগতম!</h2><p>ডিজিটাল সেবায় আপনার গ্রাম।</p>`;
-                document.getElementById('email').value = "";
-                document.getElementById('password').value = "";
-                authMsg.innerText = "";
+                document.getElementById('hero-text').innerHTML = `<h2>স্বাগতম!</h2><p>ডিজিটাল সেবায় আপনার গ্রাম।</p>`;
             }
         });
 
-        // --- Admin: Publish Notice ---
+        // ================= ADMIN: NOTICE LOGIC =================
         document.getElementById('publish-btn').addEventListener('click', async () => {
             const title = document.getElementById('notice-title').value;
             const desc = document.getElementById('notice-desc').value;
-            const adminMsg = document.getElementById('admin-msg');
-
-            if(!title || !desc) {
-                adminMsg.className = "msg error";
-                adminMsg.innerText = "শিরোনাম এবং বিস্তারিত পূরণ করুন!";
-                return;
-            }
-
-            adminMsg.className = "msg";
-            adminMsg.style.color = "var(--primary-blue)";
-            adminMsg.innerText = "পাবলিশ হচ্ছে...";
+            const msg = document.getElementById('admin-msg');
+            if(!title || !desc) { msg.className = "msg error"; msg.innerText = "সব ঘর পূরণ করুন!"; return; }
+            msg.className = "msg"; msg.style.color = "blue"; msg.innerText = "পাবলিশ হচ্ছে...";
 
             try {
-                await addDoc(collection(db, "notices"), {
-                    title: title,
-                    description: desc,
-                    createdAt: serverTimestamp()
-                });
-                adminMsg.className = "msg success";
-                adminMsg.innerText = "নোটিশ সফলভাবে পাবলিশ হয়েছে!";
-                document.getElementById('notice-title').value = "";
-                document.getElementById('notice-desc').value = "";
+                await addDoc(collection(db, "notices"), { title: title, description: desc, createdAt: serverTimestamp() });
+                msg.className = "msg success"; msg.innerText = "সফলভাবে পাবলিশ হয়েছে!";
+                document.getElementById('notice-title').value = ""; document.getElementById('notice-desc').value = "";
                 loadNotices(); 
-            } catch (e) {
-                adminMsg.className = "msg error";
-                adminMsg.innerText = "এরর: " + e.message;
-            }
+            } catch (e) { msg.className = "msg error"; msg.innerText = "এরর: " + e.message; }
         });
 
-        // --- Fetch & Show Notices ---
         async function loadNotices() {
             const container = document.getElementById('notice-container');
-            container.innerHTML = `<p style="text-align: center; color: var(--light-text); font-size: 0.9rem;">লোড হচ্ছে...</p>`;
-            
             try {
                 const q = query(collection(db, "notices"), orderBy("createdAt", "desc"));
                 const querySnapshot = await getDocs(q);
-                
                 container.innerHTML = ""; 
-                
-                if(querySnapshot.empty) {
-                    container.innerHTML = "<p style='text-align:center; color:#888; font-size: 0.9rem;'>বর্তমানে কোনো নোটিশ নেই।</p>";
-                    return;
-                }
+                if(querySnapshot.empty) { container.innerHTML = "<p style='text-align:center;'>কোনো নোটিশ নেই।</p>"; return; }
 
                 querySnapshot.forEach((doc) => {
                     const notice = doc.data();
                     const dateObj = notice.createdAt ? notice.createdAt.toDate() : new Date();
-                    
-                    // Format date beautifully
-                    const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
-                    const dateString = dateObj.toLocaleDateString('bn-BD', options);
-
-                    const noticeDiv = document.createElement('div');
-                    noticeDiv.className = 'notice-item';
-                    noticeDiv.innerHTML = `
-                        <h4>${notice.title}</h4>
-                        <p>${notice.description}</p>
-                        <p class="notice-date">
-                            <span class="material-icons-round" style="font-size: 14px;">schedule</span> ${dateString}
-                        </p>
-                    `;
-                    container.appendChild(noticeDiv);
+                    const dateString = dateObj.toLocaleDateString('bn-BD', { year: 'numeric', month: 'long', day: 'numeric' });
+                    container.innerHTML += `
+                        <div class="notice-item">
+                            <h4>${notice.title}</h4><p>${notice.description}</p>
+                            <p class="notice-date"><span class="material-icons-round" style="font-size: 14px;">schedule</span> ${dateString}</p>
+                        </div>`;
                 });
-            } catch (e) {
-                container.innerHTML = `<p class="error" style="text-align:center;">নোটিশ লোড করতে সমস্যা: ${e.message}</p>`;
-            }
+            } catch (e) { container.innerHTML = `<p class="error">সমস্যা: ${e.message}</p>`; }
         }
+
+        // ================= MODALS LOGIC =================
+        
+        // 1. Blood Donor Modal
+        const bloodModal = document.getElementById('blood-donor-modal');
+        document.getElementById('btn-blood-donor').addEventListener('click', () => {
+            bloodModal.style.display = 'flex'; loadDonors();
+        });
+        document.getElementById('close-blood-modal').addEventListener('click', () => bloodModal.style.display = 'none');
+
+        // Blood Donor Database Logic
+        document.getElementById('add-donor-btn').addEventListener('click', async () => {
+            const name = document.getElementById('donor-name').value;
+            const group = document.getElementById('donor-group').value;
+            const phone = document.getElementById('donor-phone').value;
+            const msg = document.getElementById('donor-msg');
+            if(!name || !group || !phone) { msg.className = "msg error"; msg.innerText = "সব তথ্য দিন!"; return; }
+            msg.className = "msg"; msg.style.color = "blue"; msg.innerText = "যুক্ত করা হচ্ছে...";
+
+            try {
+                await addDoc(collection(db, "blood_donors"), { name: name, bloodGroup: group, phone: phone, addedBy: auth.currentUser.email, createdAt: serverTimestamp() });
+                msg.className = "msg success"; msg.innerText = "আপনাকে যুক্ত করা হয়েছে!";
+                document.getElementById('donor-name').value = ""; document.getElementById('donor-group').value = ""; document.getElementById('donor-phone').value = "";
+                loadDonors(document.getElementById('filter-group').value);
+            } catch (e) { msg.className = "msg error"; msg.innerText = "এরর: " + e.message; }
+        });
+
+        async function loadDonors(filter = "All") {
+            const container = document.getElementById('donor-list-container');
+            container.innerHTML = `<p style="text-align: center; color: var(--light-text);">খোঁজা হচ্ছে...</p>`;
+            try {
+                const q = query(collection(db, "blood_donors"), orderBy("createdAt", "desc"));
+                const querySnapshot = await getDocs(q);
+                container.innerHTML = ""; let count = 0;
+                querySnapshot.forEach((doc) => {
+                    const donor = doc.data();
+                    if(filter === "All" || donor.bloodGroup === filter) {
+                        count++;
+                        container.innerHTML += `
+                            <div class="contact-card">
+                                <div style="display: flex; align-items: center; gap: 15px;">
+                                    <div class="contact-badge" style="background: var(--blood-red);">${donor.bloodGroup}</div>
+                                    <div class="contact-info"><h5>${donor.name}</h5><p>${donor.phone}</p></div>
+                                </div>
+                                <a href="tel:${donor.phone}" class="call-btn"><span class="material-icons-round">call</span></a>
+                            </div>`;
+                    }
+                });
+                if(count === 0) container.innerHTML = "<p style='text-align:center; color:#888;'>এই গ্রুপের ডোনার নেই।</p>";
+            } catch (e) { container.innerHTML = `<p class="error">লোড করতে সমস্যা!</p>`; }
+        }
+        document.getElementById('filter-group').addEventListener('change', (e) => loadDonors(e.target.value));
+
+        // 2. Emergency Services Modal
+        const emergencyModal = document.getElementById('emergency-modal');
+        document.getElementById('btn-emergency').addEventListener('click', () => emergencyModal.style.display = 'flex');
+        document.getElementById('close-emergency-modal').addEventListener('click', () => emergencyModal.style.display = 'none');
+
     </script>
 </body>
 </html>
