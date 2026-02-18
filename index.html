@@ -13,23 +13,15 @@
             --blood-red: #e53935; --emergency-orange: #fb8c00; --agri-green: #689f38; 
             --bg-color: #f8fafc; --card-bg: #ffffff; 
             --text-main: #1e293b; --text-muted: #64748b; 
-            --shadow-sm: 0 4px 6px -1px rgba(0,0,0,0.05);
             --shadow-md: 0 10px 15px -3px rgba(0,0,0,0.05);
             --shadow-lg: 0 20px 25px -5px rgba(0,0,0,0.1);
         }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body { font-family: 'Hind Siliguri', 'Poppins', sans-serif; margin: 0; padding: 0; background-color: var(--bg-color); color: var(--text-main); overflow-x: hidden; padding-bottom: 90px; }
-        
-        /* Main Container */
         .container { max-width: 480px; margin: 0 auto; min-height: 100vh; position: relative; background: #fff; box-shadow: 0 0 20px rgba(0,0,0,0.03); }
 
         /* --- SPLASH SCREEN --- */
-        #splash-screen {
-            position: fixed; inset: 0; max-width: 480px; margin: 0 auto;
-            background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
-            z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center;
-            transition: opacity 0.6s ease-out, visibility 0.6s ease-out;
-        }
+        #splash-screen { position: fixed; inset: 0; max-width: 480px; margin: 0 auto; background: linear-gradient(135deg, var(--primary-blue), var(--primary-green)); z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 0.6s ease-out, visibility 0.6s ease-out; }
         .splash-logo { font-size: 80px; color: white; margin-bottom: 10px; animation: pulse-logo 1.5s infinite ease-in-out; }
         .splash-text { color: white; font-size: 2rem; font-weight: 700; margin: 0; letter-spacing: 1px; }
         .spinner { width: 40px; height: 40px; border: 4px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; margin-top: 30px; animation: spin 1s linear infinite; }
@@ -38,12 +30,7 @@
         .splash-hidden { opacity: 0; visibility: hidden; pointer-events: none; }
 
         /* --- HEADER --- */
-        header { 
-            background: linear-gradient(135deg, var(--primary-blue), var(--primary-green)); 
-            color: white; padding: 2rem 1.5rem 3.5rem; 
-            border-bottom-left-radius: 35px; border-bottom-right-radius: 35px; 
-            box-shadow: var(--shadow-md); position: relative; z-index: 10;
-        }
+        header { background: linear-gradient(135deg, var(--primary-blue), var(--primary-green)); color: white; padding: 2rem 1.5rem 3.5rem; border-bottom-left-radius: 35px; border-bottom-right-radius: 35px; box-shadow: var(--shadow-md); position: relative; z-index: 10; }
         .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
         .header-top h1 { font-size: 1.5rem; font-weight: 700; margin: 0; display: flex; align-items: center; gap: 8px;}
         .logout-btn { background: rgba(255,255,255,0.2); color: white; border: none; padding: 8px 15px; cursor: pointer; border-radius: 20px; font-size: 0.9rem; font-weight: 600; display: none; align-items: center; gap: 5px; backdrop-filter: blur(5px); transition: 0.3s; }
@@ -64,33 +51,35 @@
         .msg { font-size: 0.9rem; margin-top: 10px; text-align: center; font-weight: 500; }
         .error { color: var(--blood-red); } .success { color: var(--primary-green); }
 
-        /* --- SERVICES GRID (Service Page) --- */
+        /* --- SUCCESS OVERLAY --- */
+        #success-overlay { position: fixed; inset: 0; background: rgba(255,255,255,0.95); z-index: 999; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+        .success-icon { font-size: 80px; color: var(--primary-green); margin-bottom: 20px; animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        @keyframes popIn { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+        /* --- SERVICES GRID --- */
         .services-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.2rem; }
-        .service-item { background: white; padding: 20px; border-radius: 20px; box-shadow: var(--shadow-sm); display: flex; flex-direction: column; align-items: center; cursor: pointer; transition: 0.3s; border: 1px solid #f1f5f9; text-align: center; }
+        .service-item { background: white; padding: 20px; border-radius: 20px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); display: flex; flex-direction: column; align-items: center; cursor: pointer; transition: 0.3s; border: 1px solid #f1f5f9; text-align: center; }
         .service-item:active { transform: scale(0.95); background: #f8fafc; }
-        .service-icon { width: 60px; height: 60px; border-radius: 18px; display: flex; align-items: center; justify-content: center; font-size: 32px; margin-bottom: 0.8rem; box-shadow: var(--shadow-sm); }
+        .service-icon { width: 60px; height: 60px; border-radius: 18px; display: flex; align-items: center; justify-content: center; font-size: 32px; margin-bottom: 0.8rem; }
         .icon-blood { background: #ffebee; color: var(--blood-red); }
         .icon-emergency { background: #fff3e0; color: var(--emergency-orange); }
         .icon-agri { background: #f1f8e9; color: var(--agri-green); }
         .service-label { font-size: 0.95rem; font-weight: 600; color: var(--text-main); }
 
         /* --- NOTICES --- */
-        .notice-item { background: #fff; padding: 1.2rem; border-radius: 16px; margin-bottom: 1rem; border: 1px solid #f1f5f9; border-left: 5px solid var(--primary-blue); box-shadow: var(--shadow-sm); }
+        .notice-item { background: #fff; padding: 1.2rem; border-radius: 16px; margin-bottom: 1rem; border: 1px solid #f1f5f9; border-left: 5px solid var(--primary-blue); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
         .notice-item h4 { margin: 0 0 0.5rem; color: var(--text-main); font-size: 1.15rem; font-weight: 700;}
         .notice-item p { margin: 0 0 0.8rem; font-size: 0.95rem; color: var(--text-muted); line-height: 1.5; }
-        .notice-date { font-size: 0.8rem; color: #94a3b8; display: flex; align-items: center; gap: 5px; font-weight: 500;}
 
         /* --- ADMIN PANEL UI --- */
         .admin-stat-card { background: linear-gradient(135deg, #1e293b, #334155); color: white; padding: 15px; border-radius: 16px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; box-shadow: var(--shadow-md); }
         .stat-number { font-size: 1.8rem; font-weight: 700; }
         .stat-label { font-size: 0.9rem; opacity: 0.8; }
-        
-        .user-manage-card { background: #fff; border-radius: 12px; padding: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #e2e8f0; box-shadow: var(--shadow-sm); }
+        .user-manage-card { background: #fff; border-radius: 12px; padding: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #e2e8f0; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
         .badge { padding: 4px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; color: white; }
         .badge-active { background: #10b981; } .badge-banned { background: var(--blood-red); } .badge-admin { background: var(--primary-blue); }
-        .btn-action { padding: 6px 12px; border: none; border-radius: 8px; cursor: pointer; font-size: 0.8rem; font-weight: 600; color: white; margin-left: 5px; transition: 0.2s; box-shadow: var(--shadow-sm); }
+        .btn-action { padding: 6px 12px; border: none; border-radius: 8px; cursor: pointer; font-size: 0.8rem; font-weight: 600; color: white; margin-left: 5px; transition: 0.2s; }
         .btn-warning { background: var(--emergency-orange); } .btn-danger { background: var(--blood-red); } .btn-success { background: #10b981; }
-        .btn-action:active { transform: scale(0.95); }
 
         /* --- BOTTOM NAV (Floating) --- */
         .bottom-nav { position: fixed; bottom: 20px; left: 20px; right: 20px; max-width: 440px; margin: 0 auto; background: white; display: none; justify-content: space-between; align-items: center; padding: 0.6rem 1.5rem; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); z-index: 100; }
@@ -108,8 +97,7 @@
         .modal-overlay.show .modal-content { transform: translateY(0); }
         .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;}
         .close-btn { background: #f1f5f9; border: none; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--text-muted); }
-        
-        .contact-card { background: #fff; padding: 15px; border-radius: 16px; margin-bottom: 12px; border: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center; box-shadow: var(--shadow-sm); }
+        .contact-card { background: #fff; padding: 15px; border-radius: 16px; margin-bottom: 12px; border: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
         .contact-badge { width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; border-radius: 14px; font-weight: 700; font-size: 1.1rem; color: white; }
         .call-btn { width: 45px; height: 45px; border-radius: 14px; display: flex; align-items: center; justify-content: center; text-decoration: none; color: white; background: #10b981; }
     </style>
@@ -120,6 +108,12 @@
         <span class="material-icons-round splash-logo">holiday_village</span>
         <h1 class="splash-text">পারখালী</h1>
         <div class="spinner"></div>
+    </div>
+
+    <div id="success-overlay">
+        <span class="material-icons-round success-icon">check_circle</span>
+        <h2 style="color: var(--text-main); margin: 0;">অভিনন্দন!</h2>
+        <p style="color: var(--text-muted); font-size: 1.1rem;">আপনার রেজিস্ট্রেশন সফল হয়েছে।</p>
     </div>
 
     <div class="container">
@@ -142,6 +136,35 @@
                 <button id="auth-action-btn" class="btn-primary">লগইন</button>
                 <p style="text-align: center; margin-top: 15px; color: #64748b; font-size: 0.9rem;" id="toggle-auth">অ্যাকাউন্ট নেই? <span style="color: var(--primary-blue); font-weight: 700; cursor: pointer;">রেজিস্ট্রেশন করুন</span></p>
                 <p id="auth-msg" class="msg"></p>
+            </section>
+
+            <section id="reg-form-view" class="section-card" style="display: none;">
+                <h3 class="section-title" style="color: var(--primary-green);">📝 তথ্য পূরণ করুন</h3>
+                <p style="font-size: 0.9rem; color: #64748b; margin-bottom: 20px;">নতুন অ্যাকাউন্ট চালু করতে নিচের তথ্যগুলো দিন।</p>
+                
+                <label style="font-size: 0.9rem; font-weight: 600;">আপনার নাম</label>
+                <input type="text" id="reg-name" class="form-input" placeholder="পুরো নাম লিখুন">
+                
+                <label style="font-size: 0.9rem; font-weight: 600;">পেশা</label>
+                <input type="text" id="reg-prof" class="form-input" placeholder="আপনার পেশা (যেমন: ছাত্র, কৃষক)">
+                
+                <label style="font-size: 0.9rem; font-weight: 600;">রক্তের গ্রুপ</label>
+                <select id="reg-blood" class="form-input">
+                    <option value="">সিলেক্ট করুন...</option>
+                    <option value="A+">A+</option><option value="A-">A-</option>
+                    <option value="B+">B+</option><option value="B-">B-</option>
+                    <option value="O+">O+</option><option value="O-">O-</option>
+                    <option value="AB+">AB+</option><option value="AB-">AB-</option>
+                </select>
+                
+                <label style="font-size: 0.9rem; font-weight: 600;">মোবাইল নম্বর</label>
+                <input type="tel" id="reg-phone" class="form-input" placeholder="017xxxxxxxx">
+                
+                <label style="font-size: 0.9rem; font-weight: 600;">পাড়ার নাম</label>
+                <input type="text" id="reg-address" class="form-input" placeholder="আপনার পাড়া বা গ্রামের নাম">
+                
+                <button id="complete-profile-btn" class="btn-primary" style="margin-top: 10px;">সাবমিট করুন</button>
+                <p id="reg-msg" class="msg"></p>
             </section>
 
             <div id="home-view" style="display: none;">
@@ -180,14 +203,16 @@
                     </div>
                     <h3 style="margin: 0; font-size: 1.4rem;" id="profile-display-name">প্রোফাইল</h3>
                     <p style="color: var(--text-muted); font-size: 0.95rem;" id="profile-display-email"></p>
+                    <div style="margin-top: 10px;">
+                        <span class="badge badge-admin" id="profile-role-badge" style="display:none;">Admin</span>
+                    </div>
                 </section>
                 <section class="section-card">
-                    <h4 style="margin: 0 0 15px 0;">তথ্য আপডেট করুন</h4>
-                    <input type="text" id="profile-name" class="form-input" placeholder="আপনার পূর্ণ নাম">
-                    <input type="tel" id="profile-phone" class="form-input" placeholder="মোবাইল নম্বর">
-                    <input type="text" id="profile-address" class="form-input" placeholder="গ্রামের পাড়া/ওয়ার্ড">
-                    <button id="update-profile-btn" class="btn-primary">তথ্য সেভ করুন</button>
-                    <p id="profile-msg" class="msg"></p>
+                    <h4 style="margin: 0 0 15px 0;">আমার তথ্য</h4>
+                    <p style="margin: 5px 0; font-size: 0.9rem;"><strong>পেশা:</strong> <span id="disp-prof">-</span></p>
+                    <p style="margin: 5px 0; font-size: 0.9rem;"><strong>রক্তের গ্রুপ:</strong> <span id="disp-blood" style="color: var(--blood-red); font-weight: bold;">-</span></p>
+                    <p style="margin: 5px 0; font-size: 0.9rem;"><strong>মোবাইল:</strong> <span id="disp-phone">-</span></p>
+                    <p style="margin: 5px 0; font-size: 0.9rem;"><strong>পাড়া:</strong> <span id="disp-address">-</span></p>
                 </section>
             </div>
 
@@ -221,21 +246,10 @@
         </main>
 
         <nav class="bottom-nav" id="bottom-nav">
-            <div class="nav-item active" id="nav-btn-home">
-                <span class="material-icons-round nav-icon">home</span> হোম
-            </div>
-            
-            <div class="nav-center" id="nav-btn-services">
-                <span class="material-icons-round">grid_view</span>
-            </div>
-
-            <div class="nav-item" id="nav-btn-admin" style="display: none;">
-                <span class="material-icons-round nav-icon">admin_panel_settings</span> অ্যাডমিন
-            </div>
-
-            <div class="nav-item" id="nav-btn-profile">
-                <span class="material-icons-round nav-icon">person</span> প্রোফাইল
-            </div>
+            <div class="nav-item active" id="nav-btn-home"><span class="material-icons-round nav-icon">home</span> হোম</div>
+            <div class="nav-center" id="nav-btn-services"><span class="material-icons-round">grid_view</span></div>
+            <div class="nav-item" id="nav-btn-admin" style="display: none;"><span class="material-icons-round nav-icon">admin_panel_settings</span> অ্যাডমিন</div>
+            <div class="nav-item" id="nav-btn-profile"><span class="material-icons-round nav-icon">person</span> প্রোফাইল</div>
         </nav>
 
         <div id="blood-donor-modal" class="modal-overlay">
@@ -322,18 +336,29 @@
         const db = getFirestore(app);
         const adminEmail = "admin@parkhali.com";
 
-        // Global Modal Functions
+        // Global Helpers
         window.openModal = (id) => { const m = document.getElementById(id); m.style.display='flex'; setTimeout(()=>m.classList.add('show'),10); };
         window.closeModal = (id) => { const m = document.getElementById(id); m.classList.remove('show'); setTimeout(()=>m.style.display='none',300); };
 
-        // UI Variables & Nav
-        const views = { home: document.getElementById('home-view'), services: document.getElementById('services-view'), profile: document.getElementById('profile-view'), admin: document.getElementById('admin-view') };
+        // UI Views
+        const views = { home: document.getElementById('home-view'), services: document.getElementById('services-view'), profile: document.getElementById('profile-view'), admin: document.getElementById('admin-view'), reg: document.getElementById('reg-form-view'), auth: document.getElementById('auth-section') };
         const navs = { home: document.getElementById('nav-btn-home'), services: document.getElementById('nav-btn-services'), profile: document.getElementById('nav-btn-profile'), admin: document.getElementById('nav-btn-admin') };
         
         function switchView(viewName) {
             Object.values(views).forEach(el => el.style.display = 'none');
             Object.values(navs).forEach(el => el.classList.remove('active')); 
             
+            if(viewName === 'reg' || viewName === 'auth') {
+                document.getElementById('bottom-nav').style.display = 'none';
+                document.getElementById('logout-btn').style.display = 'none';
+                views[viewName].style.display = 'block';
+                document.querySelector('.hero-section h2').innerText = "তথ্য দিন";
+                document.querySelector('.hero-section p').innerText = "প্রোফাইল সম্পূর্ণ করুন";
+                return;
+            }
+
+            document.getElementById('bottom-nav').style.display = 'flex';
+            document.getElementById('logout-btn').style.display = 'flex';
             if(viewName === 'services') { navs.services.style.transform = "scale(1.1)"; } 
             else { navs.services.style.transform = "scale(1)"; if(navs[viewName]) navs[viewName].classList.add('active'); }
 
@@ -346,47 +371,101 @@
             else if(viewName === 'admin') { hTitle.innerText = "অ্যাডমিন"; hSub.innerText = "কন্ট্রোল রুম"; loadAllUsers(); loadAdminStats(); }
         }
 
+        // Nav Click Events
         navs.home.addEventListener('click', () => switchView('home'));
         navs.services.addEventListener('click', () => switchView('services'));
         navs.profile.addEventListener('click', () => switchView('profile'));
         navs.admin.addEventListener('click', () => switchView('admin'));
 
-        // Auth Logic
+        // --- AUTH & REGISTRATION LOGIC ---
+        
+        // 1. Auth State Check
         onAuthStateChanged(auth, async (user) => {
             setTimeout(() => document.getElementById('splash-screen').classList.add('splash-hidden'), 2000); 
             if (user) {
+                // Check if user Doc exists in Firestore
                 const uDoc = await getDoc(doc(db, "users", user.uid));
-                if (uDoc.exists() && uDoc.data().status === "banned" && user.email !== adminEmail) { signOut(auth); alert("অ্যাকাউন্ট ব্যান করা হয়েছে!"); return; }
-
-                document.getElementById('auth-section').style.display = "none";
-                document.getElementById('logout-btn').style.display = "flex";
-                document.getElementById('bottom-nav').style.display = "flex";
-                navs.admin.style.display = (user.email === adminEmail) ? "flex" : "none";
-                switchView('home'); loadNotices();
+                
+                if (!uDoc.exists()) {
+                    // Profile Incomplete -> Show Registration Form
+                    switchView('reg');
+                } else {
+                    // Check if Banned
+                    if (uDoc.data().status === "banned" && user.email !== adminEmail) { signOut(auth); alert("অ্যাকাউন্ট ব্যান করা হয়েছে!"); return; }
+                    
+                    // Profile Complete -> Show Home
+                    navs.admin.style.display = (user.email === adminEmail) ? "flex" : "none";
+                    switchView('home'); loadNotices();
+                }
             } else {
-                document.getElementById('auth-section').style.display = "block";
-                Object.values(views).forEach(el => el.style.display = 'none');
-                document.getElementById('logout-btn').style.display = "none";
-                document.getElementById('bottom-nav').style.display = "none";
+                switchView('auth');
             }
         });
 
+        // 2. Login / Register Switch
         let isLogin = true;
-        document.getElementById('toggle-auth').addEventListener('click', () => { isLogin=!isLogin; document.getElementById('auth-action-btn').innerText = isLogin?"লগইন":"রেজিস্টার"; });
+        document.getElementById('toggle-auth').addEventListener('click', () => { isLogin=!isLogin; document.getElementById('auth-action-btn').innerText = isLogin?"লগইন":"রেজিস্টার"; document.getElementById('form-title').innerText = isLogin?"লগইন করুন":"রেজিস্ট্রেশন করুন";});
+        
+        // 3. Auth Action (Login/Register)
         document.getElementById('auth-action-btn').addEventListener('click', async () => {
             const email = document.getElementById('email').value; const pass = document.getElementById('password').value;
-            if(!email || !pass) return;
+            const msg = document.getElementById('auth-msg');
+            if(!email || !pass) { msg.innerText = "সব তথ্য দিন!"; return; }
+            msg.innerText = "অপেক্ষা করুন...";
+            
             try {
-                if(isLogin) await signInWithEmailAndPassword(auth, email, pass);
-                else {
-                    const cred = await createUserWithEmailAndPassword(auth, email, pass);
-                    await setDoc(doc(db, "users", cred.user.uid), { email, role: email===adminEmail?"admin":"user", status: "active", createdAt: serverTimestamp() });
+                if(isLogin) {
+                    await signInWithEmailAndPassword(auth, email, pass);
+                } else {
+                    // Just create Auth user, don't write DB yet. onAuthStateChanged will handle the redirect to form.
+                    await createUserWithEmailAndPassword(auth, email, pass);
                 }
-            } catch(e) { alert("ব্যর্থ হয়েছে!"); }
+            } catch(e) { msg.innerText = "ব্যর্থ হয়েছে: " + e.message; }
         });
+
+        // 4. Complete Profile Logic (Form Submit)
+        document.getElementById('complete-profile-btn').addEventListener('click', async () => {
+            const name = document.getElementById('reg-name').value;
+            const prof = document.getElementById('reg-prof').value;
+            const blood = document.getElementById('reg-blood').value;
+            const phone = document.getElementById('reg-phone').value;
+            const addr = document.getElementById('reg-address').value;
+            const msg = document.getElementById('reg-msg');
+
+            if(!name || !prof || !blood || !phone || !addr) { msg.innerText = "সবগুলো ঘর পূরণ করতে হবে!"; msg.className="msg error"; return; }
+            msg.innerText = "সেভ হচ্ছে...";
+
+            try {
+                const user = auth.currentUser;
+                await setDoc(doc(db, "users", user.uid), {
+                    email: user.email,
+                    role: user.email === adminEmail ? "admin" : "user",
+                    status: "active",
+                    name: name,
+                    profession: prof,
+                    bloodGroup: blood,
+                    phone: phone,
+                    address: addr,
+                    createdAt: serverTimestamp()
+                });
+
+                // Show Success Animation
+                const overlay = document.getElementById('success-overlay');
+                overlay.style.display = "flex";
+                setTimeout(() => {
+                    overlay.style.display = "none";
+                    navs.admin.style.display = (user.email === adminEmail) ? "flex" : "none";
+                    switchView('home'); loadNotices();
+                }, 2000);
+
+            } catch (e) { msg.innerText = "এরর: " + e.message; }
+        });
+
         document.getElementById('logout-btn').addEventListener('click', () => signOut(auth));
 
-        // Features Logic
+        // --- FEATURES LOGIC ---
+        
+        // Blood Donor
         window.loadDonors = async (filter="All") => {
             const c = document.getElementById('donor-list-container'); c.innerHTML="লোড হচ্ছে...";
             const s = await getDocs(query(collection(db, "blood_donors"), orderBy("createdAt", "desc")));
@@ -403,18 +482,23 @@
             alert("যুক্ত হয়েছে!"); loadDonors();
         });
 
+        // Profile Display
         async function loadProfileData() {
             if(!auth.currentUser) return;
             document.getElementById('profile-display-email').innerText = auth.currentUser.email;
             const d = await getDoc(doc(db, "users", auth.currentUser.uid));
-            if(d.exists()) { const data=d.data(); document.getElementById('profile-name').value=data.name||""; document.getElementById('profile-phone').value=data.phone||""; document.getElementById('profile-address').value=data.address||""; if(data.name) document.getElementById('profile-display-name').innerText=data.name; }
+            if(d.exists()) { 
+                const data=d.data(); 
+                document.getElementById('profile-display-name').innerText = data.name || "নাম নেই";
+                document.getElementById('disp-prof').innerText = data.profession || "-";
+                document.getElementById('disp-blood').innerText = data.bloodGroup || "-";
+                document.getElementById('disp-phone').innerText = data.phone || "-";
+                document.getElementById('disp-address').innerText = data.address || "-";
+                if(data.role === 'admin') document.getElementById('profile-role-badge').style.display = 'inline-block';
+            }
         }
-        document.getElementById('update-profile-btn').addEventListener('click', async () => {
-            await updateDoc(doc(db, "users", auth.currentUser.uid), { name:document.getElementById('profile-name').value, phone:document.getElementById('profile-phone').value, address:document.getElementById('profile-address').value });
-            alert("আপডেট হয়েছে!");
-        });
 
-        // Admin Logic
+        // Admin
         document.getElementById('publish-btn').addEventListener('click', async () => {
             const t = document.getElementById('notice-title').value; const d = document.getElementById('notice-desc').value;
             if(!t || !d) return;
@@ -439,10 +523,11 @@
             users.forEach(u => {
                 const badge = u.role==='admin' ? '<span class="badge badge-admin">Admin</span>' : (u.status==='banned' ? '<span class="badge badge-banned">Banned</span>' : '<span class="badge badge-active">Active</span>');
                 const actions = u.role!=='admin' ? (u.status==='banned' ? `<button class="btn-action btn-success" onclick="window.unban('${u.id}')">Unban</button>` : `<button class="btn-action btn-warning" onclick="window.ban('${u.id}')">Ban</button>`) + `<button class="btn-action btn-danger" onclick="window.del('${u.id}')">Del</button>` : '';
-                c.innerHTML+=`<div class="user-manage-card"><div><div style="font-weight:600; font-size:0.9rem;">${u.email}</div>${badge}</div><div>${actions}</div></div>`;
+                const details = `<div style="font-size:0.8rem; color:#64748b; margin-top:2px;">${u.profession || '-'} • ${u.bloodGroup || '-'} • ${u.phone || '-'}</div>`;
+                c.innerHTML+=`<div class="user-manage-card"><div><div style="font-weight:600; font-size:0.9rem;">${u.name || 'নাম নেই'} (${u.email})</div>${details}${badge}</div><div>${actions}</div></div>`;
             });
         }
-        document.getElementById('search-user').addEventListener('input', (e) => renderUsers(allUsers.filter(u => u.email.includes(e.target.value))));
+        document.getElementById('search-user').addEventListener('input', (e) => renderUsers(allUsers.filter(u => u.email.includes(e.target.value) || (u.name && u.name.includes(e.target.value)))));
         
         async function loadAdminStats() {
             const uSnap = await getDocs(collection(db, "users"));
