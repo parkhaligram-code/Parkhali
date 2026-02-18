@@ -7,14 +7,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
     <style>
-        /* --- Premium CSS Variables & Reset --- */
+        /* --- CSS VARIABLES & RESET --- */
         :root { 
             --primary-blue: #1565c0; --primary-green: #2e7d32; 
             --blood-red: #e53935; --emergency-orange: #fb8c00; --agri-green: #689f38; 
             --bg-color: #f8fafc; --card-bg: #ffffff; 
             --text-main: #1e293b; --text-muted: #64748b; 
-            --shadow-md: 0 10px 15px -3px rgba(0,0,0,0.05);
-            --shadow-lg: 0 20px 25px -5px rgba(0,0,0,0.1);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+            --shadow-lg: 0 10px 25px rgba(0,0,0,0.1);
         }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body { font-family: 'Hind Siliguri', 'Poppins', sans-serif; margin: 0; padding: 0; background-color: var(--bg-color); color: var(--text-main); overflow-x: hidden; padding-bottom: 90px; }
@@ -31,7 +31,7 @@
         .splash-hidden { opacity: 0; visibility: hidden; pointer-events: none; }
 
         /* --- HEADER --- */
-        header { background: linear-gradient(135deg, var(--primary-blue), var(--primary-green)); color: white; padding: 2rem 1.5rem 3.5rem; border-bottom-left-radius: 35px; border-bottom-right-radius: 35px; box-shadow: var(--shadow-md); position: relative; z-index: 10; }
+        header { background: linear-gradient(135deg, var(--primary-blue), var(--primary-green)); color: white; padding: 2rem 1.5rem 3.5rem; border-bottom-left-radius: 35px; border-bottom-right-radius: 35px; box-shadow: var(--shadow-md); position: relative; z-index: 10; transition: 0.3s; }
         .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
         .header-top h1 { font-size: 1.5rem; font-weight: 700; margin: 0; display: flex; align-items: center; gap: 8px;}
         .logout-btn { background: rgba(255,255,255,0.2); color: white; border: none; padding: 8px 15px; cursor: pointer; border-radius: 20px; font-size: 0.9rem; font-weight: 600; display: none; align-items: center; gap: 5px; backdrop-filter: blur(5px); transition: 0.3s; }
@@ -51,33 +51,22 @@
         .msg { font-size: 0.9rem; margin-top: 10px; text-align: center; font-weight: 500; }
         .error { color: var(--blood-red); } .success { color: var(--primary-green); }
 
-        /* --- BANNER SLIDER (16:9 Aspect Ratio) --- */
-        .banner-container {
-            position: relative;
-            width: 100%;
-            padding-top: 56.25%; /* 16:9 Ratio */
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: var(--shadow-md);
-            margin-bottom: 20px;
-            background: #e2e8f0;
-        }
-        .banner-slide {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            object-fit: cover; opacity: 0; transition: opacity 0.8s ease-in-out;
-        }
+        /* --- BANNER SLIDER --- */
+        .banner-container { position: relative; width: 100%; padding-top: 56.25%; border-radius: 16px; overflow: hidden; box-shadow: var(--shadow-md); margin-bottom: 20px; background: #e2e8f0; }
+        .banner-slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.8s ease-in-out; }
         .banner-slide.active { opacity: 1; }
-        
-        /* --- ADMIN BANNER ITEM --- */
-        .admin-banner-item {
-            display: flex; align-items: center; gap: 10px; padding: 10px;
-            border: 1px solid #e2e8f0; border-radius: 12px; margin-bottom: 10px;
-            background: #fff;
-        }
-        .admin-banner-thumb {
-            width: 80px; height: 45px; object-fit: cover; border-radius: 8px;
-            background: #f1f5f9;
-        }
+
+        /* --- VILLAGER LIST CARD --- */
+        .villager-btn { width: 100%; background: linear-gradient(135deg, #6366f1, #4f46e5); color: white; padding: 15px; border-radius: 16px; border: none; font-size: 1.1rem; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; box-shadow: 0 8px 20px rgba(99,102,241,0.3); margin-bottom: 20px; transition: 0.3s; }
+        .villager-btn:active { transform: scale(0.97); }
+
+        .search-container { position: sticky; top: 0; background: var(--bg-color); z-index: 50; padding-bottom: 10px; }
+        .villager-card { background: white; padding: 15px; border-radius: 16px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; box-shadow: var(--shadow-md); border: 1px solid #f1f5f9; cursor: pointer; transition: 0.2s; }
+        .villager-card:active { transform: scale(0.98); background: #f8fafc; }
+        .v-avatar { width: 50px; height: 50px; background: #e0e7ff; color: #4f46e5; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: bold; margin-right: 15px; }
+        .v-info h4 { margin: 0 0 4px 0; color: var(--text-main); font-size: 1.05rem; }
+        .v-info p { margin: 0; color: var(--text-muted); font-size: 0.85rem; }
+        .v-call { width: 45px; height: 45px; background: #10b981; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 24px; box-shadow: 0 4px 10px rgba(16,185,129,0.3); z-index: 5; }
 
         /* --- SERVICES GRID --- */
         .services-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.2rem; }
@@ -102,40 +91,39 @@
         .nav-center .material-icons-round { color: white; font-size: 30px; }
         .nav-icon { font-size: 26px; margin-bottom: 2px; }
 
-        /* --- SUCCESS MODAL --- */
-        .success-modal { position: fixed; inset: 0; background: rgba(255,255,255,0.95); z-index: 9999; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
-        .checkmark-circle { width: 80px; height: 80px; background: #4caf50; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        .checkmark-icon { color: white; font-size: 50px; }
-        @keyframes popIn { 0% { transform: scale(0); } 100% { transform: scale(1); } }
-
-        /* --- ADMIN & MODAL STYLES --- */
+        /* --- MODALS --- */
         .modal-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); z-index: 200; display: none; justify-content: center; align-items: flex-end; opacity: 0; transition: opacity 0.3s ease; }
         .modal-overlay.show { opacity: 1; }
         .modal-content { background: white; width: 100%; max-width: 480px; border-top-left-radius: 30px; border-top-right-radius: 30px; padding: 2rem 1.5rem; max-height: 85vh; overflow-y: auto; transform: translateY(100%); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         .modal-overlay.show .modal-content { transform: translateY(0); }
-        .admin-stat-card { background: linear-gradient(135deg, #1e293b, #334155); color: white; padding: 15px; border-radius: 16px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-        .badge { padding: 4px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; color: white; }
-        .badge-active { background: #10b981; } .badge-banned { background: var(--blood-red); } .badge-admin { background: var(--primary-blue); }
-        .contact-card { background: #fff; padding: 15px; border-radius: 16px; margin-bottom: 12px; border: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center; box-shadow: var(--shadow-md); }
-        .contact-badge { width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; border-radius: 14px; font-weight: 700; font-size: 1.1rem; color: white; }
-        .call-btn { width: 45px; height: 45px; border-radius: 14px; display: flex; align-items: center; justify-content: center; text-decoration: none; color: white; background: #10b981; }
         .close-btn { background: #f1f5f9; border: none; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--text-muted); }
+        
+        .success-modal { position: fixed; inset: 0; background: rgba(255,255,255,0.95); z-index: 9999; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+        .checkmark-circle { width: 80px; height: 80px; background: #4caf50; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; animation: popIn 0.5s; }
+        .checkmark-icon { color: white; font-size: 50px; }
+        @keyframes popIn { 0% { transform: scale(0); } 100% { transform: scale(1); } }
+        
+        /* Villager Detail Modal Specific */
+        .v-detail-header { text-align: center; margin-bottom: 20px; }
+        .v-detail-avatar { width: 80px; height: 80px; background: var(--primary-blue); color: white; font-size: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; }
+        .v-detail-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #eee; font-size: 0.95rem; }
+        .v-detail-label { color: var(--text-muted); font-weight: 500; }
+        .v-detail-val { color: var(--text-main); font-weight: 600; }
+
+        /* Admin Styles */
+        .admin-banner-item { display: flex; align-items: center; gap: 10px; padding: 10px; border: 1px solid #e2e8f0; border-radius: 12px; margin-bottom: 10px; background: #fff; }
+        .admin-banner-thumb { width: 80px; height: 45px; object-fit: cover; border-radius: 8px; }
+        .user-manage-card { background: #fff; border-radius: 12px; padding: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #e2e8f0; }
         .btn-action { padding: 5px 10px; border: none; border-radius: 6px; cursor: pointer; font-size: 0.75rem; color: white; margin-left: 5px; }
-        .btn-delete { background: var(--blood-red); } .btn-ban { background: var(--emergency-orange); } .btn-unban { background: #10b981; }
     </style>
 </head>
 <body>
 
-    <div id="splash-screen">
-        <span class="material-icons-round splash-logo">holiday_village</span>
-        <h1 class="splash-text">পারখালী</h1>
-        <div class="spinner"></div>
-    </div>
+    <div id="splash-screen"><span class="material-icons-round splash-logo">holiday_village</span><h1 class="splash-text">পারখালী</h1><div class="spinner"></div></div>
 
     <div id="success-modal" class="success-modal">
         <div class="checkmark-circle"><span class="material-icons-round checkmark-icon">check</span></div>
-        <h2 style="color: #333; margin-bottom: 5px;">অভিনন্দন!</h2>
-        <p style="color: #666;">রেজিস্ট্রেশন সফল হয়েছে।</p>
+        <h2 style="color: #333; margin-bottom: 5px;">অভিনন্দন!</h2><p style="color: #666;">রেজিস্ট্রেশন সফল হয়েছে।</p>
     </div>
 
     <div class="container">
@@ -144,10 +132,7 @@
                 <h1><span class="material-icons-round" style="font-size: 28px;">widgets</span> পারখালী</h1>
                 <button id="logout-btn" class="logout-btn"><span class="material-icons-round" style="font-size: 18px;">logout</span> লগআউট</button>
             </div>
-            <div class="hero-section" id="hero-text">
-                <h2>স্বাগতম!</h2>
-                <p>ডিজিটাল সেবায় আপনার গ্রাম।</p>
-            </div>
+            <div class="hero-section" id="hero-text"><h2>স্বাগতম!</h2><p>ডিজিটাল সেবায় আপনার গ্রাম।</p></div>
         </header>
 
         <main>
@@ -157,27 +142,24 @@
                 <input type="password" id="password" class="form-input" placeholder="পাসওয়ার্ড" required>
                 <button id="auth-action-btn" class="btn-primary">লগইন</button>
                 <p style="text-align: center; margin-top: 15px; color: #64748b;" id="toggle-auth">অ্যাকাউন্ট নেই? <span style="color: var(--primary-blue); font-weight: 700; cursor: pointer;">রেজিস্ট্রেশন করুন</span></p>
-                <p id="auth-msg" class="msg"></p>
             </section>
 
             <section id="reg-form-view" class="section-card" style="display: none;">
                 <h3 class="section-title" style="color: var(--primary-green);">আপনার তথ্য দিন</h3>
-                <p style="margin-bottom: 20px; color: #666; font-size: 0.9rem;">সঠিক তথ্য দিয়ে ফর্মটি পূরণ করুন।</p>
-                
                 <input type="text" id="reg-name" class="form-input" placeholder="আপনার পুরো নাম">
                 <input type="text" id="reg-profession" class="form-input" placeholder="পেশা (যেমন: ছাত্র, কৃষক)">
-                <select id="reg-blood" class="form-input">
-                    <option value="">রক্তের গ্রুপ নির্বাচন করুন...</option><option value="A+">A+</option><option value="A-">A-</option><option value="B+">B+</option><option value="B-">B-</option><option value="O+">O+</option><option value="O-">O-</option><option value="AB+">AB+</option><option value="AB-">AB-</option>
-                </select>
+                <select id="reg-blood" class="form-input"><option value="">রক্তের গ্রুপ...</option><option value="A+">A+</option><option value="B+">B+</option><option value="O+">O+</option><option value="AB+">AB+</option></select>
                 <input type="tel" id="reg-phone" class="form-input" placeholder="মোবাইল নম্বর">
                 <input type="text" id="reg-para" class="form-input" placeholder="পাড়ার নাম">
                 <button id="submit-profile-btn" class="btn-primary">সাবমিট করুন</button>
             </section>
 
             <div id="home-view" style="display: none;">
-                <div class="banner-container" id="home-banner-slider">
-                    <div style="display:flex; justify-content:center; align-items:center; height:100%; color:#94a3b8">ব্যানার লোড হচ্ছে...</div>
-                </div>
+                <div class="banner-container" id="home-banner-slider"><div style="display:flex;justify-content:center;align-items:center;height:100%;color:#94a3b8">লোড হচ্ছে...</div></div>
+                
+                <button class="villager-btn" onclick="switchView('villagers')">
+                    <span class="material-icons-round">groups</span> গ্রামবাসী তালিকা দেখুন
+                </button>
 
                 <section class="section-card">
                     <h3 class="section-title"><span class="material-icons-round" style="color:var(--primary-blue);">campaign</span> নোটিশ বোর্ড</h3>
@@ -189,20 +171,20 @@
                 <section class="section-card" style="background: transparent; box-shadow: none; padding: 0; border: none;">
                     <h3 class="section-title" style="margin-bottom: 20px;">সকল সেবাসমূহ</h3>
                     <div class="services-grid">
-                        <div class="service-item" onclick="openModal('blood-donor-modal'); loadDonors();">
-                            <div class="service-icon icon-blood"><span class="material-icons-round">bloodtype</span></div>
-                            <div class="service-label">ব্লাড ডোনার</div>
-                        </div>
-                        <div class="service-item" onclick="openModal('emergency-modal')">
-                            <div class="service-icon icon-emergency"><span class="material-icons-round">support_agent</span></div>
-                            <div class="service-label">জরুরী সেবা</div>
-                        </div>
-                        <div class="service-item" onclick="openModal('agriculture-modal')">
-                            <div class="service-icon icon-agri"><span class="material-icons-round">agriculture</span></div>
-                            <div class="service-label">কৃষি তথ্য</div>
-                        </div>
+                        <div class="service-item" onclick="openModal('blood-donor-modal'); loadDonors();"><div class="service-icon icon-blood"><span class="material-icons-round">bloodtype</span></div><div class="service-label">ব্লাড ডোনার</div></div>
+                        <div class="service-item" onclick="openModal('emergency-modal')"><div class="service-icon icon-emergency"><span class="material-icons-round">support_agent</span></div><div class="service-label">জরুরী সেবা</div></div>
+                        <div class="service-item" onclick="openModal('agriculture-modal')"><div class="service-icon icon-agri"><span class="material-icons-round">agriculture</span></div><div class="service-label">কৃষি তথ্য</div></div>
                     </div>
                 </section>
+            </div>
+
+            <div id="villagers-view" style="display: none;">
+                <div class="search-container">
+                    <input type="text" id="villager-search" class="form-input" placeholder="🔍 নাম, নম্বর বা পেশা দিয়ে খুঁজুন..." style="margin-bottom: 5px;">
+                </div>
+                <div id="villagers-list-container" style="padding-bottom: 20px;">
+                    <p style="text-align: center; color: #64748b;">লোড হচ্ছে...</p>
+                </div>
             </div>
 
             <div id="profile-view" style="display: none;">
@@ -222,30 +204,18 @@
             </div>
 
             <div id="admin-view" style="display: none;">
-                <div style="display: flex; gap: 15px; margin-bottom: 20px;">
-                    <div class="admin-stat-card" style="flex: 1;"><div><div class="stat-number" id="total-users">-</div><div>ইউজার</div></div><span class="material-icons-round" style="font-size: 32px; opacity: 0.5;">group</span></div>
-                    <div class="admin-stat-card" style="flex: 1; background: linear-gradient(135deg, #0f766e, #115e59);"><div><div class="stat-number" id="total-notices">-</div><div>নোটিশ</div></div><span class="material-icons-round" style="font-size: 32px; opacity: 0.5;">campaign</span></div>
-                </div>
-
                 <section class="section-card">
                     <h3 class="section-title">ব্যানার ম্যানেজমেন্ট</h3>
-                    <input type="text" id="banner-img-url" class="form-input" placeholder="ছবির ডাইরেক্ট লিংক (URL)">
-                    <input type="text" id="banner-link-url" class="form-input" placeholder="ক্লিক করলে যেখানে যাবে (Link URL)">
-                    <button id="add-banner-btn" class="btn-primary" style="background: #e91e63;">ব্যানার যুক্ত করুন</button>
+                    <input type="text" id="banner-img-url" class="form-input" placeholder="ছবির লিংক">
+                    <input type="text" id="banner-link-url" class="form-input" placeholder="ক্লিক লিংক">
+                    <button id="add-banner-btn" class="btn-primary" style="background: #e91e63;">যুক্ত করুন</button>
                     <div id="admin-banner-list" style="margin-top: 15px;"></div>
                 </section>
-
                 <section class="section-card">
-                    <h3 class="section-title">নোটিশ প্রকাশ</h3>
-                    <input type="text" id="notice-title" class="form-input" placeholder="শিরোনাম">
-                    <textarea id="notice-desc" class="form-input" rows="3" placeholder="বিস্তারিত..."></textarea>
-                    <button id="publish-btn" class="btn-primary">পাবলিশ করুন</button>
-                </section>
-                
-                <section class="section-card">
-                    <h3 class="section-title">ইউজার কন্ট্রোল</h3>
-                    <input type="text" id="search-user" class="form-input" placeholder="ইমেইল দিয়ে খুঁজুন...">
-                    <div id="admin-user-list" style="margin-top: 10px; max-height: 350px; overflow-y: auto;"></div>
+                    <h3 class="section-title">নোটিশ ও ইউজার</h3>
+                    <button id="publish-btn" class="btn-primary" style="margin-bottom: 15px;">নতুন নোটিশ দিন</button>
+                    <input type="text" id="search-user" class="form-input" placeholder="ইমেইল দিয়ে ইউজার খুঁজুন...">
+                    <div id="admin-user-list" style="max-height: 300px; overflow-y: auto;"></div>
                 </section>
             </div>
         </main>
@@ -253,13 +223,30 @@
         <nav class="bottom-nav" id="bottom-nav">
             <div class="nav-item active" id="nav-btn-home"><span class="material-icons-round nav-icon">home</span> হোম</div>
             <div class="nav-center" id="nav-btn-services"><span class="material-icons-round">grid_view</span></div>
-            <div class="nav-item" id="nav-btn-admin" style="display: none;"><span class="material-icons-round nav-icon">admin_panel_settings</span> অ্যাডমিন</div>
+            <div class="nav-item" id="nav-btn-admin" style="display: none;"><span class="material-icons-round nav-icon">admin_panel_settings</span></div>
             <div class="nav-item" id="nav-btn-profile"><span class="material-icons-round nav-icon">person</span> প্রোফাইল</div>
         </nav>
 
-        <div id="blood-donor-modal" class="modal-overlay"><div class="modal-content"><div class="modal-header"><h3 style="color:var(--blood-red);margin:0">🩸 রক্তদাতা</h3><button class="close-btn" onclick="closeModal('blood-donor-modal')"><span class="material-icons-round">close</span></button></div><div style="background:#fff5f5;padding:15px;border-radius:16px;margin-bottom:20px;border:1px solid #fed7d7"><h4 style="color:var(--blood-red);margin:0 0 10px 0">নিজেকে যুক্ত করুন</h4><input type="text" id="donor-name" class="form-input" placeholder="নাম"><select id="donor-group" class="form-input"><option value="">গ্রুপ...</option><option value="A+">A+</option><option value="B+">B+</option><option value="O+">O+</option><option value="AB+">AB+</option></select><input type="tel" id="donor-phone" class="form-input" placeholder="মোবাইল"><button id="add-donor-btn" class="btn-primary" style="background:var(--blood-red)">যুক্ত করুন</button></div><div><select id="filter-group" class="form-input" onchange="loadDonors(this.value)"><option value="All">সব গ্রুপ</option><option value="A+">A+</option><option value="B+">B+</option><option value="O+">O+</option><option value="AB+">AB+</option></select><div id="donor-list-container" style="margin-top:15px"></div></div></div></div>
-        <div id="emergency-modal" class="modal-overlay"><div class="modal-content"><div class="modal-header"><h3 style="color:var(--emergency-orange);margin:0">☎️ জরুরী সেবা</h3><button class="close-btn" onclick="closeModal('emergency-modal')"><span class="material-icons-round">close</span></button></div><div class="contact-card"><div><h5>জাতীয় জরুরী সেবা</h5><p>999</p></div><a href="tel:999" class="call-btn"><span class="material-icons-round">call</span></a></div><div class="contact-card"><div><h5>চেয়ারম্যান</h5><p>01700000000</p></div><a href="tel:01700000000" class="call-btn"><span class="material-icons-round">call</span></a></div></div></div>
-        <div id="agriculture-modal" class="modal-overlay"><div class="modal-content"><div class="modal-header"><h3 style="color:var(--agri-green);margin:0">🌾 কৃষি পরামর্শ</h3><button class="close-btn" onclick="closeModal('agriculture-modal')"><span class="material-icons-round">close</span></button></div><div style="background:#f0fdf4;padding:15px;border-radius:16px;margin-bottom:20px;border:1px solid #bbf7d0"><p style="margin:0;color:#166534">বোরো মৌসুমে জমিতে পর্যাপ্ত সেচ নিশ্চিত করুন।</p></div><div class="contact-card"><div><h5>কৃষি কল সেন্টার</h5><p>16123</p></div><a href="tel:16123" class="call-btn"><span class="material-icons-round">call</span></a></div></div></div>
+        <div id="villager-detail-modal" class="modal-overlay">
+            <div class="modal-content">
+                <div style="display: flex; justify-content: flex-end;"><button class="close-btn" onclick="closeModal('villager-detail-modal')"><span class="material-icons-round">close</span></button></div>
+                <div class="v-detail-header">
+                    <div class="v-detail-avatar"><span class="material-icons-round">person</span></div>
+                    <h2 id="vd-name" style="margin: 0; color: #1e293b;"></h2>
+                    <p id="vd-role" style="margin: 5px 0 0; color: #64748b;"></p>
+                </div>
+                <div class="v-detail-row"><span class="v-detail-label">মোবাইল</span><span class="v-detail-val" id="vd-phone"></span></div>
+                <div class="v-detail-row"><span class="v-detail-label">রক্তের গ্রুপ</span><span class="v-detail-val" id="vd-blood" style="color: #e53935;"></span></div>
+                <div class="v-detail-row"><span class="v-detail-label">পাড়া/ঠিকানা</span><span class="v-detail-val" id="vd-address"></span></div>
+                <a id="vd-call-btn" href="#" class="btn-primary" style="display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 20px; text-decoration: none; background: #10b981;">
+                    <span class="material-icons-round">call</span> কল করুন
+                </a>
+            </div>
+        </div>
+        
+        <div id="blood-donor-modal" class="modal-overlay"><div class="modal-content"><div style="display:flex;justify-content:space-between"><h3 style="color:var(--blood-red);margin:0">🩸 রক্তদাতা</h3><button class="close-btn" onclick="closeModal('blood-donor-modal')"><span class="material-icons-round">close</span></button></div><br><input type="text" id="donor-name" class="form-input" placeholder="নাম"><select id="donor-group" class="form-input"><option value="A+">A+</option><option value="B+">B+</option><option value="O+">O+</option><option value="AB+">AB+</option></select><input type="tel" id="donor-phone" class="form-input" placeholder="মোবাইল"><button id="add-donor-btn" class="btn-primary" style="background:var(--blood-red)">যুক্ত করুন</button><br><br><div id="donor-list-container"></div></div></div>
+        <div id="emergency-modal" class="modal-overlay"><div class="modal-content"><h3 style="color:var(--emergency-orange);margin:0 0 15px 0">☎️ জরুরী সেবা</h3><button class="close-btn" onclick="closeModal('emergency-modal')" style="position:absolute;top:15px;right:15px"><span class="material-icons-round">close</span></button><div class="contact-card"><div><h5>জাতীয় জরুরী সেবা</h5><p>999</p></div><a href="tel:999" class="call-btn"><span class="material-icons-round">call</span></a></div></div></div>
+        <div id="agriculture-modal" class="modal-overlay"><div class="modal-content"><h3 style="color:var(--agri-green);margin:0 0 15px 0">🌾 কৃষি পরামর্শ</h3><button class="close-btn" onclick="closeModal('agriculture-modal')" style="position:absolute;top:15px;right:15px"><span class="material-icons-round">close</span></button><div class="contact-card"><div><h5>কৃষি কল সেন্টার</h5><p>16123</p></div><a href="tel:16123" class="call-btn"><span class="material-icons-round">call</span></a></div></div></div>
     </div>
 
     <script type="module">
@@ -273,17 +260,22 @@
         window.openModal=(id)=>{const m=document.getElementById(id);m.style.display='flex';setTimeout(()=>m.classList.add('show'),10)};
         window.closeModal=(id)=>{const m=document.getElementById(id);m.classList.remove('show');setTimeout(()=>m.style.display='none',300)};
 
-        const views = { auth:document.getElementById('auth-section'), reg:document.getElementById('reg-form-view'), home:document.getElementById('home-view'), services:document.getElementById('services-view'), profile:document.getElementById('profile-view'), admin:document.getElementById('admin-view') };
+        const views = { auth:document.getElementById('auth-section'), reg:document.getElementById('reg-form-view'), home:document.getElementById('home-view'), services:document.getElementById('services-view'), villagers:document.getElementById('villagers-view'), profile:document.getElementById('profile-view'), admin:document.getElementById('admin-view') };
         const navs = { home:document.getElementById('nav-btn-home'), services:document.getElementById('nav-btn-services'), profile:document.getElementById('nav-btn-profile'), admin:document.getElementById('nav-btn-admin') };
 
-        function switchView(name) {
+        window.switchView = (name) => {
             Object.values(views).forEach(el=>el.style.display='none');
             Object.values(navs).forEach(el=>el.classList.remove('active'));
             if(name==='services') navs.services.style.transform="scale(1.1)"; else { navs.services.style.transform="scale(1)"; if(navs[name]) navs[name].classList.add('active'); }
+            
+            // Allow back navigation for Villagers view
+            if(name === 'villagers') { navs.home.classList.add('active'); } 
+            
             views[name].style.display='block';
             
             const hTitle=document.querySelector('.hero-section h2'); const hSub=document.querySelector('.hero-section p');
             if(name==='home'){hTitle.innerText="স্বাগতম!"; hSub.innerText=auth.currentUser?auth.currentUser.email.split('@')[0]:""; loadBanners();}
+            else if(name==='villagers'){hTitle.innerText="গ্রামবাসী"; hSub.innerText="সকলের তালিকা"; loadVillagers();}
             else if(name==='services'){hTitle.innerText="সেবাসমূহ"; hSub.innerText="একনজরে সব সেবা";}
             else if(name==='profile'){hTitle.innerText="প্রোফাইল"; hSub.innerText="ব্যক্তিগত তথ্য"; loadProfile();}
             else if(name==='admin'){hTitle.innerText="অ্যাডমিন"; hSub.innerText="কন্ট্রোল রুম"; loadAdminData();}
@@ -292,130 +284,98 @@
 
         Object.keys(navs).forEach(k=>navs[k].addEventListener('click',()=>switchView(k)));
 
-        // AUTH & FLOW LOGIC
         onAuthStateChanged(auth, async (user) => {
             setTimeout(()=>document.getElementById('splash-screen').classList.add('splash-hidden'), 2000);
             if (user) {
                 const docSnap = await getDoc(doc(db, "users", user.uid));
                 if(docSnap.exists()) {
                     const data = docSnap.data();
-                    if(data.status === "banned" && user.email !== adminEmail) { signOut(auth); alert("অ্যাকাউন্ট ব্যান করা হয়েছে!"); return; }
+                    if(data.status === "banned" && user.email !== adminEmail) { signOut(auth); alert("ব্যান করা হয়েছে!"); return; }
                     document.getElementById('logout-btn').style.display="flex";
                     if(!data.name && user.email !== adminEmail) { document.getElementById('bottom-nav').style.display="none"; switchView('reg'); } 
                     else { document.getElementById('bottom-nav').style.display="flex"; navs.admin.style.display = (user.email === adminEmail) ? "flex" : "none"; switchView('home'); loadNotices(); }
-                } else {
-                     await setDoc(doc(db, "users", user.uid), { email:user.email, role:"user", status:"active" }); switchView('reg');
-                }
+                } else { await setDoc(doc(db, "users", user.uid), { email:user.email, role:"user", status:"active" }); switchView('reg'); }
             } else { switchView('auth'); document.getElementById('logout-btn').style.display="none"; document.getElementById('bottom-nav').style.display="none"; }
         });
 
-        // LOGIN/REGISTER
-        let isLogin = true; document.getElementById('toggle-auth').addEventListener('click', () => { isLogin=!isLogin; document.getElementById('auth-action-btn').innerText = isLogin?"লগইন":"রেজিস্টার"; document.querySelector('#auth-section h3').innerText = isLogin?"লগইন করুন":"রেজিস্ট্রেশন করুন";});
-        document.getElementById('auth-action-btn').addEventListener('click', async () => {
-            const em = document.getElementById('email').value; const pass = document.getElementById('password').value;
-            if(!em || !pass) return;
-            try { if(isLogin) await signInWithEmailAndPassword(auth, em, pass); else { const cred = await createUserWithEmailAndPassword(auth, em, pass); await setDoc(doc(db, "users", cred.user.uid), { email: em, role: em===adminEmail?"admin":"user", status: "active", createdAt: serverTimestamp() }); } } catch(e) { alert("এরর: " + e.message); }
+        // LOGIN/REG
+        let isLogin=true; document.getElementById('toggle-auth').addEventListener('click',()=>{isLogin=!isLogin;document.getElementById('auth-action-btn').innerText=isLogin?"লগইন":"রেজিস্টার";});
+        document.getElementById('auth-action-btn').addEventListener('click',async()=>{
+            const em=document.getElementById('email').value; const ps=document.getElementById('password').value;
+            try{ if(isLogin)await signInWithEmailAndPassword(auth,em,ps); else {const c=await createUserWithEmailAndPassword(auth,em,ps); await setDoc(doc(db,"users",c.user.uid),{email:em,role:em===adminEmail?"admin":"user",status:"active",createdAt:serverTimestamp()});} }catch(e){alert(e.message);}
         });
-        document.getElementById('logout-btn').addEventListener('click', () => signOut(auth));
+        document.getElementById('logout-btn').addEventListener('click',()=>signOut(auth));
 
-        // SUBMIT PROFILE
-        document.getElementById('submit-profile-btn').addEventListener('click', async () => {
-            if(!document.getElementById('reg-name').value || !document.getElementById('reg-para').value) { alert("সব তথ্য পূরণ করুন!"); return; }
-            await updateDoc(doc(db, "users", auth.currentUser.uid), { name: document.getElementById('reg-name').value, profession: document.getElementById('reg-profession').value, bloodGroup: document.getElementById('reg-blood').value, phone: document.getElementById('reg-phone').value, address: document.getElementById('reg-para').value });
-            document.getElementById('success-modal').style.display = 'flex'; setTimeout(() => { document.getElementById('success-modal').style.display = 'none'; document.getElementById('bottom-nav').style.display="flex"; switchView('home'); loadNotices(); }, 2000);
+        // PROFILE SUBMIT
+        document.getElementById('submit-profile-btn').addEventListener('click',async()=>{
+            if(!document.getElementById('reg-name').value)return alert("তথ্য দিন!");
+            await updateDoc(doc(db,"users",auth.currentUser.uid),{name:document.getElementById('reg-name').value, profession:document.getElementById('reg-profession').value, bloodGroup:document.getElementById('reg-blood').value, phone:document.getElementById('reg-phone').value, address:document.getElementById('reg-para').value});
+            document.getElementById('success-modal').style.display='flex'; setTimeout(()=>{document.getElementById('success-modal').style.display='none'; document.getElementById('bottom-nav').style.display='flex'; switchView('home');},2000);
         });
 
-        // --- BANNER LOGIC ---
-        let sliderInterval;
+        // VILLAGERS DIRECTORY LOGIC
+        let allVillagers = [];
+        async function loadVillagers() {
+            const c = document.getElementById('villagers-list-container');
+            if(allVillagers.length === 0) { c.innerHTML="লোড হচ্ছে..."; const s = await getDocs(collection(db, "users")); allVillagers=[]; s.forEach(d=>allVillagers.push(d.data())); }
+            renderVillagers(allVillagers);
+        }
+        function renderVillagers(list) {
+            const c = document.getElementById('villagers-list-container'); c.innerHTML="";
+            const valid = list.filter(u => u.name && u.status !== 'banned'); // Only show complete profiles
+            if(valid.length === 0) { c.innerHTML="<p style='text-align:center'>কাউকে পাওয়া যায়নি</p>"; return; }
+            valid.forEach(u => {
+                // Encode data to pass to function safely
+                const safeUser = encodeURIComponent(JSON.stringify(u));
+                c.innerHTML += `<div class="villager-card" onclick="window.showVillager('${safeUser}')">
+                    <div style="display:flex;align-items:center;">
+                        <div class="v-avatar">${u.name.charAt(0)}</div>
+                        <div class="v-info"><h4>${u.name}</h4><p>${u.profession || 'পেশা নেই'}</p></div>
+                    </div>
+                    <a href="tel:${u.phone}" class="v-call" onclick="event.stopPropagation()"><span class="material-icons-round">call</span></a>
+                </div>`;
+            });
+        }
+        document.getElementById('villager-search').addEventListener('input', (e) => {
+            const q = e.target.value.toLowerCase();
+            const f = allVillagers.filter(u => (u.name && u.name.toLowerCase().includes(q)) || (u.phone && u.phone.includes(q)) || (u.profession && u.profession.toLowerCase().includes(q)));
+            renderVillagers(f);
+        });
+        window.showVillager = (uStr) => {
+            const u = JSON.parse(decodeURIComponent(uStr));
+            document.getElementById('vd-name').innerText = u.name;
+            document.getElementById('vd-role').innerText = u.profession;
+            document.getElementById('vd-phone').innerText = u.phone;
+            document.getElementById('vd-blood').innerText = u.bloodGroup || '-';
+            document.getElementById('vd-address').innerText = u.address || '-';
+            document.getElementById('vd-call-btn').href = `tel:${u.phone}`;
+            openModal('villager-detail-modal');
+        };
+
+        // BANNERS
         async function loadBanners() {
-            const container = document.getElementById('home-banner-slider');
-            const snap = await getDocs(query(collection(db, "banners"), orderBy("createdAt", "desc")));
-            if(snap.empty) { container.innerHTML = "<div style='display:flex;justify-content:center;align-items:center;height:100%;color:#94a3b8'>ব্যানার নেই</div>"; return; }
-            container.innerHTML = "";
-            let idx = 0;
-            snap.forEach(d => {
-                const b = d.data();
-                container.innerHTML += `<a href="${b.link || '#'}" target="_blank"><img src="${b.image}" class="banner-slide ${idx===0?'active':''}" data-idx="${idx}"></a>`;
-                idx++;
-            });
-            startSlider(idx);
+            const c=document.getElementById('home-banner-slider'); const s=await getDocs(query(collection(db,"banners"),orderBy("createdAt","desc")));
+            if(s.empty){c.innerHTML="<div style='display:flex;justify-content:center;align-items:center;height:100%;color:#94a3b8'>ব্যানার নেই</div>";return;}
+            c.innerHTML=""; let i=0; s.forEach(d=>{const b=d.data(); c.innerHTML+=`<a href="${b.link||'#'}"><img src="${b.image}" class="banner-slide ${i===0?'active':''}"></a>`; i++;});
+            setInterval(()=>{const sl=document.querySelectorAll('.banner-slide'); let a=0; sl.forEach((el,x)=>{if(el.classList.contains('active'))a=x;el.classList.remove('active')}); sl[(a+1)%sl.length].classList.add('active');},3500);
         }
-        function startSlider(count) {
-            if(sliderInterval) clearInterval(sliderInterval);
-            if(count <= 1) return;
-            let current = 0;
-            sliderInterval = setInterval(() => {
-                const slides = document.querySelectorAll('.banner-slide');
-                if(slides.length === 0) return;
-                slides[current].classList.remove('active');
-                current = (current + 1) % slides.length;
-                slides[current].classList.add('active');
-            }, 3500);
-        }
+        document.getElementById('add-banner-btn').addEventListener('click',async()=>{ const i=document.getElementById('banner-img-url').value; const l=document.getElementById('banner-link-url').value; if(i) await addDoc(collection(db,"banners"),{image:i,link:l,createdAt:serverTimestamp()}); alert("যুক্ত হয়েছে"); loadAdminData(); });
+        window.delBanner=async(id)=>{if(confirm('Delete?'))await deleteDoc(doc(db,"banners",id)); loadAdminData();};
 
-        // --- ADMIN BANNER LOGIC ---
-        document.getElementById('add-banner-btn').addEventListener('click', async () => {
-            const img = document.getElementById('banner-img-url').value; const lnk = document.getElementById('banner-link-url').value;
-            if(!img) return alert("ছবির লিংক দিন");
-            await addDoc(collection(db, "banners"), { image: img, link: lnk, createdAt: serverTimestamp() });
-            alert("ব্যানার যুক্ত হয়েছে"); document.getElementById('banner-img-url').value=""; loadAdminData();
-        });
-
-        // --- FEATURES ---
-        window.loadDonors = async (f="All") => {
-            const c=document.getElementById('donor-list-container'); c.innerHTML="লোড হচ্ছে...";
-            const s=await getDocs(query(collection(db,"blood_donors"),orderBy("createdAt","desc"))); c.innerHTML="";
-            s.forEach(d=>{ const v=d.data(); if(f==="All"||v.bloodGroup===f) c.innerHTML+=`<div class="contact-card"><div><div style="font-weight:bold;color:#e53935">${v.bloodGroup}</div><div>${v.name}</div></div><a href="tel:${v.phone}" class="call-btn"><span class="material-icons-round">call</span></a></div>`});
+        // ADMIN, PROFILE, NOTICES, DONORS (Standard Logic)
+        async function loadProfile(){if(!auth.currentUser)return; const d=await getDoc(doc(db,"users",auth.currentUser.uid)); if(d.exists()){const u=d.data();document.getElementById('profile-display-name').innerText=u.name;document.getElementById('up-name').value=u.name;}}
+        document.getElementById('update-profile-btn').addEventListener('click',async()=>{await updateDoc(doc(db,"users",auth.currentUser.uid),{name:document.getElementById('up-name').value});alert("আপডেট হয়েছে!");});
+        window.loadDonors=async()=>{const c=document.getElementById('donor-list-container');const s=await getDocs(query(collection(db,"blood_donors"),orderBy("createdAt","desc")));c.innerHTML="";s.forEach(d=>{const v=d.data();c.innerHTML+=`<div class="contact-card"><div><b style="color:red">${v.bloodGroup}</b> ${v.name}</div><a href="tel:${v.phone}" class="call-btn"><span class="material-icons-round">call</span></a></div>`});};
+        document.getElementById('add-donor-btn').addEventListener('click',async()=>{await addDoc(collection(db,"blood_donors"),{name:document.getElementById('donor-name').value,bloodGroup:document.getElementById('donor-group').value,phone:document.getElementById('donor-phone').value,createdAt:serverTimestamp()});loadDonors();});
+        async function loadNotices(){const c=document.getElementById('notice-container');const s=await getDocs(query(collection(db,"notices"),orderBy("createdAt","desc")));c.innerHTML="";s.forEach(d=>{const n=d.data();c.innerHTML+=`<div class="notice-item"><h4>${n.title}</h4><p>${n.description}</p></div>`});}
+        document.getElementById('publish-btn').addEventListener('click',async()=>{if(document.getElementById('notice-title').value)await addDoc(collection(db,"notices"),{title:document.getElementById('notice-title').value,description:document.getElementById('notice-desc').value,createdAt:serverTimestamp()});loadNotices();});
+        async function loadAdminData(){
+            const uList=document.getElementById('admin-user-list');uList.innerHTML="";const us=await getDocs(collection(db,"users"));
+            us.forEach(d=>{const u=d.data();uList.innerHTML+=`<div class="user-manage-card"><div><b>${u.email}</b></div><div>${u.status==='banned'?`<button onclick="window.tog('${d.id}','active')" style="color:green">Unban</button>`:`<button onclick="window.tog('${d.id}','banned')" style="color:orange">Ban</button>`}</div></div>`});
+            const bList=document.getElementById('admin-banner-list');bList.innerHTML="";const bs=await getDocs(collection(db,"banners"));
+            bs.forEach(d=>{bList.innerHTML+=`<div class="admin-banner-item"><img src="${d.data().image}" class="admin-banner-thumb"><button onclick="window.delBanner('${d.id}')" style="color:red">Del</button></div>`});
         }
-        document.getElementById('add-donor-btn').addEventListener('click',async()=>{
-            const n=document.getElementById('donor-name').value; const g=document.getElementById('donor-group').value; const p=document.getElementById('donor-phone').value;
-            if(!n||!g||!p)return; await addDoc(collection(db,"blood_donors"),{name:n,bloodGroup:g,phone:p,createdAt:serverTimestamp()}); alert("যুক্ত হয়েছে!"); loadDonors();
-        });
-
-        async function loadProfile() {
-            if(!auth.currentUser) return;
-            const d = await getDoc(doc(db, "users", auth.currentUser.uid));
-            if(d.exists()) {
-                const u = d.data();
-                document.getElementById('profile-display-name').innerText = u.name || "নাম নেই";
-                document.getElementById('profile-display-role').innerText = u.profession || "";
-                document.getElementById('profile-display-email').innerText = u.email;
-                document.getElementById('up-name').value = u.name || ""; document.getElementById('up-profession').value = u.profession || ""; document.getElementById('up-phone').value = u.phone || "";
-            }
-        }
-        document.getElementById('update-profile-btn').addEventListener('click', async()=>{
-            await updateDoc(doc(db,"users",auth.currentUser.uid),{ name:document.getElementById('up-name').value, profession:document.getElementById('up-profession').value, phone:document.getElementById('up-phone').value }); alert("আপডেট হয়েছে!"); loadProfile();
-        });
-
-        // ADMIN LOADER
-        document.getElementById('publish-btn').addEventListener('click', async()=>{
-            const t=document.getElementById('notice-title').value; const d=document.getElementById('notice-desc').value;
-            if(!t||!d)return; await addDoc(collection(db,"notices"),{title:t,description:d,createdAt:serverTimestamp()}); alert("পাবলিশ হয়েছে!"); loadNotices(); loadAdminData();
-        });
-        async function loadNotices() {
-            const c=document.getElementById('notice-container'); const s=await getDocs(query(collection(db,"notices"),orderBy("createdAt","desc")));
-            c.innerHTML = s.empty ? "<p style='text-align:center'>নোটিশ নেই</p>" : "";
-            s.forEach(d=>{ const n=d.data(); c.innerHTML+=`<div class="notice-item"><h4>${n.title}</h4><p>${n.description}</p></div>`});
-        }
-        async function loadAdminData() {
-            const us = await getDocs(collection(db, "users")); const ns = await getDocs(collection(db, "notices"));
-            document.getElementById('total-users').innerText = us.size; document.getElementById('total-notices').innerText = ns.size;
-            
-            // Users
-            const c=document.getElementById('admin-user-list'); c.innerHTML="";
-            us.forEach(d=>{ const u=d.data(); const act = u.status==='banned' ? `<button onclick="window.tog('${d.id}','active')" class="btn-action btn-unban">Unban</button>` : `<button onclick="window.tog('${d.id}','banned')" class="btn-action btn-ban">Ban</button>`; c.innerHTML+=`<div class="user-manage-card"><div><div style="font-weight:600; font-size:0.9rem;">${u.email}</div></div><div>${u.role!=='admin'?act+`<button onclick="window.del('${d.id}')" class="btn-action btn-delete">Del</button>`:''}</div></div>` });
-
-            // Banners
-            const bSnap = await getDocs(collection(db, "banners"));
-            const bList = document.getElementById('admin-banner-list'); bList.innerHTML = "";
-            bSnap.forEach(d => {
-                const b = d.data();
-                bList.innerHTML += `<div class="admin-banner-item"><img src="${b.image}" class="admin-banner-thumb"> <button class="btn-action btn-delete" onclick="window.delBanner('${d.id}')">Delete</button></div>`;
-            });
-        }
-        window.tog=async(id,st)=>{await updateDoc(doc(db,"users",id),{status:st}); loadAdminData();};
-        window.del=async(id)=>{if(confirm('Delete?'))await deleteDoc(doc(db,"users",id)); loadAdminData();};
-        window.delBanner=async(id)=>{if(confirm('Banner Delete?'))await deleteDoc(doc(db,"banners",id)); loadAdminData();};
+        window.tog=async(id,st)=>{await updateDoc(doc(db,"users",id),{status:st});loadAdminData();};
     </script>
 </body>
 </html>
