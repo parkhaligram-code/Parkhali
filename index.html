@@ -6,12 +6,11 @@
     <title>পারখালী স্মার্ট গ্রাম</title>
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
-
     <style>
         /* ================== THEME & VARIABLES ================== */
-        :root { 
-            --primary: #2563eb; --primary-dark: #1e40af; --accent: #10b981; 
-            --danger: #ef4444; --warning: #f97316; --bg: #f1f5f9; 
+        :root {
+            --primary: #2563eb; --primary-dark: #1e40af; --accent: #10b981;
+            --danger: #ef4444; --warning: #f97316; --bg: #f1f5f9;
             --card: #ffffff; --text-main: #0f172a; --text-sub: #64748b;
             --shadow: 0 4px 15px rgba(0,0,0,0.05);
             --header-grad: linear-gradient(135deg, #2563eb, #0891b2);
@@ -34,11 +33,17 @@
 
         .input-box { width: 100%; padding: 12px 15px; margin-bottom: 12px; border: 1px solid #e2e8f0; border-radius: 10px; font-family: inherit; font-size: 0.95rem; background: #f8fafc; }
         .input-box:focus { border-color: var(--primary); background: white; }
-        
+
         .btn { width: 100%; padding: 14px; border: none; border-radius: 12px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: 0.2s; display: flex; justify-content: center; align-items: center; gap: 8px; }
         .btn-primary { background: var(--primary); color: white; box-shadow: 0 4px 10px rgba(37,99,235,0.3); }
         .btn-success { background: var(--accent); color: white; box-shadow: 0 4px 10px rgba(16,185,129,0.3); }
         .btn-outline { background: white; color: var(--primary); border: 1px solid var(--primary); box-shadow: var(--shadow); }
+
+        /* ================== FILE INPUT ================== */
+        .file-input-wrapper { position: relative; margin-bottom: 12px; }
+        .file-input-wrapper input { position: absolute; opacity: 0; width: 100%; height: 100%; top:0; left:0; cursor: pointer; }
+        .file-label { display: flex; align-items: center; gap: 8px; background: #f1f5f9; padding: 12px 15px; border-radius: 10px; border:1px dashed var(--primary); color: var(--text-sub); justify-content: center; }
+        .image-preview { width: 100%; max-height: 150px; object-fit: cover; border-radius: 10px; margin-top: 8px; border: 1px solid #e2e8f0; }
 
         /* ================== 16:7 BANNER ================== */
         .banner-box { position: relative; width: 100%; padding-top: 43.75%; border-radius: 16px; overflow: hidden; background: #e2e8f0; margin-bottom: 15px; box-shadow: var(--shadow); }
@@ -54,14 +59,24 @@
 
         /* ================== LISTS & CARDS ================== */
         .list-item { background: white; padding: 15px; border-radius: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border: 1px solid #f1f5f9; cursor: pointer; }
-        .avatar { width: 45px; height: 45px; background: #eff6ff; color: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: bold; margin-right: 15px; }
+        .avatar { width: 45px; height: 45px; background: #eff6ff; color: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: bold; margin-right: 15px; overflow: hidden; }
+        .avatar img { width: 100%; height: 100%; object-fit: cover; }
         .info h4 { margin: 0 0 3px; font-size: 1.05rem; }
         .info p { margin: 0; font-size: 0.85rem; color: var(--text-sub); }
         .call-btn { width: 40px; height: 40px; background: #dcfce7; color: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; }
 
+        /* image thumb for places */
+        .place-thumb { width: 50px; height: 50px; border-radius: 8px; object-fit: cover; margin-right: 10px; }
+
         .service-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
         .service-card { background: white; padding: 15px; text-align: center; border-radius: 16px; box-shadow: var(--shadow); cursor: pointer; }
         .s-icon { width: 55px; height: 55px; margin: 0 auto 10px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 28px; }
+
+        /* ================== GALLERY GRID ================== */
+        .gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 10px; }
+        .gallery-item { position: relative; aspect-ratio: 1/1; border-radius: 10px; overflow: hidden; box-shadow: var(--shadow); }
+        .gallery-item img { width: 100%; height: 100%; object-fit: cover; }
+        .gallery-download { position: absolute; bottom: 5px; right: 5px; background: rgba(0,0,0,0.5); color: white; border-radius: 50%; padding: 4px; cursor: pointer; }
 
         /* ================== BOTTOM NAV ================== */
         .bottom-nav { position: fixed; bottom: 15px; left: 15px; right: 15px; max-width: 450px; margin: 0 auto; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); padding: 8px 20px; border-radius: 20px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); display: none; justify-content: space-between; align-items: center; z-index: 100; }
@@ -78,31 +93,31 @@
         #splash { position: fixed; inset: 0; background: var(--header-grad); z-index: 999; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; transition: 0.5s; }
         .loader { border: 4px solid rgba(255,255,255,0.3); border-top: 4px solid white; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin-top: 20px; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
-        
+
         .success-box { position: fixed; inset: 0; background: white; z-index: 999; display: none; flex-direction: column; align-items: center; justify-content: center; }
         .check-anim { width: 80px; height: 80px; background: var(--accent); border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; font-size: 40px; margin-bottom: 15px; animation: pop 0.5s; }
         @keyframes pop { 0% { transform: scale(0); } 100% { transform: scale(1); } }
 
-        /* ================== ADMIN UI (EXAMPRO STYLE) ================== */
+        /* ================== ADMIN UI ================== */
         .admin-stat { background: #1e293b; color: white; padding: 15px; border-radius: 12px; flex: 1; text-align: center; }
         .admin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px; }
         .exampro-card {
-            background: #1e293b; 
-            border-radius: 16px; 
-            padding: 22px 10px; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            justify-content: center; 
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15); 
-            border-bottom: 3px solid #38bdf8; 
+            background: #1e293b;
+            border-radius: 16px;
+            padding: 22px 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            border-bottom: 3px solid #38bdf8;
             cursor: pointer;
             transition: 0.2s;
         }
         .exampro-card:active { transform: scale(0.95); }
         .exampro-card .material-icons-round { color: #38bdf8; font-size: 38px; margin-bottom: 10px; }
         .exampro-card span { color: #f8fafc; font-weight: 600; font-size: 1rem; }
-        
+
         .admin-banner-item { display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #f8fafc; border-radius: 10px; margin-bottom: 10px; }
         .admin-banner-img { height: 50px; width: 80px; object-fit: cover; border-radius: 6px; }
         .action-btn { padding: 6px 12px; border: none; border-radius: 6px; color: white; cursor: pointer; font-size: 0.8rem; }
@@ -133,6 +148,7 @@
         </header>
 
         <main>
+            <!-- AUTH VIEW -->
             <div id="view-auth" style="display: none; padding-top: 15px;">
                 <div class="card" style="text-align: center;">
                     <h3 id="auth-head" style="color: var(--primary);">লগইন করুন</h3>
@@ -146,6 +162,7 @@
                 </div>
             </div>
 
+            <!-- SETUP VIEW (NEW USER) -->
             <div id="view-setup" style="display: none;">
                 <div class="card">
                     <div class="title-sec">আপনার তথ্য দিন</div>
@@ -157,10 +174,17 @@
                     </select>
                     <input type="tel" id="set-phone" class="input-box" placeholder="মোবাইল নম্বর">
                     <input id="set-addr" class="input-box" placeholder="গ্রামের পাড়া/ওয়ার্ড">
+                    <!-- Profile picture upload during setup -->
+                    <div class="file-input-wrapper">
+                        <input type="file" id="setup-photo" accept="image/*">
+                        <div class="file-label"><span class="material-icons-round">add_photo_alternate</span> প্রোফাইল ছবি (ঐচ্ছিক)</div>
+                    </div>
+                    <img id="setup-preview" class="image-preview" style="display:none;">
                     <button id="save-setup" class="btn btn-success">সাবমিট করুন <span class="material-icons-round">check_circle</span></button>
                 </div>
             </div>
 
+            <!-- HOME VIEW -->
             <div id="view-home" style="display: none;">
                 <div class="banner-box" id="banner-slider">
                     <div style="display:flex; justify-content:center; align-items:center; height:100%; color:#94a3b8">লোড হচ্ছে...</div>
@@ -188,6 +212,11 @@
                         <span class="material-icons-round" style="color:#ef4444; background:#fee2e2">map</span>
                         <span class="glance-title">Map</span>
                     </div>
+                    <!-- NEW: GALLERY CARD -->
+                    <div class="glance-card" onclick="switchTab('gallery'); loadGallery()">
+                        <span class="material-icons-round" style="color:#db2777; background:#fae8ff">photo_library</span>
+                        <span class="glance-title">গ্যালারি</span>
+                    </div>
                 </div>
 
                 <button class="btn btn-outline" onclick="switchTab('villagers')" style="margin-bottom: 15px;">
@@ -200,21 +229,25 @@
                 </div>
             </div>
 
+            <!-- MOSQUE VIEW -->
             <div id="view-mosque" style="display: none;">
                 <div class="title-sec"><span class="material-icons-round" style="cursor:pointer; margin-right:5px" onclick="switchTab('home')">arrow_back</span> গ্রামের মসজিদসমূহ</div>
                 <div id="mosque-list"><p style="text-align:center; color:#94a3b8">লোড হচ্ছে...</p></div>
             </div>
 
+            <!-- SCHOOL VIEW -->
             <div id="view-school" style="display: none;">
                 <div class="title-sec"><span class="material-icons-round" style="cursor:pointer; margin-right:5px" onclick="switchTab('home')">arrow_back</span> শিক্ষাপ্রতিষ্ঠানসমূহ</div>
                 <div id="school-list"><p style="text-align:center; color:#94a3b8">লোড হচ্ছে...</p></div>
             </div>
 
+            <!-- SHOP VIEW -->
             <div id="view-shop" style="display: none;">
                 <div class="title-sec"><span class="material-icons-round" style="cursor:pointer; margin-right:5px" onclick="switchTab('home')">arrow_back</span> স্থানীয় বাজার ও দোকান</div>
                 <div id="shop-list"><p style="text-align:center; color:#94a3b8">লোড হচ্ছে...</p></div>
             </div>
 
+            <!-- MAP VIEW -->
             <div id="view-map" style="display: none;">
                 <div class="title-sec"><span class="material-icons-round" style="cursor:pointer; margin-right:5px" onclick="switchTab('home')">arrow_back</span> গ্রামের ম্যাপ</div>
                 <div style="width: 100%; height: 400px; background: #e2e8f0; border-radius: 12px; overflow: hidden; box-shadow: var(--shadow);">
@@ -222,6 +255,7 @@
                 </div>
             </div>
 
+            <!-- SERVICES VIEW -->
             <div id="view-services" style="display: none;">
                 <div class="title-sec" style="margin-bottom: 20px; font-size: 1.2rem;">জনপ্রিয় সেবাসমূহ</div>
                 <div class="service-grid">
@@ -240,6 +274,7 @@
                 </div>
             </div>
 
+            <!-- VILLAGERS VIEW -->
             <div id="view-villagers" style="display: none;">
                 <div class="title-sec"><span class="material-icons-round" style="cursor:pointer; margin-right:5px" onclick="switchTab('home')">arrow_back</span> গ্রামবাসী তালিকা</div>
                 <div style="position: sticky; top: 0; background: var(--bg); padding-bottom: 10px; z-index: 30;">
@@ -250,9 +285,13 @@
                 </div>
             </div>
 
+            <!-- PROFILE VIEW -->
             <div id="view-profile" style="display: none;">
                 <div class="card" style="text-align: center;">
-                    <div style="width:70px; height:70px; background:var(--primary); color:white; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:35px; margin:0 auto 10px"><span class="material-icons-round">person</span></div>
+                    <div style="width:70px; height:70px; background:var(--primary); color:white; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:35px; margin:0 auto 10px; overflow:hidden;" id="profile-avatar-container">
+                        <img id="profile-avatar-img" src="" style="width:100%; height:100%; object-fit:cover; display:none;">
+                        <span id="profile-avatar-icon" class="material-icons-round" style="font-size:40px;">person</span>
+                    </div>
                     <h3 id="my-name" style="margin: 0;">Name</h3>
                     <p id="my-role" style="color:var(--text-sub); margin: 5px 0;">Role</p>
                 </div>
@@ -261,12 +300,26 @@
                     <input id="up-name" class="input-box" placeholder="নাম">
                     <input id="up-prof" class="input-box" placeholder="পেশা">
                     <input id="up-phone" class="input-box" placeholder="মোবাইল">
+                    <div class="file-input-wrapper">
+                        <input type="file" id="profile-photo" accept="image/*">
+                        <div class="file-label"><span class="material-icons-round">add_photo_alternate</span> প্রোফাইল ছবি আপলোড</div>
+                    </div>
+                    <img id="profile-preview" class="image-preview" style="display:none;">
                     <button id="up-btn" class="btn btn-primary">আপডেট করুন</button>
                 </div>
             </div>
 
+            <!-- GALLERY VIEW (NEW) -->
+            <div id="view-gallery" style="display: none;">
+                <div class="title-sec"><span class="material-icons-round" style="cursor:pointer; margin-right:5px" onclick="switchTab('home')">arrow_back</span> গ্রামের গ্যালারি</div>
+                <div id="gallery-grid" class="gallery-grid">
+                    <p style="text-align:center; color:#94a3b8">লোড হচ্ছে...</p>
+                </div>
+            </div>
+
+            <!-- ADMIN VIEW -->
             <div id="view-admin" style="display: none;">
-                
+                <!-- Admin Main Dashboard -->
                 <div id="admin-main">
                     <div style="display: flex; gap: 10px; margin-bottom: 15px;">
                         <div class="admin-stat"><h2 id="st-user" style="margin:0">0</h2><small>Users</small></div>
@@ -290,9 +343,15 @@
                             <span class="material-icons-round">view_carousel</span>
                             <span>ব্যানার</span>
                         </div>
+                        <!-- NEW: GALLERY MANAGE -->
+                        <div class="exampro-card" onclick="openAdminSub('gallery')">
+                            <span class="material-icons-round">photo_library</span>
+                            <span>গ্যালারি ম্যানেজ</span>
+                        </div>
                     </div>
                 </div>
 
+                <!-- Admin Sub: Places -->
                 <div id="admin-sub-places" style="display:none;">
                     <div class="title-sec"><span class="material-icons-round" style="cursor:pointer; margin-right:5px" onclick="closeAdminSub()">arrow_back</span> প্রতিষ্ঠান/স্থান যোগ করুন</div>
                     <div class="card">
@@ -303,6 +362,12 @@
                         </select>
                         <input id="ap-name" class="input-box" placeholder="প্রতিষ্ঠানের নাম">
                         <textarea id="ap-desc" class="input-box" rows="2" placeholder="বিস্তারিত/ঠিকানা"></textarea>
+                        <!-- Image upload for place -->
+                        <div class="file-input-wrapper">
+                            <input type="file" id="ap-image" accept="image/*">
+                            <div class="file-label"><span class="material-icons-round">add_photo_alternate</span> ছবি আপলোড (ঐচ্ছিক)</div>
+                        </div>
+                        <img id="ap-preview" class="image-preview" style="display:none;">
                         <button id="ap-btn" class="btn btn-primary" style="background:var(--accent)">যুক্ত করুন</button>
                         
                         <hr style="border:0; border-top:1px solid #e2e8f0; margin:15px 0">
@@ -316,6 +381,7 @@
                     </div>
                 </div>
 
+                <!-- Admin Sub: Users (unchanged) -->
                 <div id="admin-sub-users" style="display:none;">
                     <div class="title-sec"><span class="material-icons-round" style="cursor:pointer; margin-right:5px" onclick="closeAdminSub()">arrow_back</span> ইউজার কন্ট্রোল</div>
                     <div class="card">
@@ -324,6 +390,7 @@
                     </div>
                 </div>
 
+                <!-- Admin Sub: Notices (unchanged) -->
                 <div id="admin-sub-notices" style="display:none;">
                     <div class="title-sec"><span class="material-icons-round" style="cursor:pointer; margin-right:5px" onclick="closeAdminSub()">arrow_back</span> নোটিশ ম্যানেজমেন্ট</div>
                     <div class="card">
@@ -337,9 +404,11 @@
                     </div>
                 </div>
 
+                <!-- Admin Sub: Banners (unchanged) -->
                 <div id="admin-sub-banners" style="display:none;">
                     <div class="title-sec"><span class="material-icons-round" style="cursor:pointer; margin-right:5px" onclick="closeAdminSub()">arrow_back</span> ব্যানার ম্যানেজমেন্ট</div>
                     <div class="card">
+                        <!-- We'll keep existing URL inputs, but also add file upload for banners? Optional: we can add image upload later if needed -->
                         <input id="ab-img" class="input-box" placeholder="Image URL (16:7)">
                         <input id="ab-link" class="input-box" placeholder="Link URL">
                         <button id="ab-btn" class="btn btn-primary" style="background:#db2777">ব্যানার যোগ করুন</button>
@@ -347,9 +416,24 @@
                     </div>
                 </div>
 
+                <!-- NEW: Admin Sub: Gallery Manage -->
+                <div id="admin-sub-gallery" style="display:none;">
+                    <div class="title-sec"><span class="material-icons-round" style="cursor:pointer; margin-right:5px" onclick="closeAdminSub()">arrow_back</span> গ্যালারি ম্যানেজমেন্ট</div>
+                    <div class="card">
+                        <div class="file-input-wrapper">
+                            <input type="file" id="gallery-upload" accept="image/*" multiple>
+                            <div class="file-label"><span class="material-icons-round">add_photo_alternate</span> একাধিক ছবি আপলোড করুন</div>
+                        </div>
+                        <button id="gallery-upload-btn" class="btn btn-primary" style="background:var(--accent); margin-top:10px;">আপলোড শুরু করুন</button>
+                        <div id="admin-gallery-list" style="margin-top: 15px; max-height: 300px; overflow-y: auto;">
+                            <!-- Existing images with delete buttons will appear here -->
+                        </div>
+                    </div>
+                </div>
             </div>
         </main>
 
+        <!-- Bottom Navigation -->
         <nav class="bottom-nav" id="b-nav">
             <div class="nav-btn active" id="tab-home"><span class="material-icons-round" style="font-size:26px">home</span>হোম</div>
             <div class="nav-btn" id="tab-services"><div class="nav-center"><span class="material-icons-round" style="font-size:30px">grid_view</span></div></div>
@@ -357,10 +441,16 @@
             <div class="nav-btn" id="tab-profile"><span class="material-icons-round" style="font-size:26px">person</span>প্রোফাইল</div>
         </nav>
 
+        <!-- MODALS -->
+
+        <!-- User Detail Modal -->
         <div id="user-modal" class="modal-bg">
             <div class="modal-content" style="text-align: center;">
                 <span class="material-icons-round close-icon" onclick="closeModal('user-modal')">close</span>
-                <div id="um-av" style="width:60px; height:60px; background:#eff6ff; color:var(--primary); border-radius:50%; font-size:28px; font-weight:bold; display:flex; align-items:center; justify-content:center; margin: 0 auto 10px;">A</div>
+                <div id="um-av" style="width:60px; height:60px; background:#eff6ff; color:var(--primary); border-radius:50%; font-size:28px; font-weight:bold; display:flex; align-items:center; justify-content:center; margin: 0 auto 10px; overflow:hidden;">
+                    <img id="um-av-img" src="" style="width:100%; height:100%; object-fit:cover; display:none;">
+                    <span id="um-av-text">A</span>
+                </div>
                 <h3 id="um-name" style="margin: 0;">Name</h3>
                 <p id="um-role" style="color:var(--text-sub); margin: 5px 0 15px;">Role</p>
                 <div style="background:#f8fafc; padding:15px; border-radius:12px; text-align:left; font-size:0.95rem;">
@@ -372,6 +462,17 @@
             </div>
         </div>
 
+        <!-- Place Detail Modal (NEW) -->
+        <div id="place-modal" class="modal-bg">
+            <div class="modal-content">
+                <span class="material-icons-round close-icon" onclick="closeModal('place-modal')">close</span>
+                <img id="place-modal-img" src="" style="width:100%; max-height:200px; object-fit:cover; border-radius:12px; margin-bottom:10px;">
+                <h3 id="place-modal-name" style="margin:0 0 5px;"></h3>
+                <p id="place-modal-desc" style="color:var(--text-sub);"></p>
+            </div>
+        </div>
+
+        <!-- Blood Modal -->
         <div id="blood-modal" class="modal-bg">
             <div class="modal-content">
                 <span class="material-icons-round close-icon" onclick="closeModal('blood-modal')">close</span>
@@ -387,6 +488,7 @@
             </div>
         </div>
 
+        <!-- Emergency Modal -->
         <div id="emergency-modal" class="modal-bg">
             <div class="modal-content">
                 <span class="material-icons-round close-icon" onclick="closeModal('emergency-modal')">close</span>
@@ -396,6 +498,7 @@
             </div>
         </div>
 
+        <!-- Agri Modal -->
         <div id="agri-modal" class="modal-bg">
             <div class="modal-content">
                 <span class="material-icons-round close-icon" onclick="closeModal('agri-modal')">close</span>
@@ -412,15 +515,20 @@
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         import { getFirestore, collection, addDoc, getDocs, getDoc, doc, setDoc, updateDoc, deleteDoc, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
+        // Firebase config
         const firebaseConfig = { apiKey: "AIzaSyAuqcDRrtuQi2tdWXA2E_UWyq7pCrGpoy4", authDomain: "parkhali-village.firebaseapp.com", projectId: "parkhali-village" };
         const app = initializeApp(firebaseConfig); const auth = getAuth(app); const db = getFirestore(app); const adminEmail = "admin@parkhali.com";
+
+        // Cloudinary config (Replace with your own)
+        const CLOUD_NAME = "dwnpdwnvc"; // <-- Replace with your Cloudinary cloud name
+        const UPLOAD_PRESET = "parkhali"; // <-- Replace with your unsigned upload preset
 
         // Global Modal Controls
         window.openModal = (id) => { const m=document.getElementById(id); m.style.display='flex'; setTimeout(()=>m.classList.add('show'), 10); }
         window.closeModal = (id) => { const m=document.getElementById(id); m.classList.remove('show'); setTimeout(()=>m.style.display='none', 300); }
 
         // Navigation Manager
-        const tabs = { home:'view-home', services:'view-services', villagers:'view-villagers', profile:'view-profile', admin:'view-admin', auth:'view-auth', setup:'view-setup', mosque:'view-mosque', school:'view-school', shop:'view-shop', map:'view-map' };
+        const tabs = { home:'view-home', services:'view-services', villagers:'view-villagers', profile:'view-profile', admin:'view-admin', auth:'view-auth', setup:'view-setup', mosque:'view-mosque', school:'view-school', shop:'view-shop', map:'view-map', gallery:'view-gallery' };
         const navBtns = { home:'tab-home', services:'tab-services', profile:'tab-profile', admin:'tab-admin' };
 
         window.switchTab = (tabName) => {
@@ -429,7 +537,7 @@
 
             document.getElementById(tabs[tabName]).style.display = 'block';
 
-            if(['villagers', 'mosque', 'school', 'shop', 'map'].includes(tabName)) { document.getElementById('tab-home').classList.add('active'); }
+            if(['villagers', 'mosque', 'school', 'shop', 'map', 'gallery'].includes(tabName)) { document.getElementById('tab-home').classList.add('active'); }
             else if(navBtns[tabName]) { document.getElementById(navBtns[tabName]).classList.add('active'); }
 
             const hTitle = document.getElementById('h-title'); const hSub = document.getElementById('h-sub');
@@ -439,13 +547,14 @@
             else if(tabName === 'profile') { hTitle.innerText="প্রোফাইল"; hSub.innerText="ব্যক্তিগত তথ্য"; loadProfile(); }
             else if(tabName === 'admin') { 
                 hTitle.innerText="অ্যাডমিন প্যানেল"; hSub.innerText="কন্ট্রোল ড্যাশবোর্ড"; 
-                window.closeAdminSub(); // Always open main dashboard first
+                window.closeAdminSub(); 
                 loadAdminData(); 
             }
             else if(tabName === 'mosque') { hTitle.innerText="মসজিদ"; hSub.innerText="গ্রামের মসজিদসমূহ"; }
             else if(tabName === 'school') { hTitle.innerText="বিদ্যালয়"; hSub.innerText="শিক্ষাপ্রতিষ্ঠানসমূহ"; }
             else if(tabName === 'shop') { hTitle.innerText="দোকান"; hSub.innerText="স্থানীয় বাজার ও দোকান"; }
             else if(tabName === 'map') { hTitle.innerText="ম্যাপ"; hSub.innerText="গ্রামের অবস্থান"; }
+            else if(tabName === 'gallery') { hTitle.innerText="গ্যালারি"; hSub.innerText="গ্রামের ছবি"; loadGallery(); }
         };
 
         Object.keys(navBtns).forEach(k => document.getElementById(navBtns[k]).addEventListener('click', () => switchTab(k)));
@@ -502,18 +611,58 @@
         };
         document.getElementById('logoutBtn').onclick = () => signOut(auth);
 
+        // ========== CLOUDINARY UPLOAD FUNCTION ==========
+        async function uploadToCloudinary(file) {
+            const formData = new FormData();
+            formData.append("file", file);
+            formData.append("upload_preset", UPLOAD_PRESET);
+            const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, { method: "POST", body: formData });
+            const data = await res.json();
+            return data.secure_url;
+        }
+
+        // ========== SETUP ==========
+        // Setup photo preview
+        document.getElementById('setup-photo').addEventListener('change', function(e) {
+            if (e.target.files[0]) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    const preview = document.getElementById('setup-preview');
+                    preview.src = event.target.result;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(e.target.files[0]);
+            }
+        });
+
         document.getElementById('save-setup').onclick = async () => {
             const n = document.getElementById('set-name').value; const a = document.getElementById('set-addr').value;
             if(!n || !a) return alert("নাম এবং ঠিকানা দিন!");
+            
+            let photoURL = "";
+            const fileInput = document.getElementById('setup-photo');
+            if (fileInput.files[0]) {
+                try {
+                    photoURL = await uploadToCloudinary(fileInput.files[0]);
+                } catch (err) {
+                    alert("ছবি আপলোড করতে সমস্যা হয়েছে, পরে আবার চেষ্টা করুন।");
+                    return;
+                }
+            }
+
             await updateDoc(doc(db, "users", auth.currentUser.uid), {
-                name: n, profession: document.getElementById('set-prof').value,
+                name: n,
+                profession: document.getElementById('set-prof').value,
                 bloodGroup: document.getElementById('set-blood').value,
-                phone: document.getElementById('set-phone').value, address: a
+                phone: document.getElementById('set-phone').value,
+                address: a,
+                photoURL: photoURL
             });
             const s = document.getElementById('success-view'); s.style.display='flex';
             setTimeout(() => { s.style.display='none'; document.getElementById('b-nav').style.display='flex'; switchTab('home'); }, 2000);
         };
 
+        // ========== BANNERS (unchanged) ==========
         let sInt;
         async function loadBanners() {
             const b = document.getElementById('banner-slider');
@@ -529,6 +678,7 @@
             }, 3500);
         }
 
+        // ========== NOTICES (unchanged) ==========
         async function loadNotices() {
             const n = document.getElementById('notice-list');
             const d = await getDocs(query(collection(db, "notices"), orderBy("createdAt", "desc")));
@@ -536,6 +686,7 @@
             d.forEach(doc => { n.innerHTML += `<div style="background:white; padding:12px; border-left:4px solid var(--primary); border-radius:8px; margin-bottom:10px; box-shadow:0 1px 3px rgba(0,0,0,0.05)"><h4 style="margin:0 0 5px">${doc.data().title}</h4><p style="margin:0; font-size:0.85rem; color:#64748b">${doc.data().description}</p></div>`; });
         }
 
+        // ========== PLACES ==========
         window.loadPlaces = async (collectionName, listId) => {
             const l = document.getElementById(listId);
             l.innerHTML = "<p style='text-align:center;color:#94a3b8'>লোড হচ্ছে...</p>";
@@ -544,20 +695,42 @@
             l.innerHTML = "";
             d.forEach(doc => {
                 const data = doc.data();
-                l.innerHTML += `<div class="list-item" style="display:block">
-                    <h4 style="margin:0 0 5px; color:var(--primary);">${data.name}</h4>
-                    <p style="margin:0; font-size:0.85rem; color:var(--text-sub)">${data.desc}</p>
+                const imgHtml = data.imageUrl ? `<img src="${data.imageUrl}" class="place-thumb" style="width:50px; height:50px; border-radius:8px; margin-right:10px; object-fit:cover;">` : '<div class="place-thumb" style="background:#f1f5f9; display:flex; align-items:center; justify-content:center; width:50px; height:50px; border-radius:8px; margin-right:10px;"><span class="material-icons-round" style="color:#94a3b8">place</span></div>';
+                l.innerHTML += `
+                <div class="list-item" onclick='showPlaceDetails(${JSON.stringify(data).replace(/'/g, "&apos;")})'>
+                    <div style="display:flex; align-items:center;">
+                        ${imgHtml}
+                        <div>
+                            <h4 style="margin:0 0 3px; color:var(--primary);">${data.name}</h4>
+                            <p style="margin:0; font-size:0.8rem; color:var(--text-sub)">${data.desc || ''}</p>
+                        </div>
+                    </div>
+                    <span class="material-icons-round" style="color:var(--text-sub)">chevron_right</span>
                 </div>`;
             });
         };
 
+        window.showPlaceDetails = (place) => {
+            document.getElementById('place-modal-name').innerText = place.name;
+            document.getElementById('place-modal-desc').innerText = place.desc || 'কোনো বিবরণ নেই';
+            const imgEl = document.getElementById('place-modal-img');
+            if (place.imageUrl) {
+                imgEl.src = place.imageUrl;
+                imgEl.style.display = 'block';
+            } else {
+                imgEl.style.display = 'none';
+            }
+            openModal('place-modal');
+        };
+
+        // ========== VILLAGERS ==========
         let cachedV = [];
         async function loadVillagers() {
             const l = document.getElementById('villager-list');
             if(cachedV.length === 0) {
                 l.innerHTML = "<p style='text-align:center;color:#94a3b8'>লোড হচ্ছে...</p>";
                 const d = await getDocs(collection(db, "users")); cachedV = [];
-                d.forEach(doc => cachedV.push(doc.data()));
+                d.forEach(doc => cachedV.push({ id: doc.id, ...doc.data() }));
             }
             renderV(cachedV);
         }
@@ -567,9 +740,10 @@
             if(v.length===0) { l.innerHTML = "<p style='text-align:center'>কাউকে পাওয়া যায়নি</p>"; return; }
             v.forEach(u => {
                 const sData = encodeURIComponent(JSON.stringify(u));
+                const avatarHtml = u.photoURL ? `<img src="${u.photoURL}" style="width:100%; height:100%; object-fit:cover;">` : u.name.charAt(0);
                 l.innerHTML += `
                 <div class="list-item" onclick="window.showU('${sData}')">
-                    <div style="display:flex;align-items:center"><div class="avatar">${u.name.charAt(0)}</div><div class="info"><h4>${u.name}</h4><p>${u.profession||'পেশা নেই'}</p></div></div>
+                    <div style="display:flex;align-items:center"><div class="avatar">${avatarHtml}</div><div class="info"><h4>${u.name}</h4><p>${u.profession||'পেশা নেই'}</p></div></div>
                     <a href="tel:${u.phone}" class="call-btn" onclick="event.stopPropagation()"><span class="material-icons-round">call</span></a>
                 </div>`;
             });
@@ -580,7 +754,16 @@
         });
         window.showU = (d) => {
             const u = JSON.parse(decodeURIComponent(d));
-            document.getElementById('um-av').innerText = u.name.charAt(0);
+            document.getElementById('um-av-text').innerText = u.name.charAt(0);
+            const avImg = document.getElementById('um-av-img');
+            if (u.photoURL) {
+                avImg.src = u.photoURL;
+                avImg.style.display = 'block';
+                document.getElementById('um-av-text').style.display = 'none';
+            } else {
+                avImg.style.display = 'none';
+                document.getElementById('um-av-text').style.display = 'block';
+            }
             document.getElementById('um-name').innerText = u.name;
             document.getElementById('um-role').innerText = u.profession||'-';
             document.getElementById('um-phone').innerText = u.phone||'-';
@@ -590,6 +773,7 @@
             openModal('user-modal');
         };
 
+        // ========== BLOOD DONORS (unchanged) ==========
         window.loadDonors = async (f) => {
             const l = document.getElementById('bd-list'); l.innerHTML = "লোড হচ্ছে...";
             const d = await getDocs(query(collection(db, "blood_donors"), orderBy("createdAt", "desc"))); l.innerHTML="";
@@ -603,27 +787,94 @@
             if(!n||!g||!p)return; await addDoc(collection(db,"blood_donors"),{name:n,bloodGroup:g,phone:p,createdAt:serverTimestamp()}); alert("যুক্ত হয়েছে!"); loadDonors('All');
         };
 
+        // ========== PROFILE ==========
         async function loadProfile() {
             if(!auth.currentUser) return;
             const d = await getDoc(doc(db,"users",auth.currentUser.uid));
             if(d.exists()) {
-                const u=d.data(); document.getElementById('my-name').innerText=u.name; document.getElementById('my-role').innerText=u.email;
-                document.getElementById('up-name').value=u.name; document.getElementById('up-prof').value=u.profession; document.getElementById('up-phone').value=u.phone;
+                const u = d.data();
+                document.getElementById('my-name').innerText = u.name;
+                document.getElementById('my-role').innerText = u.email;
+                document.getElementById('up-name').value = u.name;
+                document.getElementById('up-prof').value = u.profession || '';
+                document.getElementById('up-phone').value = u.phone || '';
+                if (u.photoURL) {
+                    document.getElementById('profile-avatar-img').src = u.photoURL;
+                    document.getElementById('profile-avatar-img').style.display = 'block';
+                    document.getElementById('profile-avatar-icon').style.display = 'none';
+                } else {
+                    document.getElementById('profile-avatar-img').style.display = 'none';
+                    document.getElementById('profile-avatar-icon').style.display = 'block';
+                }
             }
         }
+        // Profile photo preview
+        document.getElementById('profile-photo').addEventListener('change', function(e) {
+            if (e.target.files[0]) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    const preview = document.getElementById('profile-preview');
+                    preview.src = event.target.result;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(e.target.files[0]);
+            }
+        });
+
         document.getElementById('up-btn').onclick = async () => {
-            await updateDoc(doc(db,"users",auth.currentUser.uid),{name:document.getElementById('up-name').value, profession:document.getElementById('up-prof').value, phone:document.getElementById('up-phone').value}); alert("আপডেট হয়েছে"); loadProfile();
+            const updates = {
+                name: document.getElementById('up-name').value,
+                profession: document.getElementById('up-prof').value,
+                phone: document.getElementById('up-phone').value
+            };
+            const fileInput = document.getElementById('profile-photo');
+            if (fileInput.files[0]) {
+                try {
+                    updates.photoURL = await uploadToCloudinary(fileInput.files[0]);
+                } catch (err) {
+                    alert("ছবি আপলোড ব্যর্থ হয়েছে");
+                    return;
+                }
+            }
+            await updateDoc(doc(db, "users", auth.currentUser.uid), updates);
+            alert("আপডেট হয়েছে");
+            loadProfile();
+            // Reset preview
+            document.getElementById('profile-preview').style.display = 'none';
+            fileInput.value = '';
         };
 
-        // ================== ADMIN PANEL LOGIC ================== //
-        
+        // ========== GALLERY ==========
+        async function loadGallery() {
+            const grid = document.getElementById('gallery-grid');
+            grid.innerHTML = '<p style="text-align:center; color:#94a3b8">লোড হচ্ছে...</p>';
+            const snaps = await getDocs(query(collection(db, "gallery"), orderBy("createdAt", "desc")));
+            if (snaps.empty) {
+                grid.innerHTML = '<p style="text-align:center; color:#94a3b8">কোনো ছবি নেই</p>';
+                return;
+            }
+            grid.innerHTML = '';
+            snaps.forEach(doc => {
+                const imgUrl = doc.data().imageUrl;
+                grid.innerHTML += `
+                    <div class="gallery-item">
+                        <img src="${imgUrl}" loading="lazy">
+                        <a href="${imgUrl}" download class="gallery-download" onclick="event.stopPropagation()"><span class="material-icons-round" style="font-size:18px;">download</span></a>
+                    </div>
+                `;
+            });
+        }
+
+        // ========== ADMIN PANEL ==========
         window.openAdminSub = (id) => {
             document.getElementById('admin-main').style.display = 'none';
             document.getElementById('admin-sub-places').style.display = 'none';
             document.getElementById('admin-sub-users').style.display = 'none';
             document.getElementById('admin-sub-notices').style.display = 'none';
             document.getElementById('admin-sub-banners').style.display = 'none';
+            document.getElementById('admin-sub-gallery').style.display = 'none';
             document.getElementById('admin-sub-' + id).style.display = 'block';
+            if (id === 'gallery') loadAdminGallery();
         };
 
         window.closeAdminSub = () => {
@@ -631,11 +882,11 @@
             document.getElementById('admin-sub-users').style.display = 'none';
             document.getElementById('admin-sub-notices').style.display = 'none';
             document.getElementById('admin-sub-banners').style.display = 'none';
+            document.getElementById('admin-sub-gallery').style.display = 'none';
             document.getElementById('admin-main').style.display = 'block';
         };
 
         async function loadAdminData() {
-            // Stats
             const us = await getDocs(collection(db,"users")); 
             const ns = await getDocs(query(collection(db,"notices"), orderBy("createdAt", "desc")));
             document.getElementById('st-user').innerText = us.size; 
@@ -654,7 +905,7 @@
             const bs = await getDocs(collection(db,"banners"));
             bs.forEach(d => { bl.innerHTML+=`<div class="admin-banner-item"><img src="${d.data().image}" class="admin-banner-img"><button onclick="window.delB('${d.id}')" class="action-btn" style="background:var(--danger)">Delete</button></div>`; });
 
-            // Notices Load (For Deletion)
+            // Notices Load
             const nl = document.getElementById('admin-notices-list'); nl.innerHTML="";
             ns.forEach(d => {
                 nl.innerHTML += `<div class="list-item" style="padding:10px; cursor:default; align-items:center;">
@@ -666,7 +917,7 @@
             window.loadAdminPlaces();
         }
 
-        // Add/Delete Notice
+        // Add Notice
         document.getElementById('an-btn').onclick = async () => { 
             const t=document.getElementById('an-title').value; 
             if(!t)return; 
@@ -682,18 +933,44 @@
             }
         };
 
-        // Admin Places Setup
+        // Admin Places Setup (with image)
         document.getElementById('ap-btn').onclick = async () => {
             const col = document.getElementById('ap-col').value;
             const name = document.getElementById('ap-name').value;
             const desc = document.getElementById('ap-desc').value;
             if(!name) return alert("প্রতিষ্ঠানের নাম আবশ্যক!");
-            await addDoc(collection(db, col), { name: name, desc: desc, createdAt: serverTimestamp() });
+            
+            let imageUrl = "";
+            const fileInput = document.getElementById('ap-image');
+            if (fileInput.files[0]) {
+                try {
+                    imageUrl = await uploadToCloudinary(fileInput.files[0]);
+                } catch (err) {
+                    alert("ছবি আপলোড ব্যর্থ");
+                    return;
+                }
+            }
+
+            await addDoc(collection(db, col), { name: name, desc: desc, imageUrl: imageUrl, createdAt: serverTimestamp() });
             document.getElementById('ap-name').value = ""; document.getElementById('ap-desc').value = "";
+            document.getElementById('ap-image').value = "";
+            document.getElementById('ap-preview').style.display = 'none';
             alert("সফলভাবে যুক্ত হয়েছে");
             document.getElementById('ad-view-col').value = col;
             loadAdminPlaces();
         };
+        // Preview for admin place image
+        document.getElementById('ap-image').addEventListener('change', function(e) {
+            if (e.target.files[0]) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    const preview = document.getElementById('ap-preview');
+                    preview.src = event.target.result;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(e.target.files[0]);
+            }
+        });
 
         window.loadAdminPlaces = async () => {
             const col = document.getElementById('ad-view-col').value;
@@ -717,7 +994,7 @@
             }
         };
 
-        // Add Banners
+        // Add Banners (unchanged)
         document.getElementById('ab-btn').onclick = async () => { const i=document.getElementById('ab-img').value; if(!i)return; await addDoc(collection(db,"banners"),{image:i,link:document.getElementById('ab-link').value,createdAt:serverTimestamp()}); document.getElementById('ab-img').value=""; loadAdminData(); };
         
         document.getElementById('au-search').addEventListener('input',(e)=>{ const v=e.target.value.toLowerCase(); document.querySelectorAll('#admin-users .list-item').forEach(el=>{ el.style.display=el.innerText.toLowerCase().includes(v)?'flex':'none'; }); });
@@ -726,6 +1003,51 @@
         window.delU=async(id)=>{if(confirm('ইউজারকে ডিলিট করতে চান?')){await deleteDoc(doc(db,"users",id)); loadAdminData();}};
         window.delB=async(id)=>{if(confirm('ব্যানারটি ডিলিট করতে চান?')){await deleteDoc(doc(db,"banners",id)); loadAdminData();}};
 
+        // ========== ADMIN GALLERY MANAGEMENT ==========
+        async function loadAdminGallery() {
+            const listDiv = document.getElementById('admin-gallery-list');
+            listDiv.innerHTML = '<p style="text-align:center; color:#94a3b8;">লোড হচ্ছে...</p>';
+            const snaps = await getDocs(query(collection(db, "gallery"), orderBy("createdAt", "desc")));
+            if (snaps.empty) {
+                listDiv.innerHTML = '<p style="text-align:center; color:#94a3b8;">কোনো ছবি নেই</p>';
+                return;
+            }
+            listDiv.innerHTML = '';
+            snaps.forEach(doc => {
+                const imgUrl = doc.data().imageUrl;
+                listDiv.innerHTML += `
+                    <div class="admin-banner-item">
+                        <img src="${imgUrl}" class="admin-banner-img">
+                        <button onclick="window.delGalleryImage('${doc.id}')" class="action-btn" style="background:var(--danger)">Delete</button>
+                    </div>
+                `;
+            });
+        }
+
+        window.delGalleryImage = async (id) => {
+            if (confirm('ছবিটি ডিলিট করতে চান?')) {
+                await deleteDoc(doc(db, "gallery", id));
+                loadAdminGallery();
+                if (document.getElementById('view-gallery').style.display === 'block') loadGallery();
+            }
+        };
+
+        document.getElementById('gallery-upload-btn').onclick = async () => {
+            const files = document.getElementById('gallery-upload').files;
+            if (files.length === 0) return alert('কমপক্ষে একটি ছবি নির্বাচন করুন');
+            for (let file of files) {
+                try {
+                    const url = await uploadToCloudinary(file);
+                    await addDoc(collection(db, "gallery"), { imageUrl: url, createdAt: serverTimestamp() });
+                } catch (err) {
+                    alert('এক বা একাধিক ছবি আপলোড ব্যর্থ হয়েছে');
+                    break;
+                }
+            }
+            document.getElementById('gallery-upload').value = '';
+            loadAdminGallery();
+            if (document.getElementById('view-gallery').style.display === 'block') loadGallery();
+        };
     </script>
 </body>
 </html>
