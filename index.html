@@ -45,6 +45,18 @@
         .banner-img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: 0.5s; }
         .banner-img.active { opacity: 1; }
 
+        /* ================== AT A GLANCE (NEW) ================== */
+        .glance-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(75px, 1fr)); gap: 10px; margin-bottom: 20px; }
+        .glance-card { background: white; border-radius: 12px; padding: 12px 5px; text-align: center; box-shadow: var(--shadow); cursor: pointer; transition: 0.2s; border: 1px solid #f1f5f9; }
+        .glance-card:active { transform: scale(0.95); }
+        .glance-icon { width: 42px; height: 42px; margin: 0 auto 8px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px; color: white; }
+        .ic-mosque { background: #10b981; box-shadow: 0 4px 10px rgba(16,185,129,0.3); }
+        .ic-school { background: #3b82f6; box-shadow: 0 4px 10px rgba(59,130,246,0.3); }
+        .ic-shop { background: #f59e0b; box-shadow: 0 4px 10px rgba(245,158,11,0.3); }
+        .ic-villager { background: #8b5cf6; box-shadow: 0 4px 10px rgba(139,92,246,0.3); }
+        .ic-map { background: #ef4444; box-shadow: 0 4px 10px rgba(239,68,68,0.3); }
+        .map-container iframe { width: 100%; height: 350px; border: none; border-radius: 12px; background: #f8fafc; }
+
         /* ================== LISTS & CARDS ================== */
         .list-item { background: white; padding: 15px; border-radius: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border: 1px solid #f1f5f9; cursor: pointer; }
         .avatar { width: 45px; height: 45px; background: #eff6ff; color: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: bold; margin-right: 15px; }
@@ -141,8 +153,32 @@
                     <div style="display:flex; justify-content:center; align-items:center; height:100%; color:#94a3b8">লোড হচ্ছে...</div>
                 </div>
 
+                <div class="title-sec" style="margin-bottom: 12px; font-size: 1.15rem;">এক নজরে গ্রামটি</div>
+                <div class="glance-grid">
+                    <div class="glance-card" onclick="openDirectory('mosque', 'মসজিদসমূহ')">
+                        <div class="glance-icon ic-mosque"><span class="material-icons-round">mosque</span></div>
+                        <div style="font-size: 0.8rem; font-weight: 600;">মসজিদ</div>
+                    </div>
+                    <div class="glance-card" onclick="openDirectory('school', 'বিদ্যালয়সমূহ')">
+                        <div class="glance-icon ic-school"><span class="material-icons-round">school</span></div>
+                        <div style="font-size: 0.8rem; font-weight: 600;">বিদ্যালয়</div>
+                    </div>
+                    <div class="glance-card" onclick="openDirectory('shop', 'দোকানসমূহ')">
+                        <div class="glance-icon ic-shop"><span class="material-icons-round">storefront</span></div>
+                        <div style="font-size: 0.8rem; font-weight: 600;">দোকান</div>
+                    </div>
+                    <div class="glance-card" onclick="switchTab('villagers')">
+                        <div class="glance-icon ic-villager"><span class="material-icons-round">groups</span></div>
+                        <div style="font-size: 0.8rem; font-weight: 600;">গ্রামবাসী</div>
+                    </div>
+                    <div class="glance-card" onclick="openMapModal()">
+                        <div class="glance-icon ic-map"><span class="material-icons-round">map</span></div>
+                        <div style="font-size: 0.8rem; font-weight: 600;">Map</div>
+                    </div>
+                </div>
+
                 <button class="btn btn-outline" onclick="switchTab('villagers')" style="margin-bottom: 15px;">
-                    <span class="material-icons-round">groups</span> গ্রামবাসী তালিকা দেখুন
+                    <span class="material-icons-round">groups</span> সম্পূর্ণ গ্রামবাসী তালিকা দেখুন
                 </button>
 
                 <div class="card" style="padding: 15px 10px;">
@@ -205,6 +241,25 @@
                     <input id="ab-link" class="input-box" placeholder="Link URL">
                     <button id="ab-btn" class="btn btn-primary" style="background:#db2777">ব্যানার যোগ করুন</button>
                     <div id="admin-banners" style="margin-top: 15px;"></div>
+                </div>
+
+                <div class="card">
+                    <div class="title-sec">প্রতিষ্ঠান ও দোকান ম্যানেজমেন্ট</div>
+                    <select id="ad-dir-type" class="input-box">
+                        <option value="mosque">মসজিদ</option>
+                        <option value="school">বিদ্যালয়</option>
+                        <option value="shop">দোকান</option>
+                    </select>
+                    <input id="ad-dir-name" class="input-box" placeholder="প্রতিষ্ঠানের/দোকানের নাম">
+                    <textarea id="ad-dir-desc" class="input-box" rows="2" placeholder="বিস্তারিত তথ্য / ঠিকানা"></textarea>
+                    <button id="ad-dir-btn" class="btn btn-primary" style="background:#8b5cf6">তালিকায় যুক্ত করুন</button>
+                    <div id="admin-dir-list" style="margin-top: 15px; max-height:200px; overflow-y:auto"></div>
+                </div>
+
+                <div class="card">
+                    <div class="title-sec">ম্যাপ (Map) ম্যানেজমেন্ট</div>
+                    <input id="ad-map-url" class="input-box" placeholder="Google Maps Embed Code / Link">
+                    <button id="ad-map-btn" class="btn btn-primary" style="background:#ef4444">ম্যাপ সেভ করুন</button>
                 </div>
 
                 <div class="card">
@@ -274,6 +329,22 @@
                 <h3 style="color:var(--accent); margin:0 0 15px;">🌾 কৃষি তথ্য</h3>
                 <div style="background:#f0fdf4; color:#166534; padding:12px; border-radius:12px; margin-bottom:15px; font-size:0.9rem">বোরো ধানের চারা রোপণের উপযুক্ত সময় চলছে। জমিতে পর্যাপ্ত সেচ দিন।</div>
                 <div class="list-item"><div><h4 style="margin:0">কৃষি কল সেন্টার</h4><small>16123</small></div><a href="tel:16123" class="call-btn"><span class="material-icons-round">call</span></a></div>
+            </div>
+        </div>
+
+        <div id="dir-modal" class="modal-bg">
+            <div class="modal-content">
+                <span class="material-icons-round close-icon" onclick="closeModal('dir-modal')">close</span>
+                <h3 id="dir-title" style="margin:0 0 15px;">Title</h3>
+                <div id="dir-list" style="max-height: 400px; overflow-y:auto;"></div>
+            </div>
+        </div>
+
+        <div id="map-modal" class="modal-bg">
+            <div class="modal-content">
+                <span class="material-icons-round close-icon" onclick="closeModal('map-modal')">close</span>
+                <h3 style="margin:0 0 15px;">গ্রামের ম্যাপ</h3>
+                <div id="map-wrapper" class="map-container"></div>
             </div>
         </div>
 
@@ -458,6 +529,44 @@
             if(!n||!g||!p)return; await addDoc(collection(db,"blood_donors"),{name:n,bloodGroup:g,phone:p,createdAt:serverTimestamp()}); alert("যুক্ত হয়েছে!"); loadDonors('All');
         };
 
+        // NEW: Directory Logic (Mosque, School, Shop)
+        window.openDirectory = async (type, title) => {
+            document.getElementById('dir-title').innerText = title;
+            openModal('dir-modal');
+            const l = document.getElementById('dir-list');
+            l.innerHTML = "<p style='text-align:center; color:#94a3b8'>লোড হচ্ছে...</p>";
+            const d = await getDocs(query(collection(db, "directory"), orderBy("createdAt", "desc")));
+            l.innerHTML = "";
+            let count = 0;
+            d.forEach(doc => {
+                const v = doc.data();
+                if(v.type === type) {
+                    count++;
+                    l.innerHTML += `
+                    <div style="background:#f8fafc; padding:15px; border-radius:12px; margin-bottom:10px; border-left:4px solid var(--primary);">
+                        <h4 style="margin:0 0 5px; color:var(--text-main); font-size:1.05rem;">${v.name}</h4>
+                        <p style="margin:0; font-size:0.85rem; color:var(--text-sub); white-space:pre-wrap;">${v.desc}</p>
+                    </div>`;
+                }
+            });
+            if(count === 0) l.innerHTML = "<p style='text-align:center; color:#94a3b8'>কোনো তথ্য পাওয়া যায়নি</p>";
+        };
+
+        // NEW: Map Logic
+        window.openMapModal = async () => {
+            openModal('map-modal');
+            const w = document.getElementById('map-wrapper');
+            w.innerHTML = "<p style='text-align:center; color:#94a3b8'>লোড হচ্ছে...</p>";
+            const docRef = await getDoc(doc(db, "settings", "map"));
+            if(docRef.exists() && docRef.data().url) {
+                const url = docRef.data().url;
+                if(url.includes('<iframe')) { w.innerHTML = url; } 
+                else { w.innerHTML = `<iframe src="${url}"></iframe>`; }
+            } else {
+                w.innerHTML = "<p style='text-align:center; color:#94a3b8'>অ্যাডমিন এখনও ম্যাপ যুক্ত করেনি</p>";
+            }
+        };
+
         // Profile
         async function loadProfile() {
             if(!auth.currentUser) return;
@@ -476,6 +585,7 @@
             const us = await getDocs(collection(db,"users")); const ns = await getDocs(collection(db,"notices"));
             document.getElementById('st-user').innerText = us.size; document.getElementById('st-note').innerText = ns.size;
             
+            // Users list
             const ul = document.getElementById('admin-users'); ul.innerHTML="";
             us.forEach(d => {
                 const u=d.data();
@@ -483,18 +593,57 @@
                 ul.innerHTML += `<div class="list-item" style="cursor:default"><div><b>${u.email}</b><br><small>${u.role}</small></div><div>${u.role!=='admin'?btn+` <button onclick="window.delU('${d.id}')" class="action-btn" style="background:var(--danger)">Del</button>`:''}</div></div>`;
             });
 
+            // Banners list
             const bl = document.getElementById('admin-banners'); bl.innerHTML="";
             const bs = await getDocs(collection(db,"banners"));
             bs.forEach(d => { bl.innerHTML+=`<div class="admin-banner-item"><img src="${d.data().image}" class="admin-banner-img"><button onclick="window.delB('${d.id}')" class="action-btn" style="background:var(--danger)">Delete</button></div>`; });
+
+            // NEW: Directory list
+            const dl = document.getElementById('admin-dir-list'); dl.innerHTML = "";
+            const ds = await getDocs(query(collection(db, "directory"), orderBy("createdAt", "desc")));
+            ds.forEach(d => {
+                const v = d.data();
+                let tName = v.type==='mosque'?'মসজিদ':v.type==='school'?'বিদ্যালয়':'দোকান';
+                dl.innerHTML += `<div class="list-item" style="cursor:default; padding:10px;">
+                    <div><b>${v.name}</b><br><small>${tName}</small></div>
+                    <button onclick="window.delDir('${d.id}')" class="action-btn" style="background:var(--danger)">Del</button>
+                </div>`;
+            });
+
+            // NEW: Map Pre-fill
+            const mDoc = await getDoc(doc(db, "settings", "map"));
+            if(mDoc.exists() && mDoc.data().url) document.getElementById('ad-map-url').value = mDoc.data().url;
         }
+
         document.getElementById('ab-btn').onclick = async () => { const i=document.getElementById('ab-img').value; if(!i)return; await addDoc(collection(db,"banners"),{image:i,link:document.getElementById('ab-link').value,createdAt:serverTimestamp()}); document.getElementById('ab-img').value=""; loadAdminData(); };
         document.getElementById('an-btn').onclick = async () => { const t=document.getElementById('an-title').value; if(!t)return; await addDoc(collection(db,"notices"),{title:t,description:document.getElementById('an-desc').value,createdAt:serverTimestamp()}); alert("Published"); };
+        
+        // NEW: Directory Save
+        document.getElementById('ad-dir-btn').onclick = async () => {
+            const type = document.getElementById('ad-dir-type').value;
+            const name = document.getElementById('ad-dir-name').value;
+            const desc = document.getElementById('ad-dir-desc').value;
+            if(!name) return;
+            await addDoc(collection(db, "directory"), { type, name, desc, createdAt: serverTimestamp() });
+            alert("তালিকায় যুক্ত হয়েছে!");
+            document.getElementById('ad-dir-name').value = ""; document.getElementById('ad-dir-desc').value = "";
+            loadAdminData();
+        };
+
+        // NEW: Map Save
+        document.getElementById('ad-map-btn').onclick = async () => {
+            const url = document.getElementById('ad-map-url').value;
+            if(!url) return;
+            await setDoc(doc(db, "settings", "map"), { url });
+            alert("ম্যাপ আপডেট হয়েছে!");
+        };
         
         document.getElementById('au-search').addEventListener('input',(e)=>{ const v=e.target.value.toLowerCase(); document.querySelectorAll('#admin-users .list-item').forEach(el=>{ el.style.display=el.innerText.toLowerCase().includes(v)?'flex':'none'; }); });
 
         window.actU=async(id,s)=>{await updateDoc(doc(db,"users",id),{status:s}); loadAdminData();};
         window.delU=async(id)=>{if(confirm('Delete User?')){await deleteDoc(doc(db,"users",id)); loadAdminData();}};
         window.delB=async(id)=>{if(confirm('Delete Banner?')){await deleteDoc(doc(db,"banners",id)); loadAdminData();}};
+        window.delDir=async(id)=>{if(confirm('মুছে ফেলতে চান?')){await deleteDoc(doc(db,"directory",id)); loadAdminData();}};
 
     </script>
 </body>
