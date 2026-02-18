@@ -1256,7 +1256,7 @@
             fileInput.value = '';
         };
 
-        // ========== GALLERY (with image view) ==========
+                // ========== GALLERY ==========
         async function loadGallery() {
             const grid = document.getElementById('gallery-grid');
             grid.innerHTML = '<p style="text-align:center; color:#94a3b8">লোড হচ্ছে...</p>';
@@ -1268,10 +1268,17 @@
             grid.innerHTML = '';
             snaps.forEach(doc => {
                 const imgUrl = doc.data().imageUrl;
+                
+                // Cloudinary লিংক থেকে সরাসরি ডাউনলোড করানোর জন্য fl_attachment যুক্ত করা হলো
+                let downloadUrl = imgUrl;
+                if (imgUrl.includes('/upload/')) {
+                    downloadUrl = imgUrl.replace('/upload/', '/upload/fl_attachment/');
+                }
+
                 grid.innerHTML += `
-                    <div class="gallery-item" onclick="openImageView('${imgUrl}')">
+                    <div class="gallery-item">
                         <img src="${imgUrl}" loading="lazy">
-                        <a href="${imgUrl}" download class="gallery-download" onclick="event.stopPropagation();"><span class="material-icons-round" style="font-size:18px;">download</span></a>
+                        <a href="${downloadUrl}" class="gallery-download" onclick="event.stopPropagation()"><span class="material-icons-round" style="font-size:18px;">download</span></a>
                     </div>
                 `;
             });
