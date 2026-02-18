@@ -45,17 +45,12 @@
         .banner-img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: 0.5s; }
         .banner-img.active { opacity: 1; }
 
-        /* ================== AT A GLANCE (NEW) ================== */
-        .glance-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(75px, 1fr)); gap: 10px; margin-bottom: 20px; }
-        .glance-card { background: white; border-radius: 12px; padding: 12px 5px; text-align: center; box-shadow: var(--shadow); cursor: pointer; transition: 0.2s; border: 1px solid #f1f5f9; }
+        /* ================== GLANCE GRID ================== */
+        .glance-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
+        .glance-card { background: white; padding: 12px 5px; border-radius: 12px; text-align: center; box-shadow: var(--shadow); cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; border: 1px solid #f1f5f9; transition: 0.2s; }
         .glance-card:active { transform: scale(0.95); }
-        .glance-icon { width: 42px; height: 42px; margin: 0 auto 8px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px; color: white; }
-        .ic-mosque { background: #10b981; box-shadow: 0 4px 10px rgba(16,185,129,0.3); }
-        .ic-school { background: #3b82f6; box-shadow: 0 4px 10px rgba(59,130,246,0.3); }
-        .ic-shop { background: #f59e0b; box-shadow: 0 4px 10px rgba(245,158,11,0.3); }
-        .ic-villager { background: #8b5cf6; box-shadow: 0 4px 10px rgba(139,92,246,0.3); }
-        .ic-map { background: #ef4444; box-shadow: 0 4px 10px rgba(239,68,68,0.3); }
-        .map-container iframe { width: 100%; height: 350px; border: none; border-radius: 12px; background: #f8fafc; }
+        .glance-card .material-icons-round { font-size: 26px; padding: 10px; border-radius: 50%; margin-bottom: 2px; }
+        .glance-title { font-size: 0.85rem; font-weight: 600; color: var(--text-main); }
 
         /* ================== LISTS & CARDS ================== */
         .list-item { background: white; padding: 15px; border-radius: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border: 1px solid #f1f5f9; cursor: pointer; }
@@ -88,8 +83,26 @@
         .check-anim { width: 80px; height: 80px; background: var(--accent); border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; font-size: 40px; margin-bottom: 15px; animation: pop 0.5s; }
         @keyframes pop { 0% { transform: scale(0); } 100% { transform: scale(1); } }
 
-        /* Admin UI */
+        /* ================== ADMIN UI (EXAMPRO STYLE) ================== */
         .admin-stat { background: #1e293b; color: white; padding: 15px; border-radius: 12px; flex: 1; text-align: center; }
+        .admin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px; }
+        .exampro-card {
+            background: #1e293b; 
+            border-radius: 16px; 
+            padding: 22px 10px; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15); 
+            border-bottom: 3px solid #38bdf8; 
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .exampro-card:active { transform: scale(0.95); }
+        .exampro-card .material-icons-round { color: #38bdf8; font-size: 38px; margin-bottom: 10px; }
+        .exampro-card span { color: #f8fafc; font-weight: 600; font-size: 1rem; }
+        
         .admin-banner-item { display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #f8fafc; border-radius: 10px; margin-bottom: 10px; }
         .admin-banner-img { height: 50px; width: 80px; object-fit: cover; border-radius: 6px; }
         .action-btn { padding: 6px 12px; border: none; border-radius: 6px; color: white; cursor: pointer; font-size: 0.8rem; }
@@ -153,37 +166,59 @@
                     <div style="display:flex; justify-content:center; align-items:center; height:100%; color:#94a3b8">লোড হচ্ছে...</div>
                 </div>
 
-                <div class="title-sec" style="margin-bottom: 12px; font-size: 1.15rem;">এক নজরে গ্রামটি</div>
+                <div class="title-sec" style="margin-left: 5px; margin-top: 10px;">এক নজরে গ্রামটি</div>
                 <div class="glance-grid">
-                    <div class="glance-card" onclick="openDirectory('mosque', 'মসজিদসমূহ')">
-                        <div class="glance-icon ic-mosque"><span class="material-icons-round">mosque</span></div>
-                        <div style="font-size: 0.8rem; font-weight: 600;">মসজিদ</div>
+                    <div class="glance-card" onclick="switchTab('mosque'); loadPlaces('mosques', 'mosque-list')">
+                        <span class="material-icons-round" style="color:#0ea5e9; background:#e0f2fe">mosque</span>
+                        <span class="glance-title">মসজিদ</span>
                     </div>
-                    <div class="glance-card" onclick="openDirectory('school', 'বিদ্যালয়সমূহ')">
-                        <div class="glance-icon ic-school"><span class="material-icons-round">school</span></div>
-                        <div style="font-size: 0.8rem; font-weight: 600;">বিদ্যালয়</div>
+                    <div class="glance-card" onclick="switchTab('school'); loadPlaces('schools', 'school-list')">
+                        <span class="material-icons-round" style="color:#8b5cf6; background:#ede9fe">school</span>
+                        <span class="glance-title">বিদ্যালয়</span>
                     </div>
-                    <div class="glance-card" onclick="openDirectory('shop', 'দোকানসমূহ')">
-                        <div class="glance-icon ic-shop"><span class="material-icons-round">storefront</span></div>
-                        <div style="font-size: 0.8rem; font-weight: 600;">দোকান</div>
+                    <div class="glance-card" onclick="switchTab('shop'); loadPlaces('shops', 'shop-list')">
+                        <span class="material-icons-round" style="color:#f59e0b; background:#fef3c7">storefront</span>
+                        <span class="glance-title">দোকান</span>
                     </div>
                     <div class="glance-card" onclick="switchTab('villagers')">
-                        <div class="glance-icon ic-villager"><span class="material-icons-round">groups</span></div>
-                        <div style="font-size: 0.8rem; font-weight: 600;">গ্রামবাসী</div>
+                        <span class="material-icons-round" style="color:#10b981; background:#d1fae5">groups</span>
+                        <span class="glance-title">গ্রামবাসী</span>
                     </div>
-                    <div class="glance-card" onclick="openMapModal()">
-                        <div class="glance-icon ic-map"><span class="material-icons-round">map</span></div>
-                        <div style="font-size: 0.8rem; font-weight: 600;">Map</div>
+                    <div class="glance-card" onclick="switchTab('map')">
+                        <span class="material-icons-round" style="color:#ef4444; background:#fee2e2">map</span>
+                        <span class="glance-title">Map</span>
                     </div>
                 </div>
 
                 <button class="btn btn-outline" onclick="switchTab('villagers')" style="margin-bottom: 15px;">
-                    <span class="material-icons-round">groups</span> সম্পূর্ণ গ্রামবাসী তালিকা দেখুন
+                    <span class="material-icons-round">groups</span> গ্রামবাসী তালিকা দেখুন
                 </button>
 
                 <div class="card" style="padding: 15px 10px;">
                     <div class="title-sec" style="margin-left: 5px;"><span class="material-icons-round">campaign</span> নোটিশ বোর্ড</div>
                     <div id="notice-list"><p style="text-align:center; color:#94a3b8">লোড হচ্ছে...</p></div>
+                </div>
+            </div>
+
+            <div id="view-mosque" style="display: none;">
+                <div class="title-sec"><span class="material-icons-round" style="cursor:pointer; margin-right:5px" onclick="switchTab('home')">arrow_back</span> গ্রামের মসজিদসমূহ</div>
+                <div id="mosque-list"><p style="text-align:center; color:#94a3b8">লোড হচ্ছে...</p></div>
+            </div>
+
+            <div id="view-school" style="display: none;">
+                <div class="title-sec"><span class="material-icons-round" style="cursor:pointer; margin-right:5px" onclick="switchTab('home')">arrow_back</span> শিক্ষাপ্রতিষ্ঠানসমূহ</div>
+                <div id="school-list"><p style="text-align:center; color:#94a3b8">লোড হচ্ছে...</p></div>
+            </div>
+
+            <div id="view-shop" style="display: none;">
+                <div class="title-sec"><span class="material-icons-round" style="cursor:pointer; margin-right:5px" onclick="switchTab('home')">arrow_back</span> স্থানীয় বাজার ও দোকান</div>
+                <div id="shop-list"><p style="text-align:center; color:#94a3b8">লোড হচ্ছে...</p></div>
+            </div>
+
+            <div id="view-map" style="display: none;">
+                <div class="title-sec"><span class="material-icons-round" style="cursor:pointer; margin-right:5px" onclick="switchTab('home')">arrow_back</span> গ্রামের ম্যাপ</div>
+                <div style="width: 100%; height: 400px; background: #e2e8f0; border-radius: 12px; overflow: hidden; box-shadow: var(--shadow);">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3690.697669145946!2d91.78287341535794!3d22.32712954756306!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30acd8000676fef3%3A0x6d9f8df5b6d519ff!2sChittagong!5e0!3m2!1sen!2sbd!4v1708240000000!5m2!1sen!2sbd" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                 </div>
             </div>
 
@@ -206,6 +241,7 @@
             </div>
 
             <div id="view-villagers" style="display: none;">
+                <div class="title-sec"><span class="material-icons-round" style="cursor:pointer; margin-right:5px" onclick="switchTab('home')">arrow_back</span> গ্রামবাসী তালিকা</div>
                 <div style="position: sticky; top: 0; background: var(--bg); padding-bottom: 10px; z-index: 30;">
                     <input type="text" id="search-villager" class="input-box" placeholder="🔍 নাম, নম্বর বা পেশা দিয়ে খুঁজুন..." style="border-radius: 30px; margin: 0;">
                 </div>
@@ -230,50 +266,87 @@
             </div>
 
             <div id="view-admin" style="display: none;">
-                <div style="display: flex; gap: 10px; margin-bottom: 15px;">
-                    <div class="admin-stat"><h2 id="st-user" style="margin:0">0</h2><small>Users</small></div>
-                    <div class="admin-stat" style="background:var(--accent)"><h2 id="st-note" style="margin:0">0</h2><small>Notices</small></div>
+                
+                <div id="admin-main">
+                    <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                        <div class="admin-stat"><h2 id="st-user" style="margin:0">0</h2><small>Users</small></div>
+                        <div class="admin-stat" style="background:var(--accent)"><h2 id="st-note" style="margin:0">0</h2><small>Notices</small></div>
+                    </div>
+
+                    <div class="admin-grid">
+                        <div class="exampro-card" onclick="openAdminSub('places')">
+                            <span class="material-icons-round">domain</span>
+                            <span>প্রতিষ্ঠান</span>
+                        </div>
+                        <div class="exampro-card" onclick="openAdminSub('users')">
+                            <span class="material-icons-round">people</span>
+                            <span>ইউজার্স</span>
+                        </div>
+                        <div class="exampro-card" onclick="openAdminSub('notices')">
+                            <span class="material-icons-round">campaign</span>
+                            <span>নোটিশ</span>
+                        </div>
+                        <div class="exampro-card" onclick="openAdminSub('banners')">
+                            <span class="material-icons-round">view_carousel</span>
+                            <span>ব্যানার</span>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="card">
-                    <div class="title-sec">ব্যানার ম্যানেজমেন্ট</div>
-                    <input id="ab-img" class="input-box" placeholder="Image URL (16:7)">
-                    <input id="ab-link" class="input-box" placeholder="Link URL">
-                    <button id="ab-btn" class="btn btn-primary" style="background:#db2777">ব্যানার যোগ করুন</button>
-                    <div id="admin-banners" style="margin-top: 15px;"></div>
+                <div id="admin-sub-places" style="display:none;">
+                    <div class="title-sec"><span class="material-icons-round" style="cursor:pointer; margin-right:5px" onclick="closeAdminSub()">arrow_back</span> প্রতিষ্ঠান/স্থান যোগ করুন</div>
+                    <div class="card">
+                        <select id="ap-col" class="input-box">
+                            <option value="mosques">মসজিদ</option>
+                            <option value="schools">বিদ্যালয়</option>
+                            <option value="shops">দোকান</option>
+                        </select>
+                        <input id="ap-name" class="input-box" placeholder="প্রতিষ্ঠানের নাম">
+                        <textarea id="ap-desc" class="input-box" rows="2" placeholder="বিস্তারিত/ঠিকানা"></textarea>
+                        <button id="ap-btn" class="btn btn-primary" style="background:var(--accent)">যুক্ত করুন</button>
+                        
+                        <hr style="border:0; border-top:1px solid #e2e8f0; margin:15px 0">
+                        <div class="title-sec" style="font-size:1rem">তালিকা ম্যানেজমেন্ট</div>
+                        <select id="ad-view-col" class="input-box" onchange="loadAdminPlaces()">
+                            <option value="mosques">মসজিদ তালিকা</option>
+                            <option value="schools">বিদ্যালয় তালিকা</option>
+                            <option value="shops">দোকান তালিকা</option>
+                        </select>
+                        <div id="admin-places-list" style="max-height: 250px; overflow-y: auto;"></div>
+                    </div>
                 </div>
 
-                <div class="card">
-                    <div class="title-sec">প্রতিষ্ঠান ও দোকান ম্যানেজমেন্ট</div>
-                    <select id="ad-dir-type" class="input-box">
-                        <option value="mosque">মসজিদ</option>
-                        <option value="school">বিদ্যালয়</option>
-                        <option value="shop">দোকান</option>
-                    </select>
-                    <input id="ad-dir-name" class="input-box" placeholder="প্রতিষ্ঠানের/দোকানের নাম">
-                    <textarea id="ad-dir-desc" class="input-box" rows="2" placeholder="বিস্তারিত তথ্য / ঠিকানা"></textarea>
-                    <button id="ad-dir-btn" class="btn btn-primary" style="background:#8b5cf6">তালিকায় যুক্ত করুন</button>
-                    <div id="admin-dir-list" style="margin-top: 15px; max-height:200px; overflow-y:auto"></div>
+                <div id="admin-sub-users" style="display:none;">
+                    <div class="title-sec"><span class="material-icons-round" style="cursor:pointer; margin-right:5px" onclick="closeAdminSub()">arrow_back</span> ইউজার কন্ট্রোল</div>
+                    <div class="card">
+                        <input id="au-search" class="input-box" placeholder="ইমেইল দিয়ে খুঁজুন...">
+                        <div id="admin-users" style="max-height: 400px; overflow-y: auto;"></div>
+                    </div>
                 </div>
 
-                <div class="card">
-                    <div class="title-sec">ম্যাপ (Map) ম্যানেজমেন্ট</div>
-                    <input id="ad-map-url" class="input-box" placeholder="Google Maps Embed Code / Link">
-                    <button id="ad-map-btn" class="btn btn-primary" style="background:#ef4444">ম্যাপ সেভ করুন</button>
+                <div id="admin-sub-notices" style="display:none;">
+                    <div class="title-sec"><span class="material-icons-round" style="cursor:pointer; margin-right:5px" onclick="closeAdminSub()">arrow_back</span> নোটিশ ম্যানেজমেন্ট</div>
+                    <div class="card">
+                        <input id="an-title" class="input-box" placeholder="শিরোনাম">
+                        <textarea id="an-desc" class="input-box" rows="2" placeholder="বিস্তারিত"></textarea>
+                        <button id="an-btn" class="btn btn-primary">পাবলিশ করুন</button>
+                        
+                        <hr style="border:0; border-top:1px solid #e2e8f0; margin:15px 0">
+                        <div class="title-sec" style="font-size:1rem">সকল নোটিশ</div>
+                        <div id="admin-notices-list" style="max-height: 250px; overflow-y: auto;"></div>
+                    </div>
                 </div>
 
-                <div class="card">
-                    <div class="title-sec">নোটিশ ম্যানেজমেন্ট</div>
-                    <input id="an-title" class="input-box" placeholder="শিরোনাম">
-                    <textarea id="an-desc" class="input-box" rows="2" placeholder="বিস্তারিত"></textarea>
-                    <button id="an-btn" class="btn btn-primary">পাবলিশ করুন</button>
+                <div id="admin-sub-banners" style="display:none;">
+                    <div class="title-sec"><span class="material-icons-round" style="cursor:pointer; margin-right:5px" onclick="closeAdminSub()">arrow_back</span> ব্যানার ম্যানেজমেন্ট</div>
+                    <div class="card">
+                        <input id="ab-img" class="input-box" placeholder="Image URL (16:7)">
+                        <input id="ab-link" class="input-box" placeholder="Link URL">
+                        <button id="ab-btn" class="btn btn-primary" style="background:#db2777">ব্যানার যোগ করুন</button>
+                        <div id="admin-banners" style="margin-top: 15px; max-height: 300px; overflow-y: auto;"></div>
+                    </div>
                 </div>
 
-                <div class="card">
-                    <div class="title-sec">ইউজার কন্ট্রোল</div>
-                    <input id="au-search" class="input-box" placeholder="ইমেইল দিয়ে খুঁজুন...">
-                    <div id="admin-users" style="max-height: 300px; overflow-y: auto;"></div>
-                </div>
             </div>
         </main>
 
@@ -332,22 +405,6 @@
             </div>
         </div>
 
-        <div id="dir-modal" class="modal-bg">
-            <div class="modal-content">
-                <span class="material-icons-round close-icon" onclick="closeModal('dir-modal')">close</span>
-                <h3 id="dir-title" style="margin:0 0 15px;">Title</h3>
-                <div id="dir-list" style="max-height: 400px; overflow-y:auto;"></div>
-            </div>
-        </div>
-
-        <div id="map-modal" class="modal-bg">
-            <div class="modal-content">
-                <span class="material-icons-round close-icon" onclick="closeModal('map-modal')">close</span>
-                <h3 style="margin:0 0 15px;">গ্রামের ম্যাপ</h3>
-                <div id="map-wrapper" class="map-container"></div>
-            </div>
-        </div>
-
     </div>
 
     <script type="module">
@@ -363,7 +420,7 @@
         window.closeModal = (id) => { const m=document.getElementById(id); m.classList.remove('show'); setTimeout(()=>m.style.display='none', 300); }
 
         // Navigation Manager
-        const tabs = { home:'view-home', services:'view-services', villagers:'view-villagers', profile:'view-profile', admin:'view-admin', auth:'view-auth', setup:'view-setup' };
+        const tabs = { home:'view-home', services:'view-services', villagers:'view-villagers', profile:'view-profile', admin:'view-admin', auth:'view-auth', setup:'view-setup', mosque:'view-mosque', school:'view-school', shop:'view-shop', map:'view-map' };
         const navBtns = { home:'tab-home', services:'tab-services', profile:'tab-profile', admin:'tab-admin' };
 
         window.switchTab = (tabName) => {
@@ -372,7 +429,7 @@
 
             document.getElementById(tabs[tabName]).style.display = 'block';
 
-            if(tabName === 'villagers') { document.getElementById('tab-home').classList.add('active'); }
+            if(['villagers', 'mosque', 'school', 'shop', 'map'].includes(tabName)) { document.getElementById('tab-home').classList.add('active'); }
             else if(navBtns[tabName]) { document.getElementById(navBtns[tabName]).classList.add('active'); }
 
             const hTitle = document.getElementById('h-title'); const hSub = document.getElementById('h-sub');
@@ -380,7 +437,15 @@
             else if(tabName === 'services') { hTitle.innerText="সেবাসমূহ"; hSub.innerText="প্রয়োজনীয় সকল সেবা"; }
             else if(tabName === 'villagers') { hTitle.innerText="গ্রামবাসী"; hSub.innerText="তালিকা ও যোগাযোগ"; loadVillagers(); }
             else if(tabName === 'profile') { hTitle.innerText="প্রোফাইল"; hSub.innerText="ব্যক্তিগত তথ্য"; loadProfile(); }
-            else if(tabName === 'admin') { hTitle.innerText="অ্যাডমিন"; hSub.innerText="কন্ট্রোল প্যানেল"; loadAdminData(); }
+            else if(tabName === 'admin') { 
+                hTitle.innerText="অ্যাডমিন প্যানেল"; hSub.innerText="কন্ট্রোল ড্যাশবোর্ড"; 
+                window.closeAdminSub(); // Always open main dashboard first
+                loadAdminData(); 
+            }
+            else if(tabName === 'mosque') { hTitle.innerText="মসজিদ"; hSub.innerText="গ্রামের মসজিদসমূহ"; }
+            else if(tabName === 'school') { hTitle.innerText="বিদ্যালয়"; hSub.innerText="শিক্ষাপ্রতিষ্ঠানসমূহ"; }
+            else if(tabName === 'shop') { hTitle.innerText="দোকান"; hSub.innerText="স্থানীয় বাজার ও দোকান"; }
+            else if(tabName === 'map') { hTitle.innerText="ম্যাপ"; hSub.innerText="গ্রামের অবস্থান"; }
         };
 
         Object.keys(navBtns).forEach(k => document.getElementById(navBtns[k]).addEventListener('click', () => switchTab(k)));
@@ -415,7 +480,6 @@
             }
         });
 
-        // Login / Register Toggle
         let isLog = true;
         document.getElementById('auth-toggle').onclick = () => {
             isLog = !isLog;
@@ -438,7 +502,6 @@
         };
         document.getElementById('logoutBtn').onclick = () => signOut(auth);
 
-        // Save Profile (Step 2 Reg)
         document.getElementById('save-setup').onclick = async () => {
             const n = document.getElementById('set-name').value; const a = document.getElementById('set-addr').value;
             if(!n || !a) return alert("নাম এবং ঠিকানা দিন!");
@@ -451,7 +514,6 @@
             setTimeout(() => { s.style.display='none'; document.getElementById('b-nav').style.display='flex'; switchTab('home'); }, 2000);
         };
 
-        // Banner Slider
         let sInt;
         async function loadBanners() {
             const b = document.getElementById('banner-slider');
@@ -467,7 +529,6 @@
             }, 3500);
         }
 
-        // Notices
         async function loadNotices() {
             const n = document.getElementById('notice-list');
             const d = await getDocs(query(collection(db, "notices"), orderBy("createdAt", "desc")));
@@ -475,7 +536,21 @@
             d.forEach(doc => { n.innerHTML += `<div style="background:white; padding:12px; border-left:4px solid var(--primary); border-radius:8px; margin-bottom:10px; box-shadow:0 1px 3px rgba(0,0,0,0.05)"><h4 style="margin:0 0 5px">${doc.data().title}</h4><p style="margin:0; font-size:0.85rem; color:#64748b">${doc.data().description}</p></div>`; });
         }
 
-        // Villagers List
+        window.loadPlaces = async (collectionName, listId) => {
+            const l = document.getElementById(listId);
+            l.innerHTML = "<p style='text-align:center;color:#94a3b8'>লোড হচ্ছে...</p>";
+            const d = await getDocs(query(collection(db, collectionName), orderBy("createdAt", "desc")));
+            if(d.empty) { l.innerHTML = "<p style='text-align:center'>কোনো তথ্য পাওয়া যায়নি</p>"; return; }
+            l.innerHTML = "";
+            d.forEach(doc => {
+                const data = doc.data();
+                l.innerHTML += `<div class="list-item" style="display:block">
+                    <h4 style="margin:0 0 5px; color:var(--primary);">${data.name}</h4>
+                    <p style="margin:0; font-size:0.85rem; color:var(--text-sub)">${data.desc}</p>
+                </div>`;
+            });
+        };
+
         let cachedV = [];
         async function loadVillagers() {
             const l = document.getElementById('villager-list');
@@ -515,7 +590,6 @@
             openModal('user-modal');
         };
 
-        // Blood Donors
         window.loadDonors = async (f) => {
             const l = document.getElementById('bd-list'); l.innerHTML = "লোড হচ্ছে...";
             const d = await getDocs(query(collection(db, "blood_donors"), orderBy("createdAt", "desc"))); l.innerHTML="";
@@ -529,45 +603,6 @@
             if(!n||!g||!p)return; await addDoc(collection(db,"blood_donors"),{name:n,bloodGroup:g,phone:p,createdAt:serverTimestamp()}); alert("যুক্ত হয়েছে!"); loadDonors('All');
         };
 
-        // NEW: Directory Logic (Mosque, School, Shop)
-        window.openDirectory = async (type, title) => {
-            document.getElementById('dir-title').innerText = title;
-            openModal('dir-modal');
-            const l = document.getElementById('dir-list');
-            l.innerHTML = "<p style='text-align:center; color:#94a3b8'>লোড হচ্ছে...</p>";
-            const d = await getDocs(query(collection(db, "directory"), orderBy("createdAt", "desc")));
-            l.innerHTML = "";
-            let count = 0;
-            d.forEach(doc => {
-                const v = doc.data();
-                if(v.type === type) {
-                    count++;
-                    l.innerHTML += `
-                    <div style="background:#f8fafc; padding:15px; border-radius:12px; margin-bottom:10px; border-left:4px solid var(--primary);">
-                        <h4 style="margin:0 0 5px; color:var(--text-main); font-size:1.05rem;">${v.name}</h4>
-                        <p style="margin:0; font-size:0.85rem; color:var(--text-sub); white-space:pre-wrap;">${v.desc}</p>
-                    </div>`;
-                }
-            });
-            if(count === 0) l.innerHTML = "<p style='text-align:center; color:#94a3b8'>কোনো তথ্য পাওয়া যায়নি</p>";
-        };
-
-        // NEW: Map Logic
-        window.openMapModal = async () => {
-            openModal('map-modal');
-            const w = document.getElementById('map-wrapper');
-            w.innerHTML = "<p style='text-align:center; color:#94a3b8'>লোড হচ্ছে...</p>";
-            const docRef = await getDoc(doc(db, "settings", "map"));
-            if(docRef.exists() && docRef.data().url) {
-                const url = docRef.data().url;
-                if(url.includes('<iframe')) { w.innerHTML = url; } 
-                else { w.innerHTML = `<iframe src="${url}"></iframe>`; }
-            } else {
-                w.innerHTML = "<p style='text-align:center; color:#94a3b8'>অ্যাডমিন এখনও ম্যাপ যুক্ত করেনি</p>";
-            }
-        };
-
-        // Profile
         async function loadProfile() {
             if(!auth.currentUser) return;
             const d = await getDoc(doc(db,"users",auth.currentUser.uid));
@@ -580,12 +615,33 @@
             await updateDoc(doc(db,"users",auth.currentUser.uid),{name:document.getElementById('up-name').value, profession:document.getElementById('up-prof').value, phone:document.getElementById('up-phone').value}); alert("আপডেট হয়েছে"); loadProfile();
         };
 
-        // Admin
+        // ================== ADMIN PANEL LOGIC ================== //
+        
+        window.openAdminSub = (id) => {
+            document.getElementById('admin-main').style.display = 'none';
+            document.getElementById('admin-sub-places').style.display = 'none';
+            document.getElementById('admin-sub-users').style.display = 'none';
+            document.getElementById('admin-sub-notices').style.display = 'none';
+            document.getElementById('admin-sub-banners').style.display = 'none';
+            document.getElementById('admin-sub-' + id).style.display = 'block';
+        };
+
+        window.closeAdminSub = () => {
+            document.getElementById('admin-sub-places').style.display = 'none';
+            document.getElementById('admin-sub-users').style.display = 'none';
+            document.getElementById('admin-sub-notices').style.display = 'none';
+            document.getElementById('admin-sub-banners').style.display = 'none';
+            document.getElementById('admin-main').style.display = 'block';
+        };
+
         async function loadAdminData() {
-            const us = await getDocs(collection(db,"users")); const ns = await getDocs(collection(db,"notices"));
-            document.getElementById('st-user').innerText = us.size; document.getElementById('st-note').innerText = ns.size;
+            // Stats
+            const us = await getDocs(collection(db,"users")); 
+            const ns = await getDocs(query(collection(db,"notices"), orderBy("createdAt", "desc")));
+            document.getElementById('st-user').innerText = us.size; 
+            document.getElementById('st-note').innerText = ns.size;
             
-            // Users list
+            // Users Load
             const ul = document.getElementById('admin-users'); ul.innerHTML="";
             us.forEach(d => {
                 const u=d.data();
@@ -593,57 +649,82 @@
                 ul.innerHTML += `<div class="list-item" style="cursor:default"><div><b>${u.email}</b><br><small>${u.role}</small></div><div>${u.role!=='admin'?btn+` <button onclick="window.delU('${d.id}')" class="action-btn" style="background:var(--danger)">Del</button>`:''}</div></div>`;
             });
 
-            // Banners list
+            // Banners Load
             const bl = document.getElementById('admin-banners'); bl.innerHTML="";
             const bs = await getDocs(collection(db,"banners"));
             bs.forEach(d => { bl.innerHTML+=`<div class="admin-banner-item"><img src="${d.data().image}" class="admin-banner-img"><button onclick="window.delB('${d.id}')" class="action-btn" style="background:var(--danger)">Delete</button></div>`; });
 
-            // NEW: Directory list
-            const dl = document.getElementById('admin-dir-list'); dl.innerHTML = "";
-            const ds = await getDocs(query(collection(db, "directory"), orderBy("createdAt", "desc")));
-            ds.forEach(d => {
-                const v = d.data();
-                let tName = v.type==='mosque'?'মসজিদ':v.type==='school'?'বিদ্যালয়':'দোকান';
-                dl.innerHTML += `<div class="list-item" style="cursor:default; padding:10px;">
-                    <div><b>${v.name}</b><br><small>${tName}</small></div>
-                    <button onclick="window.delDir('${d.id}')" class="action-btn" style="background:var(--danger)">Del</button>
+            // Notices Load (For Deletion)
+            const nl = document.getElementById('admin-notices-list'); nl.innerHTML="";
+            ns.forEach(d => {
+                nl.innerHTML += `<div class="list-item" style="padding:10px; cursor:default; align-items:center;">
+                    <div><b style="font-size:0.95rem">${d.data().title}</b></div>
+                    <button onclick="window.delNotice('${d.id}')" class="action-btn" style="background:var(--danger)"><span class="material-icons-round" style="font-size:16px; vertical-align:middle;">delete</span></button>
                 </div>`;
             });
 
-            // NEW: Map Pre-fill
-            const mDoc = await getDoc(doc(db, "settings", "map"));
-            if(mDoc.exists() && mDoc.data().url) document.getElementById('ad-map-url').value = mDoc.data().url;
+            window.loadAdminPlaces();
         }
 
-        document.getElementById('ab-btn').onclick = async () => { const i=document.getElementById('ab-img').value; if(!i)return; await addDoc(collection(db,"banners"),{image:i,link:document.getElementById('ab-link').value,createdAt:serverTimestamp()}); document.getElementById('ab-img').value=""; loadAdminData(); };
-        document.getElementById('an-btn').onclick = async () => { const t=document.getElementById('an-title').value; if(!t)return; await addDoc(collection(db,"notices"),{title:t,description:document.getElementById('an-desc').value,createdAt:serverTimestamp()}); alert("Published"); };
-        
-        // NEW: Directory Save
-        document.getElementById('ad-dir-btn').onclick = async () => {
-            const type = document.getElementById('ad-dir-type').value;
-            const name = document.getElementById('ad-dir-name').value;
-            const desc = document.getElementById('ad-dir-desc').value;
-            if(!name) return;
-            await addDoc(collection(db, "directory"), { type, name, desc, createdAt: serverTimestamp() });
-            alert("তালিকায় যুক্ত হয়েছে!");
-            document.getElementById('ad-dir-name').value = ""; document.getElementById('ad-dir-desc').value = "";
-            loadAdminData();
+        // Add/Delete Notice
+        document.getElementById('an-btn').onclick = async () => { 
+            const t=document.getElementById('an-title').value; 
+            if(!t)return; 
+            await addDoc(collection(db,"notices"),{title:t,description:document.getElementById('an-desc').value,createdAt:serverTimestamp()}); 
+            document.getElementById('an-title').value = ""; document.getElementById('an-desc').value = "";
+            alert("নোটিশ পাবলিশ হয়েছে"); 
+            loadAdminData(); 
+        };
+        window.delNotice = async(id) => {
+            if(confirm('এই নোটিশটি ডিলিট করতে চান?')){
+                await deleteDoc(doc(db,"notices",id)); 
+                loadAdminData(); 
+            }
         };
 
-        // NEW: Map Save
-        document.getElementById('ad-map-btn').onclick = async () => {
-            const url = document.getElementById('ad-map-url').value;
-            if(!url) return;
-            await setDoc(doc(db, "settings", "map"), { url });
-            alert("ম্যাপ আপডেট হয়েছে!");
+        // Admin Places Setup
+        document.getElementById('ap-btn').onclick = async () => {
+            const col = document.getElementById('ap-col').value;
+            const name = document.getElementById('ap-name').value;
+            const desc = document.getElementById('ap-desc').value;
+            if(!name) return alert("প্রতিষ্ঠানের নাম আবশ্যক!");
+            await addDoc(collection(db, col), { name: name, desc: desc, createdAt: serverTimestamp() });
+            document.getElementById('ap-name').value = ""; document.getElementById('ap-desc').value = "";
+            alert("সফলভাবে যুক্ত হয়েছে");
+            document.getElementById('ad-view-col').value = col;
+            loadAdminPlaces();
         };
+
+        window.loadAdminPlaces = async () => {
+            const col = document.getElementById('ad-view-col').value;
+            const l = document.getElementById('admin-places-list');
+            l.innerHTML = "<p style='text-align:center; color:#94a3b8; font-size:0.9rem;'>লোড হচ্ছে...</p>";
+            const d = await getDocs(query(collection(db, col), orderBy("createdAt", "desc")));
+            l.innerHTML = "";
+            if(d.empty) { l.innerHTML = "<p style='text-align:center; color:#94a3b8; font-size:0.9rem;'>কোনো ডাটা নেই</p>"; return; }
+            d.forEach(doc => {
+                l.innerHTML += `<div class="list-item" style="padding:10px; cursor:default;">
+                    <div><b style="font-size:0.95rem">${doc.data().name}</b></div>
+                    <button onclick="window.delPlace('${col}', '${doc.id}')" class="action-btn" style="background:var(--danger)">Delete</button>
+                </div>`;
+            });
+        };
+
+        window.delPlace = async (col, id) => {
+            if(confirm('আপনি কি এটি মুছতে চান?')) {
+                await deleteDoc(doc(db, col, id));
+                loadAdminPlaces();
+            }
+        };
+
+        // Add Banners
+        document.getElementById('ab-btn').onclick = async () => { const i=document.getElementById('ab-img').value; if(!i)return; await addDoc(collection(db,"banners"),{image:i,link:document.getElementById('ab-link').value,createdAt:serverTimestamp()}); document.getElementById('ab-img').value=""; loadAdminData(); };
         
         document.getElementById('au-search').addEventListener('input',(e)=>{ const v=e.target.value.toLowerCase(); document.querySelectorAll('#admin-users .list-item').forEach(el=>{ el.style.display=el.innerText.toLowerCase().includes(v)?'flex':'none'; }); });
 
         window.actU=async(id,s)=>{await updateDoc(doc(db,"users",id),{status:s}); loadAdminData();};
-        window.delU=async(id)=>{if(confirm('Delete User?')){await deleteDoc(doc(db,"users",id)); loadAdminData();}};
-        window.delB=async(id)=>{if(confirm('Delete Banner?')){await deleteDoc(doc(db,"banners",id)); loadAdminData();}};
-        window.delDir=async(id)=>{if(confirm('মুছে ফেলতে চান?')){await deleteDoc(doc(db,"directory",id)); loadAdminData();}};
+        window.delU=async(id)=>{if(confirm('ইউজারকে ডিলিট করতে চান?')){await deleteDoc(doc(db,"users",id)); loadAdminData();}};
+        window.delB=async(id)=>{if(confirm('ব্যানারটি ডিলিট করতে চান?')){await deleteDoc(doc(db,"banners",id)); loadAdminData();}};
 
     </script>
 </body>
