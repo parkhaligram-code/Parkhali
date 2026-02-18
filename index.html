@@ -661,11 +661,14 @@
         </div>
 
         <!-- Image View Modal for Gallery -->
-        <div id="image-view-modal" class="modal-bg">
-            <div class="modal-content">
-                <span class="material-icons-round close-icon" onclick="closeModal('image-view-modal')">close</span>
-                <img id="image-view-img" src="" alt="">
-                <a id="image-view-download" href="#" download class="download-btn"><span class="material-icons-round">download</span> ডাউনলোড</a>
+                <div id="gallery-modal" class="modal-bg">
+            <div class="modal-content" style="text-align: center;">
+                <span class="material-icons-round close-icon" onclick="closeModal('gallery-modal')">close</span>
+                <h3 style="margin:0 0 10px; color:var(--text-main); text-align: left;">ছবি দেখুন</h3>
+                <img id="gallery-modal-img" src="" style="width:100%; max-height:50vh; object-fit:contain; border-radius:12px; margin-bottom:15px; background: #f8fafc;">
+                <a id="gallery-modal-download" href="#" class="btn btn-success" style="text-decoration: none; display: flex; justify-content: center; gap: 8px;">
+                    <span class="material-icons-round">download</span> ডাউনলোড করুন
+                </a>
             </div>
         </div>
 
@@ -1256,7 +1259,22 @@
             fileInput.value = '';
         };
 
-                // ========== GALLERY ==========
+                        // ========== GALLERY ==========
+        window.viewGalleryImage = (url) => {
+            // মডালে ছবি সেট করা হচ্ছে
+            document.getElementById('gallery-modal-img').src = url;
+            
+            // সরাসরি ডাউনলোডের জন্য লিংক মডিফাই করা হচ্ছে
+            let downloadUrl = url;
+            if (url.includes('/upload/')) {
+                downloadUrl = url.replace('/upload/', '/upload/fl_attachment/');
+            }
+            document.getElementById('gallery-modal-download').href = downloadUrl;
+            
+            // মডাল ওপেন করা হচ্ছে
+            openModal('gallery-modal');
+        };
+
         async function loadGallery() {
             const grid = document.getElementById('gallery-grid');
             grid.innerHTML = '<p style="text-align:center; color:#94a3b8">লোড হচ্ছে...</p>';
@@ -1268,21 +1286,15 @@
             grid.innerHTML = '';
             snaps.forEach(doc => {
                 const imgUrl = doc.data().imageUrl;
-                
-                // Cloudinary লিংক থেকে সরাসরি ডাউনলোড করানোর জন্য fl_attachment যুক্ত করা হলো
-                let downloadUrl = imgUrl;
-                if (imgUrl.includes('/upload/')) {
-                    downloadUrl = imgUrl.replace('/upload/', '/upload/fl_attachment/');
-                }
-
+                // ছবিতে ক্লিক করলে viewGalleryImage ফাংশন কল হবে
                 grid.innerHTML += `
-                    <div class="gallery-item">
+                    <div class="gallery-item" onclick="viewGalleryImage('${imgUrl}')" style="cursor: pointer;">
                         <img src="${imgUrl}" loading="lazy">
-                        <a href="${downloadUrl}" class="gallery-download" onclick="event.stopPropagation()"><span class="material-icons-round" style="font-size:18px;">download</span></a>
                     </div>
                 `;
             });
         }
+
 
         window.openImageView = (url) => {
             document.getElementById('image-view-img').src = url;
