@@ -620,13 +620,15 @@
 
         // ========== TOAST & LOADING ==========
         function showToast(message, icon = 'check_circle', duration = 3000) {
-            const toast = document.getElementById('toast-message');
-            document.getElementById('toast-icon').innerText = icon;
-            document.getElementById('toast-text').innerText = message;
-            toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), duration);
+    const toast = document.getElementById('toast-message');
+    document.getElementById('toast-icon').innerText = icon;
+    document.getElementById('toast-text').innerText = message;
+    toast.classList.add('show');
+    
+    // আগের টাইমআউট ক্যান্সেল করে নতুন সেট করুন
+    if (toastTimeout) clearTimeout(toastTimeout);
+    toastTimeout = setTimeout(() => toast.classList.remove('show'), duration);
         }
-
         function showLoading(btn) {
             const originalText = btn.innerText;
             btn.disabled = true;
