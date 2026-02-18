@@ -11,7 +11,7 @@
         :root { 
             --primary-blue: #1565c0; --primary-green: #2e7d32; 
             --blood-red: #e53935; --emergency-orange: #fb8c00; --agri-green: #689f38; 
-            --bg-color: #f4f7fa; --card-bg: #ffffff; 
+            --bg-color: #f8fafc; --card-bg: #ffffff; 
             --text-main: #1e293b; --text-muted: #64748b; 
             --shadow-sm: 0 4px 6px -1px rgba(0,0,0,0.05);
             --shadow-md: 0 10px 15px -3px rgba(0,0,0,0.05);
@@ -21,7 +21,7 @@
         body { font-family: 'Hind Siliguri', 'Poppins', sans-serif; margin: 0; padding: 0; background-color: var(--bg-color); color: var(--text-main); overflow-x: hidden; padding-bottom: 90px; }
         
         /* Main Container */
-        .container { max-width: 480px; margin: 0 auto; min-height: 100vh; position: relative; }
+        .container { max-width: 480px; margin: 0 auto; min-height: 100vh; position: relative; background: #fff; box-shadow: 0 0 20px rgba(0,0,0,0.03); }
 
         /* --- SPLASH SCREEN --- */
         #splash-screen {
@@ -53,7 +53,7 @@
 
         /* --- MAIN CONTENT --- */
         main { padding: 0 1.5rem; margin-top: -2.5rem; position: relative; z-index: 20; }
-        .section-card { background: var(--card-bg); padding: 1.8rem; border-radius: 20px; box-shadow: var(--shadow-lg); margin-bottom: 1.5rem; transition: transform 0.3s ease; }
+        .section-card { background: var(--card-bg); padding: 1.5rem; border-radius: 20px; box-shadow: var(--shadow-lg); margin-bottom: 1.5rem; transition: transform 0.3s ease; border: 1px solid #f1f5f9; }
         .section-title { font-size: 1.25rem; color: var(--text-main); margin: 0 0 1.2rem 0; font-weight: 700; display: flex; align-items: center; gap: 8px;}
         
         /* --- FORMS & BUTTONS --- */
@@ -64,7 +64,7 @@
         .msg { font-size: 0.9rem; margin-top: 10px; text-align: center; font-weight: 500; }
         .error { color: var(--blood-red); } .success { color: var(--primary-green); }
 
-        /* --- SERVICES GRID (For Service Page) --- */
+        /* --- SERVICES GRID (Service Page) --- */
         .services-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.2rem; }
         .service-item { background: white; padding: 20px; border-radius: 20px; box-shadow: var(--shadow-sm); display: flex; flex-direction: column; align-items: center; cursor: pointer; transition: 0.3s; border: 1px solid #f1f5f9; text-align: center; }
         .service-item:active { transform: scale(0.95); background: #f8fafc; }
@@ -80,13 +80,23 @@
         .notice-item p { margin: 0 0 0.8rem; font-size: 0.95rem; color: var(--text-muted); line-height: 1.5; }
         .notice-date { font-size: 0.8rem; color: #94a3b8; display: flex; align-items: center; gap: 5px; font-weight: 500;}
 
-        /* --- BOTTOM NAV (Floating Style) --- */
+        /* --- ADMIN PANEL UI --- */
+        .admin-stat-card { background: linear-gradient(135deg, #1e293b, #334155); color: white; padding: 15px; border-radius: 16px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; box-shadow: var(--shadow-md); }
+        .stat-number { font-size: 1.8rem; font-weight: 700; }
+        .stat-label { font-size: 0.9rem; opacity: 0.8; }
+        
+        .user-manage-card { background: #fff; border-radius: 12px; padding: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #e2e8f0; box-shadow: var(--shadow-sm); }
+        .badge { padding: 4px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; color: white; }
+        .badge-active { background: #10b981; } .badge-banned { background: var(--blood-red); } .badge-admin { background: var(--primary-blue); }
+        .btn-action { padding: 6px 12px; border: none; border-radius: 8px; cursor: pointer; font-size: 0.8rem; font-weight: 600; color: white; margin-left: 5px; transition: 0.2s; box-shadow: var(--shadow-sm); }
+        .btn-warning { background: var(--emergency-orange); } .btn-danger { background: var(--blood-red); } .btn-success { background: #10b981; }
+        .btn-action:active { transform: scale(0.95); }
+
+        /* --- BOTTOM NAV (Floating) --- */
         .bottom-nav { position: fixed; bottom: 20px; left: 20px; right: 20px; max-width: 440px; margin: 0 auto; background: white; display: none; justify-content: space-between; align-items: center; padding: 0.6rem 1.5rem; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); z-index: 100; }
         .nav-item { color: #94a3b8; text-decoration: none; display: flex; flex-direction: column; align-items: center; font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: 0.3s; flex: 1; }
         .nav-item.active { color: var(--primary-blue); }
         .nav-icon { font-size: 26px; margin-bottom: 2px; transition: 0.3s; }
-        
-        /* Middle Floating Button */
         .nav-center { position: relative; top: -25px; background: var(--primary-blue); width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 20px rgba(21,101,192,0.4); border: 4px solid white; transition: 0.3s; }
         .nav-center .material-icons-round { color: white; font-size: 30px; }
         .nav-center:active { transform: scale(0.9); box-shadow: 0 4px 10px rgba(21,101,192,0.3); }
@@ -144,7 +154,7 @@
             </div>
 
             <div id="services-view" style="display: none;">
-                <section class="section-card" style="background: transparent; box-shadow: none; padding: 0;">
+                <section class="section-card" style="background: transparent; box-shadow: none; padding: 0; border: none;">
                     <h3 class="section-title" style="margin-bottom: 20px;">সকল সেবাসমূহ</h3>
                     <div class="services-grid">
                         <div class="service-item" onclick="openModal('blood-donor-modal'); loadDonors();">
@@ -159,7 +169,7 @@
                             <div class="service-icon icon-agri"><span class="material-icons-round">agriculture</span></div>
                             <div class="service-label">কৃষি তথ্য</div>
                         </div>
-                        </div>
+                    </div>
                 </section>
             </div>
 
@@ -182,18 +192,29 @@
             </div>
 
             <div id="admin-view" style="display: none;">
-                <section class="section-card" style="border: 2px solid #e0f2fe;">
-                    <h3 class="section-title" style="color: var(--primary-blue);">অ্যাডমিন কন্ট্রোল রুম</h3>
-                    <div style="margin-bottom: 20px;">
-                        <h4 style="margin: 0 0 10px 0;">নতুন নোটিশ প্রকাশ করুন</h4>
-                        <input type="text" id="notice-title" class="form-input" placeholder="শিরোনাম">
-                        <textarea id="notice-desc" class="form-input" rows="3" placeholder="বিস্তারিত..."></textarea>
-                        <button id="publish-btn" class="btn-primary">পাবলিশ করুন</button>
+                <div style="display: flex; gap: 15px; margin-bottom: 20px;">
+                    <div class="admin-stat-card" style="flex: 1; background: linear-gradient(135deg, #1e293b, #475569);">
+                        <div><div class="stat-number" id="total-users-count">-</div><div class="stat-label">ইউজার</div></div>
+                        <span class="material-icons-round" style="font-size: 32px; opacity: 0.5;">group</span>
                     </div>
-                    <div>
-                        <h4 style="margin: 0 0 10px 0;">ইউজার ম্যানেজমেন্ট</h4>
-                        <input type="text" id="search-user" class="form-input" placeholder="ইমেইল দিয়ে খুঁজুন...">
-                        <div id="admin-user-list" style="margin-top: 10px; max-height: 300px; overflow-y: auto;"></div>
+                    <div class="admin-stat-card" style="flex: 1; background: linear-gradient(135deg, #0f766e, #115e59);">
+                        <div><div class="stat-number" id="total-notices-count">-</div><div class="stat-label">নোটিশ</div></div>
+                        <span class="material-icons-round" style="font-size: 32px; opacity: 0.5;">campaign</span>
+                    </div>
+                </div>
+
+                <section class="section-card" style="border-top: 5px solid var(--primary-blue);">
+                    <h3 class="section-title" style="color: var(--primary-blue);">নোটিশ প্রকাশ করুন</h3>
+                    <input type="text" id="notice-title" class="form-input" placeholder="নোটিশের শিরোনাম">
+                    <textarea id="notice-desc" class="form-input" rows="3" placeholder="বিস্তারিত..."></textarea>
+                    <button id="publish-btn" class="btn-primary" style="background: var(--primary-blue);">পাবলিশ করুন</button>
+                </section>
+
+                <section class="section-card" style="border-top: 5px solid #334155;">
+                    <h3 class="section-title">ইউজার ম্যানেজমেন্ট</h3>
+                    <input type="text" id="search-user" class="form-input" placeholder="ইমেইল দিয়ে খুঁজুন...">
+                    <div id="admin-user-list" style="margin-top: 10px; max-height: 350px; overflow-y: auto;">
+                        <p style="text-align: center; color: #94a3b8;">লোড হচ্ছে...</p>
                     </div>
                 </section>
             </div>
@@ -305,59 +326,43 @@
         window.openModal = (id) => { const m = document.getElementById(id); m.style.display='flex'; setTimeout(()=>m.classList.add('show'),10); };
         window.closeModal = (id) => { const m = document.getElementById(id); m.classList.remove('show'); setTimeout(()=>m.style.display='none',300); };
 
-        // UI Variables
+        // UI Variables & Nav
         const views = { home: document.getElementById('home-view'), services: document.getElementById('services-view'), profile: document.getElementById('profile-view'), admin: document.getElementById('admin-view') };
         const navs = { home: document.getElementById('nav-btn-home'), services: document.getElementById('nav-btn-services'), profile: document.getElementById('nav-btn-profile'), admin: document.getElementById('nav-btn-admin') };
         
-        // Navigation Logic
         function switchView(viewName) {
             Object.values(views).forEach(el => el.style.display = 'none');
-            Object.values(navs).forEach(el => el.classList.remove('active')); // Reset all active states
+            Object.values(navs).forEach(el => el.classList.remove('active')); 
             
-            // Special handling for the center button style
-            if(viewName === 'services') {
-                navs.services.style.transform = "scale(1.1)";
-            } else {
-                navs.services.style.transform = "scale(1)";
-                if(navs[viewName]) navs[viewName].classList.add('active');
-            }
+            if(viewName === 'services') { navs.services.style.transform = "scale(1.1)"; } 
+            else { navs.services.style.transform = "scale(1)"; if(navs[viewName]) navs[viewName].classList.add('active'); }
 
             views[viewName].style.display = 'block';
-
-            // Header Text Update
-            const headerTitle = document.querySelector('.hero-section h2');
-            const headerSub = document.querySelector('.hero-section p');
+            const hTitle = document.querySelector('.hero-section h2'); const hSub = document.querySelector('.hero-section p');
             
-            if(viewName === 'home') { headerTitle.innerText = "স্বাগতম!"; headerSub.innerText = auth.currentUser ? auth.currentUser.email : ""; }
-            else if(viewName === 'services') { headerTitle.innerText = "সেবাসমূহ"; headerSub.innerText = "প্রয়োজনীয় সব সেবা একনজরে"; }
-            else if(viewName === 'profile') { headerTitle.innerText = "প্রোফাইল"; headerSub.innerText = "আপনার ব্যক্তিগত তথ্য"; loadProfileData(); }
-            else if(viewName === 'admin') { headerTitle.innerText = "অ্যাডমিন"; headerSub.innerText = "কন্ট্রোল রুম"; loadAllUsers(); }
+            if(viewName === 'home') { hTitle.innerText = "স্বাগতম!"; hSub.innerText = auth.currentUser ? auth.currentUser.email.split('@')[0] : ""; }
+            else if(viewName === 'services') { hTitle.innerText = "সেবাসমূহ"; hSub.innerText = "প্রয়োজনীয় সব সেবা"; }
+            else if(viewName === 'profile') { hTitle.innerText = "প্রোফাইল"; hSub.innerText = "আপনার তথ্য"; loadProfileData(); }
+            else if(viewName === 'admin') { hTitle.innerText = "অ্যাডমিন"; hSub.innerText = "কন্ট্রোল রুম"; loadAllUsers(); loadAdminStats(); }
         }
 
-        // Nav Click Events
         navs.home.addEventListener('click', () => switchView('home'));
         navs.services.addEventListener('click', () => switchView('services'));
         navs.profile.addEventListener('click', () => switchView('profile'));
         navs.admin.addEventListener('click', () => switchView('admin'));
 
-        // Auth State Logic
+        // Auth Logic
         onAuthStateChanged(auth, async (user) => {
-            const splash = document.getElementById('splash-screen');
-            setTimeout(() => splash.classList.add('splash-hidden'), 2000); // 2s Splash
-
+            setTimeout(() => document.getElementById('splash-screen').classList.add('splash-hidden'), 2000); 
             if (user) {
-                // Ban Check
-                const userDoc = await getDoc(doc(db, "users", user.uid));
-                if (userDoc.exists() && userDoc.data().status === "banned" && user.email !== adminEmail) {
-                    signOut(auth); alert("অ্যাকাউন্ট ব্যান করা হয়েছে!"); return;
-                }
+                const uDoc = await getDoc(doc(db, "users", user.uid));
+                if (uDoc.exists() && uDoc.data().status === "banned" && user.email !== adminEmail) { signOut(auth); alert("অ্যাকাউন্ট ব্যান করা হয়েছে!"); return; }
 
                 document.getElementById('auth-section').style.display = "none";
                 document.getElementById('logout-btn').style.display = "flex";
                 document.getElementById('bottom-nav').style.display = "flex";
                 navs.admin.style.display = (user.email === adminEmail) ? "flex" : "none";
-                switchView('home');
-                loadNotices();
+                switchView('home'); loadNotices();
             } else {
                 document.getElementById('auth-section').style.display = "block";
                 Object.values(views).forEach(el => el.style.display = 'none');
@@ -366,7 +371,6 @@
             }
         });
 
-        // Auth Login/Register
         let isLogin = true;
         document.getElementById('toggle-auth').addEventListener('click', () => { isLogin=!isLogin; document.getElementById('auth-action-btn').innerText = isLogin?"লগইন":"রেজিস্টার"; });
         document.getElementById('auth-action-btn').addEventListener('click', async () => {
@@ -382,8 +386,7 @@
         });
         document.getElementById('logout-btn').addEventListener('click', () => signOut(auth));
 
-        // --- Features Logic (Blood, Profile, Admin) ---
-        // Blood Donor
+        // Features Logic
         window.loadDonors = async (filter="All") => {
             const c = document.getElementById('donor-list-container'); c.innerHTML="লোড হচ্ছে...";
             const s = await getDocs(query(collection(db, "blood_donors"), orderBy("createdAt", "desc")));
@@ -400,7 +403,6 @@
             alert("যুক্ত হয়েছে!"); loadDonors();
         });
 
-        // Profile
         async function loadProfileData() {
             if(!auth.currentUser) return;
             document.getElementById('profile-display-email').innerText = auth.currentUser.email;
@@ -412,12 +414,12 @@
             alert("আপডেট হয়েছে!");
         });
 
-        // Admin & Notices
+        // Admin Logic
         document.getElementById('publish-btn').addEventListener('click', async () => {
             const t = document.getElementById('notice-title').value; const d = document.getElementById('notice-desc').value;
             if(!t || !d) return;
             await addDoc(collection(db, "notices"), { title:t, description:d, createdAt: serverTimestamp() });
-            alert("পাবলিশ হয়েছে!"); loadNotices();
+            alert("পাবলিশ হয়েছে!"); loadNotices(); loadAdminStats();
         });
         async function loadNotices() {
             const c = document.getElementById('notice-container'); const s = await getDocs(query(collection(db, "notices"), orderBy("createdAt", "desc")));
@@ -425,13 +427,33 @@
             s.forEach(d => { const n = d.data(); c.innerHTML+=`<div class="notice-item"><h4>${n.title}</h4><p>${n.description}</p></div>`; });
         }
         
-        // Admin User List (Simple Render)
+        let allUsers = [];
         async function loadAllUsers() {
             const c = document.getElementById('admin-user-list'); c.innerHTML="লোড হচ্ছে...";
-            const s = await getDocs(collection(db, "users")); c.innerHTML="";
-            s.forEach(d => { const u = d.data(); c.innerHTML+=`<div style="padding:10px; border-bottom:1px solid #eee;"><b>${u.email}</b> - ${u.status} ${u.status==='active' && u.role!=='admin' ? `<button onclick="window.banUser('${d.id}')" style="margin-left:5px; color:red;">Ban</button>` : ''}</div>`; });
+            const s = await getDocs(collection(db, "users")); allUsers=[];
+            s.forEach(d => allUsers.push({id:d.id, ...d.data()}));
+            renderUsers(allUsers);
         }
-        window.banUser = async (id) => { if(confirm('Ban?')) { await updateDoc(doc(db,"users",id), {status:"banned"}); loadAllUsers(); } };
+        function renderUsers(users) {
+            const c = document.getElementById('admin-user-list'); c.innerHTML="";
+            users.forEach(u => {
+                const badge = u.role==='admin' ? '<span class="badge badge-admin">Admin</span>' : (u.status==='banned' ? '<span class="badge badge-banned">Banned</span>' : '<span class="badge badge-active">Active</span>');
+                const actions = u.role!=='admin' ? (u.status==='banned' ? `<button class="btn-action btn-success" onclick="window.unban('${u.id}')">Unban</button>` : `<button class="btn-action btn-warning" onclick="window.ban('${u.id}')">Ban</button>`) + `<button class="btn-action btn-danger" onclick="window.del('${u.id}')">Del</button>` : '';
+                c.innerHTML+=`<div class="user-manage-card"><div><div style="font-weight:600; font-size:0.9rem;">${u.email}</div>${badge}</div><div>${actions}</div></div>`;
+            });
+        }
+        document.getElementById('search-user').addEventListener('input', (e) => renderUsers(allUsers.filter(u => u.email.includes(e.target.value))));
+        
+        async function loadAdminStats() {
+            const uSnap = await getDocs(collection(db, "users"));
+            const nSnap = await getDocs(collection(db, "notices"));
+            document.getElementById('total-users-count').innerText = uSnap.size;
+            document.getElementById('total-notices-count').innerText = nSnap.size;
+        }
+
+        window.ban = async (id) => { if(confirm('Ban?')) { await updateDoc(doc(db,"users",id), {status:"banned"}); loadAllUsers(); } };
+        window.unban = async (id) => { await updateDoc(doc(db,"users",id), {status:"active"}); loadAllUsers(); };
+        window.del = async (id) => { if(confirm('Delete?')) { await deleteDoc(doc(db,"users",id)); loadAllUsers(); } };
 
     </script>
 </body>
