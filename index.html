@@ -9,7 +9,7 @@
     
     <style>
         :root {
-            --primary-color: #3b82f6; /* Blue matching your UI */
+            --primary-color: #3b82f6;
             --bg-color: #f3f4f6;
             --text-dark: #1f2937;
             --text-light: #6b7280;
@@ -50,7 +50,7 @@
             top: 0;
             left: 0;
             background: var(--bg-color);
-            padding-bottom: 70px; /* For bottom nav */
+            padding-bottom: 70px;
         }
 
         .active-page {
@@ -87,162 +87,42 @@
         }
 
         /* Forms & Inputs */
-        .form-container {
-            padding: 20px;
-            margin-top: 50px;
-        }
+        .form-container { padding: 20px; margin-top: 50px; }
+        .title { font-size: 1.5rem; font-weight: 600; color: var(--text-dark); margin-bottom: 20px; text-align: center; }
+        .input-group { margin-bottom: 15px; }
+        .input-group label { display: block; font-size: 0.9rem; color: var(--text-light); margin-bottom: 5px; }
+        .input-group input, .input-group select { width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 1rem; outline: none; }
+        .input-group input:focus, .input-group select:focus { border-color: var(--primary-color); }
 
-        .title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: var(--text-dark);
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        .input-group {
-            margin-bottom: 15px;
-        }
-
-        .input-group label {
-            display: block;
-            font-size: 0.9rem;
-            color: var(--text-light);
-            margin-bottom: 5px;
-        }
-
-        .input-group input, .input-group select {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #d1d5db;
-            border-radius: 8px;
-            font-size: 1rem;
-            outline: none;
-        }
-
-        .input-group input:focus, .input-group select:focus {
-            border-color: var(--primary-color);
-        }
-
-        .btn {
-            width: 100%;
-            padding: 14px;
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        
+        .btn { width: 100%; padding: 14px; background: var(--primary-color); color: white; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: 0.2s; }
         .btn:active { transform: scale(0.98); }
         .btn-outline { background: transparent; color: var(--primary-color); border: 1px solid var(--primary-color); margin-top: 10px;}
 
         /* Home Screen UI */
-        .header-curved {
-            background: var(--primary-color);
-            border-bottom-left-radius: 30px;
-            border-bottom-right-radius: 30px;
-            padding: 30px 20px 40px;
-            color: white;
-        }
-        
-        .grid-services {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 15px;
-            padding: 20px;
-            margin-top: -30px;
-            background: white;
-            margin-left: 15px;
-            margin-right: 15px;
-            border-radius: 15px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-        }
-
-        .service-item {
-            text-align: center;
-            font-size: 0.8rem;
-            color: var(--text-dark);
-        }
-        .service-item i {
-            font-size: 1.5rem;
-            color: var(--primary-color);
-            margin-bottom: 5px;
-        }
+        .header-curved { background: var(--primary-color); border-bottom-left-radius: 30px; border-bottom-right-radius: 30px; padding: 30px 20px 40px; color: white; }
+        .grid-services { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; padding: 20px; margin-top: -30px; background: white; margin-left: 15px; margin-right: 15px; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .service-item { text-align: center; font-size: 0.8rem; color: var(--text-dark); }
+        .service-item i { font-size: 1.5rem; color: var(--primary-color); margin-bottom: 5px; }
 
         /* Bottom Nav */
-        .bottom-nav {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background: white;
-            display: flex;
-            justify-content: space-around;
-            padding: 15px 0;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
-            z-index: 100;
-        }
-
-        .nav-item {
-            text-align: center;
-            color: var(--text-light);
-            cursor: pointer;
-            font-size: 0.8rem;
-        }
+        .bottom-nav { position: absolute; bottom: 0; left: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 15px 0; box-shadow: 0 -2px 10px rgba(0,0,0,0.05); z-index: 100; }
+        .nav-item { text-align: center; color: var(--text-light); cursor: pointer; font-size: 0.8rem; }
         .nav-item.active { color: var(--primary-color); }
         .nav-item i { font-size: 1.2rem; display: block; margin-bottom: 3px; }
 
         /* Admin UI */
-        .admin-card {
-            background: white;
-            padding: 15px;
-            margin: 10px;
-            border-radius: 10px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }
-        .user-list-item {
-            border-bottom: 1px solid #eee;
-            padding: 10px 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .action-btns button {
-            padding: 5px 10px;
-            margin-left: 5px;
-            border: none;
-            border-radius: 4px;
-            color: white;
-            font-size: 0.8rem;
-        }
+        .admin-card { background: white; padding: 15px; margin: 10px; border-radius: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .user-list-item { border-bottom: 1px solid #eee; padding: 10px 0; display: flex; justify-content: space-between; align-items: center; }
+        .action-btns button { padding: 5px 10px; margin-left: 5px; border: none; border-radius: 4px; color: white; font-size: 0.8rem; }
         .btn-ban { background: #f59e0b; }
         .btn-delete { background: var(--danger); }
         .btn-view { background: #3b82f6; }
 
         /* Loader & Toast */
-        #loader {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255,255,255,0.8);
-            display: none; justify-content: center; align-items: center; z-index: 2000;
-        }
-        .spinner {
-            border: 4px solid #f3f3f3; border-top: 4px solid var(--primary-color);
-            border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite;
-        }
+        #loader { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.8); display: none; justify-content: center; align-items: center; z-index: 2000; }
+        .spinner { border: 4px solid #f3f3f3; border-top: 4px solid var(--primary-color); border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-        #toast {
-            position: absolute; top: 20px; left: 50%; transform: translateX(-50%);
-            background: var(--success); color: white; padding: 10px 20px;
-            border-radius: 20px; display: none; z-index: 3000; font-size: 0.9rem;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1); white-space: nowrap;
-        }
-
-        /* Pull to refresh text */
+        #toast { position: absolute; top: 20px; left: 50%; transform: translateX(-50%); background: var(--success); color: white; padding: 10px 20px; border-radius: 20px; display: none; z-index: 3000; font-size: 0.9rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); white-space: nowrap; }
         .ptr-text { text-align: center; color: var(--text-light); padding: 10px; font-size: 0.8rem; display: none; }
     </style>
 </head>
@@ -381,10 +261,10 @@
 
 </div>
 
-<script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getFirestore, doc, setDoc, getDoc, collection, getDocs, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
+<script>
     const firebaseConfig = {
       apiKey: "AIzaSyAuqcDRrtuQi2tdWXA2E_UWyq7pCrGpoy4",
       authDomain: "parkhali-village.firebaseapp.com",
@@ -395,12 +275,9 @@
       measurementId: "G-WD2LSS97KC"
     };
 
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    
-    // Cloudinary Config (Prepared for next phase)
-    const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/dwnpdwnvc/image/upload";
-    const UPLOAD_PRESET = "parkhali";
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
 
     // Global Data
     let tempRegData = {};
@@ -417,17 +294,16 @@
         setTimeout(() => toast.style.display = 'none', 3000);
     };
 
-    window.navigate = (pageId) => {
+    function navigate(pageId) {
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active-page'));
         document.getElementById(pageId).classList.add('active-page');
         
-        // Show/Hide bottom nav
         if(pageId === 'home-screen' || pageId === 'admin-screen') {
             document.getElementById('bottom-navigation').style.display = 'flex';
         } else {
             document.getElementById('bottom-navigation').style.display = 'none';
         }
-    };
+    }
 
     // App Initialization & Splash Screen
     setTimeout(() => {
@@ -435,7 +311,7 @@
         if (userPhone) {
             setupUserSession(userPhone, localStorage.getItem('userName'));
         } else {
-            window.navigate('login-screen');
+            navigate('login-screen');
         }
     }, 2500); // 2.5 seconds splash screen
 
@@ -444,17 +320,15 @@
         if (phone === '01000000000') {
             document.getElementById('nav-admin').style.display = 'block';
         }
-        window.navigate('home-screen');
+        navigate('home-screen');
     }
 
-    window.logout = () => {
+    function logout() {
         localStorage.clear();
-        window.navigate('login-screen');
-    };
+        navigate('login-screen');
+    }
 
     // --- Authentication Logic ---
-
-    // Login
     document.getElementById('btn-login').addEventListener('click', async () => {
         const phone = document.getElementById('login-phone').value;
         const pass = document.getElementById('login-pass').value;
@@ -463,10 +337,10 @@
 
         showLoader();
         try {
-            const docRef = doc(db, "users", phone);
-            const docSnap = await getDoc(docRef);
+            const docRef = db.collection("users").doc(phone);
+            const docSnap = await docRef.get();
 
-            if (docSnap.exists()) {
+            if (docSnap.exists) {
                 const userData = docSnap.data();
                 if (userData.status === 'banned') {
                     showToast("আপনার একাউন্ট ব্যান করা হয়েছে!", true);
@@ -482,12 +356,12 @@
                 showToast("এই নম্বরে কোনো একাউন্ট নেই", true);
             }
         } catch (error) {
-            showToast("সার্ভার এরর!", true);
+            console.error(error);
+            showToast("সার্ভার এরর বা ইন্টারনেট কানেকশন নেই!", true);
         }
         hideLoader();
     });
 
-    // Registration Step 1
     document.getElementById('btn-next-step').addEventListener('click', async () => {
         const phone = document.getElementById('reg-phone').value;
         const pass = document.getElementById('reg-pass').value;
@@ -497,19 +371,24 @@
         if(pass !== cPass) return showToast("পাসওয়ার্ড মিলেনি", true);
 
         showLoader();
-        const docRef = doc(db, "users", phone);
-        const docSnap = await getDoc(docRef);
-        hideLoader();
+        try {
+            const docRef = db.collection("users").doc(phone);
+            const docSnap = await docRef.get();
+            hideLoader();
 
-        if (docSnap.exists()) {
-            showToast("এই নম্বরে ইতিমধ্যে একাউন্ট আছে", true);
-        } else {
-            tempRegData = { phone, password: pass };
-            window.navigate('register-step-2');
+            if (docSnap.exists) {
+                showToast("এই নম্বরে ইতিমধ্যে একাউন্ট আছে", true);
+            } else {
+                tempRegData = { phone, password: pass };
+                navigate('register-step-2');
+            }
+        } catch (e) {
+            hideLoader();
+            console.error(e);
+            showToast("নেটওয়ার্ক সমস্যা", true);
         }
     });
 
-    // Registration Step 2
     document.getElementById('btn-register-final').addEventListener('click', async () => {
         const fullName = document.getElementById('reg-name').value;
         const profession = document.getElementById('reg-job').value;
@@ -527,23 +406,24 @@
 
         showLoader();
         try {
-            await setDoc(doc(db, "users", finalData.phone), finalData);
+            await db.collection("users").doc(finalData.phone).set(finalData);
             localStorage.setItem('userPhone', finalData.phone);
             localStorage.setItem('userName', finalData.fullName);
             showToast("রেজিস্ট্রেশন সফল হয়েছে!");
             setupUserSession(finalData.phone, finalData.fullName);
         } catch(e) {
+            console.error(e);
             showToast("রেজিস্ট্রেশন ব্যর্থ হয়েছে", true);
         }
         hideLoader();
     });
 
     // --- Admin Panel Logic ---
-    window.loadAdmin = async () => {
-        window.navigate('admin-screen');
+    async function loadAdmin() {
+        navigate('admin-screen');
         showLoader();
         try {
-            const querySnapshot = await getDocs(collection(db, "users"));
+            const querySnapshot = await db.collection("users").get();
             let html = "";
             querySnapshot.forEach((doc) => {
                 const user = doc.data();
@@ -565,29 +445,38 @@
             });
             document.getElementById('user-list-container').innerHTML = html;
         } catch (e) {
+            console.error(e);
             showToast("ডেটা লোড করতে সমস্যা হয়েছে", true);
         }
         hideLoader();
     }
 
-    window.viewPass = (pass) => { alert(`ইউজারের পাসওয়ার্ড: ${pass}`); }
+    function viewPass(pass) { alert(`ইউজারের পাসওয়ার্ড: ${pass}`); }
 
-    window.toggleBan = async (phone, currentStatus) => {
+    async function toggleBan(phone, currentStatus) {
         const newStatus = currentStatus === 'banned' ? 'active' : 'banned';
         showLoader();
-        await updateDoc(doc(db, "users", phone), { status: newStatus });
+        try {
+            await db.collection("users").doc(phone).update({ status: newStatus });
+            showToast("স্ট্যাটাস আপডেট হয়েছে!");
+            loadAdmin();
+        } catch(e) {
+            showToast("সমস্যা হয়েছে", true);
+        }
         hideLoader();
-        showToast("স্ট্যাটাস আপডেট হয়েছে!");
-        loadAdmin();
     }
 
-    window.deleteUser = async (phone) => {
+    async function deleteUser(phone) {
         if(confirm("সত্যিই ডিলিট করতে চান?")) {
             showLoader();
-            await deleteDoc(doc(db, "users", phone));
+            try {
+                await db.collection("users").doc(phone).delete();
+                showToast("ডিলিট সফল হয়েছে!");
+                loadAdmin();
+            } catch(e) {
+                 showToast("সমস্যা হয়েছে", true);
+            }
             hideLoader();
-            showToast("ডিলিট সফল হয়েছে!");
-            loadAdmin();
         }
     }
 
@@ -620,20 +509,6 @@
         }
         touchstartY = 0;
     });
-
-    // Prepared function for Cloudinary Image Upload (For next phase)
-    window.uploadImageToCloudinary = async (file) => {
-        const formData = new FormData();
-        formData.append("file", file);
-        formData.append("upload_preset", UPLOAD_PRESET);
-
-        const response = await fetch(CLOUDINARY_URL, {
-            method: "POST",
-            body: formData
-        });
-        const data = await response.json();
-        return data.secure_url; // Returns Cloudinary URL to save in Firebase
-    }
 
 </script>
 </body>
