@@ -2,377 +2,173 @@
 <html lang="bn">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>পারখালী গ্রাম</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>পারখালী গ্রাম - স্মার্ট সেবা</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap');
-
-        :root {
-            --primary-color: #2b70c9;
-            --bg-color: #f4f7fb;
-            --text-color: #333;
-            --white: #ffffff;
-            --gray: #888;
-        }
-
-        * {
+        /* --- CSS Styles --- */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-            font-family: 'Hind Siliguri', sans-serif;
-            -webkit-tap-highlight-color: transparent;
+            background-color: #f4f7f6;
+            color: #333;
         }
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            overflow: hidden; /* Prevent body scroll, handle in app-container */
-        }
-
-        #app-container {
-            width: 100%;
-            height: 100vh;
-            overflow-y: auto;
-            position: relative;
-            background-color: var(--bg-color);
-        }
-
-        /* Pull to Refresh Indicator */
-        #ptr-indicator {
-            text-align: center;
-            padding: 10px;
-            color: var(--primary-color);
-            font-size: 14px;
-            display: none;
-            position: absolute;
-            top: 0;
-            width: 100%;
-            z-index: 10;
-        }
-
-        .screen {
-            display: none;
-            min-height: 100vh;
-            padding-bottom: 70px; /* Space for bottom nav */
-            animation: fadeIn 0.3s ease-in-out;
-        }
-
-        .screen.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Splash Screen */
-        #splash-screen {
-            background-color: var(--primary-color);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            z-index: 9999;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            left: 0;
-        }
-        
-        .splash-text {
-            color: var(--white);
-            font-size: 40px;
-            font-weight: 700;
-            letter-spacing: 2px;
-            animation: scaleUp 1.5s ease-in-out infinite alternate;
-        }
-
-        @keyframes scaleUp {
-            from { transform: scale(1); text-shadow: 0px 0px 10px rgba(255,255,255,0.2); }
-            to { transform: scale(1.1); text-shadow: 0px 0px 20px rgba(255,255,255,0.6); }
-        }
-
-        /* Forms */
-        .form-container {
-            padding: 30px 20px;
-            background: var(--white);
-            border-radius: 20px 20px 0 0;
-            margin-top: 20px;
-            min-height: calc(100vh - 150px);
-            box-shadow: 0 -5px 15px rgba(0,0,0,0.05);
-        }
-
-        .header-bg {
-            background: var(--primary-color);
-            height: 150px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        header {
+            background-color: #2e7d32;
             color: white;
-            font-size: 24px;
-            font-weight: bold;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        .input-group { margin-bottom: 15px; }
-        .input-group label { display: block; font-size: 14px; margin-bottom: 5px; color: var(--gray); }
-        .input-group input, .input-group select {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            font-size: 16px;
-            outline: none;
-        }
-        .input-group input:focus, .input-group select:focus { border-color: var(--primary-color); }
-
-        .btn {
-            width: 100%;
-            padding: 14px;
-            background: var(--primary-color);
+        header button {
+            background-color: #d32f2f;
             color: white;
             border: none;
-            border-radius: 10px;
+            padding: 8px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        main {
+            padding: 2rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .form-container, .dashboard-section, .admin-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .form-container {
+            max-width: 400px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        input, textarea {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button.action-btn {
+            width: 100%;
+            padding: 10px;
+            background-color: #2e7d32;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
             font-size: 16px;
             font-weight: bold;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-        .btn-outline {
-            background: transparent;
-            color: var(--primary-color);
-            border: 1px solid var(--primary-color);
         }
 
-        /* Home Screen */
-        .home-header {
-            background: var(--primary-color);
-            padding: 30px 20px;
-            color: white;
-            border-radius: 0 0 20px 20px;
+        button.action-btn:hover { background-color: #1b5e20; }
+
+        .link {
+            color: #1976d2;
+            cursor: pointer;
+            font-weight: bold;
         }
-        .home-header h2 { font-size: 20px; }
-        .home-header p { font-size: 14px; opacity: 0.8; }
-        
+
+        .error { color: red; font-size: 14px; margin-top: 10px; }
+        .success { color: green; font-size: 14px; margin-top: 10px; }
+
         .services-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 15px;
+            margin-top: 20px;
+        }
+
+        .card {
+            background: #e8f5e9;
             padding: 20px;
-        }
-        .service-item {
-            background: white;
-            padding: 15px 10px;
-            border-radius: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
             text-align: center;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            font-size: 12px;
-            font-weight: 500;
-        }
-        .service-item i {
-            font-size: 24px;
-            color: var(--primary-color);
-            margin-bottom: 8px;
-            display: block;
-        }
-
-        /* Bottom Nav */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            background: white;
-            display: flex;
-            justify-content: space-around;
-            padding: 12px 0;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
-            z-index: 100;
-        }
-        .nav-item {
-            text-align: center;
-            color: var(--gray);
-            font-size: 12px;
+            font-weight: bold;
             cursor: pointer;
+            transition: 0.3s;
+            border: 1px solid #c8e6c9;
         }
-        .nav-item.active { color: var(--primary-color); font-weight: bold; }
-        .nav-item i { font-size: 20px; display: block; margin-bottom: 4px; }
 
-        /* Admin Panel */
-        .admin-card {
-            background: white;
+        .card:hover { transform: translateY(-5px); background-color: #c8e6c9; }
+
+        /* Notice Board Styles */
+        .notice-item {
+            background: #fff3e0;
             padding: 15px;
-            margin: 10px 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            border-left: 5px solid #ff9800;
+            margin-bottom: 10px;
+            border-radius: 4px;
         }
-        .user-list-item {
-            border-bottom: 1px solid #eee;
-            padding: 10px 0;
-        }
-        .user-list-item:last-child { border-bottom: none; }
-        .action-btn { padding: 5px 10px; border: none; border-radius: 5px; color: white; margin-right: 5px; font-size: 12px;}
-        .btn-ban { background: #e74c3c; }
-        .btn-unban { background: #2ecc71; }
-        .btn-del { background: #c0392b; }
-
-        /* Loading & Toast */
-        #loader {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255,255,255,0.8);
-            z-index: 10000;
-            justify-content: center;
-            align-items: center;
-        }
-        .spinner {
-            width: 50px; height: 50px;
-            border: 5px solid #f3f3f3;
-            border-top: 5px solid var(--primary-color);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-        #toast {
-            visibility: hidden; min-width: 250px; margin-left: -125px;
-            background-color: #333; color: #fff; text-align: center;
-            border-radius: 20px; padding: 12px; position: fixed; z-index: 10001;
-            left: 50%; bottom: 80px; font-size: 14px;
-        }
-        #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
+        .notice-date { font-size: 12px; color: #666; }
+        
+        #admin-panel { border: 2px solid #0277bd; }
+        .admin-title { color: #0277bd; }
     </style>
 </head>
 <body>
 
-    <div id="loader"><div class="spinner"></div></div>
-    <div id="toast">Message</div>
+    <header>
+        <h1>পারখালী স্মার্ট গ্রাম</h1>
+        <button id="logout-btn" style="display: none;">লগআউট</button>
+    </header>
 
-    <div id="splash-screen">
-        <div class="splash-text">পারখালী</div>
-    </div>
+    <main>
+        <section id="auth-section" class="form-container">
+            <h2 id="form-title">লগইন করুন</h2>
+            <input type="email" id="email" placeholder="আপনার ইমেইল" required>
+            <input type="password" id="password" placeholder="পাসওয়ার্ড" required>
+            <button id="auth-action-btn" class="action-btn">লগইন</button>
+            <p id="toggle-auth">অ্যাকাউন্ট নেই? <span class="link">রেজিস্ট্রেশন করুন</span></p>
+            <p id="error-msg" class="error"></p>
+        </section>
 
-    <div id="app-container">
-        <div id="ptr-indicator"><i class="fas fa-sync fa-spin"></i> রিফ্রেশ হচ্ছে...</div>
+        <section id="admin-panel" class="admin-section" style="display: none;">
+            <h2 class="admin-title">অ্যাডমিন প্যানেল (কন্ট্রোল রুম)</h2>
+            <p>নতুন নোটিশ প্রকাশ করুন:</p>
+            <input type="text" id="notice-title" placeholder="নোটিশের শিরোনাম">
+            <textarea id="notice-desc" rows="3" placeholder="নোটিশের বিস্তারিত..."></textarea>
+            <button id="publish-notice-btn" class="action-btn" style="background-color: #0277bd;">নোটিশ পাবলিশ করুন</button>
+            <p id="admin-msg"></p>
+        </section>
 
-        <div id="login-screen" class="screen">
-            <div class="header-bg">স্বাগতম</div>
-            <div class="form-container">
-                <h3 style="margin-bottom: 20px;">লগইন করুন</h3>
-                <div class="input-group">
-                    <label>মোবাইল নম্বর</label>
-                    <input type="number" id="login-phone" placeholder="01XXXXXXXXX">
-                </div>
-                <div class="input-group">
-                    <label>পাসওয়ার্ড</label>
-                    <input type="password" id="login-pass" placeholder="পাসওয়ার্ড দিন">
-                </div>
-                <button class="btn" onclick="login()">লগইন</button>
-                <p style="text-align: center; margin-top: 20px; color: var(--gray);">একাউন্ট নেই?</p>
-                <button class="btn btn-outline" onclick="showScreen('register-step1-screen')">নতুন একাউন্ট খুলুন</button>
-            </div>
-        </div>
-
-        <div id="register-step1-screen" class="screen">
-            <div class="header-bg">রেজিস্ট্রেশন (ধাপ ১)</div>
-            <div class="form-container">
-                <div class="input-group">
-                    <label>মোবাইল নম্বর</label>
-                    <input type="number" id="reg-phone" placeholder="01XXXXXXXXX">
-                </div>
-                <div class="input-group">
-                    <label>পাসওয়ার্ড</label>
-                    <input type="password" id="reg-pass" placeholder="পাসওয়ার্ড দিন">
-                </div>
-                <div class="input-group">
-                    <label>কনফার্ম পাসওয়ার্ড</label>
-                    <input type="password" id="reg-pass-confirm" placeholder="পুনরায় পাসওয়ার্ড দিন">
-                </div>
-                <button class="btn" onclick="nextStepRegister()">পরবর্তী ধাপ</button>
-                <button class="btn btn-outline" style="border:none;" onclick="showScreen('login-screen')">ফিরে যান</button>
-            </div>
-        </div>
-
-        <div id="register-step2-screen" class="screen">
-            <div class="header-bg">রেজিস্ট্রেশন (ধাপ ২)</div>
-            <div class="form-container">
-                <div class="input-group">
-                    <label>পুরো নাম</label>
-                    <input type="text" id="reg-name" placeholder="আপনার নাম">
-                </div>
-                <div class="input-group">
-                    <label>পেশা</label>
-                    <input type="text" id="reg-profession" placeholder="আপনার পেশা">
-                </div>
-                <div class="input-group">
-                    <label>ব্লাড গ্রুপ</label>
-                    <select id="reg-blood">
-                        <option value="">নির্বাচন করুন</option>
-                        <option value="A+">A+</option><option value="A-">A-</option>
-                        <option value="B+">B+</option><option value="B-">B-</option>
-                        <option value="O+">O+</option><option value="O-">O-</option>
-                        <option value="AB+">AB+</option><option value="AB-">AB-</option>
-                    </select>
-                </div>
-                <div class="input-group">
-                    <label>পাড়ার নাম</label>
-                    <input type="text" id="reg-para" placeholder="পাড়ার নাম">
-                </div>
-                <button class="btn" onclick="submitRegistration()">সাবমিট করুন</button>
-                <button class="btn btn-outline" style="border:none;" onclick="showScreen('register-step1-screen')">ফিরে যান</button>
-            </div>
-        </div>
-
-        <div id="home-screen" class="screen">
-            <div class="home-header">
-                <h2>হ্যালো, <span id="user-display-name">ব্যবহারকারী</span>!</h2>
-                <p>পারখালী গ্রামে আপনাকে স্বাগতম</p>
-            </div>
+        <section id="user-dashboard" class="dashboard-section" style="display: none;">
+            <h2>স্বাগতম, <span id="user-email-display" style="color:#2e7d32;"></span></h2>
             
+            <h3>সেবাসমূহ</h3>
             <div class="services-grid">
-                <div class="service-item"><i class="fas fa-file-alt"></i>প্রশাসন</div>
-                <div class="service-item"><i class="fas fa-calculator"></i>হিসাব</div>
-                <div class="service-item"><i class="fas fa-chart-bar"></i>পরিসংখ্যান</div>
-                <div class="service-item"><i class="fas fa-hand-holding-medical"></i>ত্রাণ/সাহায্য</div>
-                <div class="service-item"><i class="fas fa-syringe"></i>ভ্যাকসিন</div>
-                <div class="service-item"><i class="fas fa-store"></i>বাজার/উদ্যোক্তা</div>
+                <div class="card">🩸 ব্লাড ডোনার লিস্ট</div>
+                <div class="card">☎️ জরুরী যোগাযোগ</div>
+                <div class="card">🌾 কৃষি পরামর্শ</div>
             </div>
 
-            <div class="admin-card" style="margin-top: 20px;">
-                <h4><i class="fas fa-image"></i> ছবি আপলোড টেস্ট (Cloudinary)</h4>
-                <input type="file" id="image-upload" accept="image/*" style="margin-top:10px;">
-                <img id="image-preview" style="max-width: 100%; margin-top:10px; border-radius:10px; display:none;">
+            <h3 style="margin-top: 30px;">📢 নোটিশ বোর্ড</h3>
+            <div id="notice-board-container">
+                <p>নোটিশ লোড হচ্ছে...</p>
             </div>
-        </div>
+        </section>
+    </main>
 
-        <div id="admin-screen" class="screen">
-            <div class="header-bg" style="height: 100px; font-size: 20px;">অ্যাডমিন প্যানেল</div>
-            <div class="admin-card">
-                <input type="text" id="search-user" placeholder="নম্বর দিয়ে খুঁজুন..." class="input-group input" style="width:100%; padding:10px; border-radius:5px; border:1px solid #ddd;" onkeyup="loadUsers()">
-            </div>
-            <div class="admin-card" id="user-list-container">
-                </div>
-        </div>
-    </div>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getFirestore, collection, addDoc, getDocs, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-    <div class="bottom-nav" id="bottom-nav" style="display: none;">
-        <div class="nav-item active" onclick="showScreen('home-screen')">
-            <i class="fas fa-home"></i> হোম
-        </div>
-        <div class="nav-item" id="nav-admin" style="display: none;" onclick="showScreen('admin-screen')">
-            <i class="fas fa-user-shield"></i> অ্যাডমিন
-        </div>
-        <div class="nav-item" onclick="logout()">
-            <i class="fas fa-sign-out-alt"></i> লগআউট
-        </div>
-    </div>
-
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-
-    <script>
-        // --- 1. Firebase Config ---
+        // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyAuqcDRrtuQi2tdWXA2E_UWyq7pCrGpoy4",
             authDomain: "parkhali-village.firebaseapp.com",
@@ -382,275 +178,131 @@
             appId: "1:645968583344:web:89a049e6ffaba4af33b975",
             measurementId: "G-WD2LSS97KC"
         };
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
 
-        // --- 2. Global Variables ---
-        const ADMIN_NUMBER = "01000000000";
-        let tempRegData = {};
-        let currentUser = null;
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
 
-        // --- 3. UI Helpers ---
-        function showLoader() { document.getElementById('loader').style.display = 'flex'; }
-        function hideLoader() { document.getElementById('loader').style.display = 'none'; }
+        // UI Elements
+        const authSection = document.getElementById('auth-section');
+        const userDashboard = document.getElementById('user-dashboard');
+        const adminPanel = document.getElementById('admin-panel');
+        const logoutBtn = document.getElementById('logout-btn');
+        const errorMsg = document.getElementById('error-msg');
         
-        function showToast(message) {
-            const toast = document.getElementById("toast");
-            toast.innerText = message;
-            toast.className = "show";
-            setTimeout(() => { toast.className = toast.className.replace("show", ""); }, 3000);
-        }
+        let isLogin = true;
+        const adminEmail = "admin@parkhali.com"; // অ্যাডমিন ইমেইল সেট করুন
 
-        function showScreen(screenId) {
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.getElementById(screenId).classList.add('active');
+        // Auth Toggle
+        document.getElementById('toggle-auth').addEventListener('click', () => {
+            isLogin = !isLogin;
+            document.getElementById('form-title').innerText = isLogin ? "লগইন করুন" : "রেজিস্ট্রেশন করুন";
+            document.getElementById('auth-action-btn').innerText = isLogin ? "লগইন" : "রেজিস্টার";
+            document.getElementById('toggle-auth').innerHTML = isLogin ? 'অ্যাকাউন্ট নেই? <span class="link">রেজিস্ট্রেশন করুন</span>' : 'অ্যাকাউন্ট আছে? <span class="link">লগইন করুন</span>';
+            errorMsg.innerText = "";
+        });
+
+        // Login / Register Action
+        document.getElementById('auth-action-btn').addEventListener('click', () => {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
             
-            // Handle bottom nav visibility
-            if(['login-screen', 'register-step1-screen', 'register-step2-screen'].includes(screenId)) {
-                document.getElementById('bottom-nav').style.display = 'none';
+            if(!email || !password) return errorMsg.innerText = "ইমেইল এবং পাসওয়ার্ড দিন!";
+
+            if(isLogin) {
+                signInWithEmailAndPassword(auth, email, password).catch(e => errorMsg.innerText = "লগইন ব্যর্থ: " + e.message);
             } else {
-                document.getElementById('bottom-nav').style.display = 'flex';
-                // Highlight active nav
-                document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-                if(screenId === 'home-screen') document.querySelectorAll('.nav-item')[0].classList.add('active');
-                if(screenId === 'admin-screen') document.getElementById('nav-admin').classList.add('active');
-            }
-
-            if(screenId === 'admin-screen') loadUsers();
-        }
-
-        // --- 4. Pull to Refresh Logic ---
-        let touchstartY = 0;
-        const container = document.getElementById('app-container');
-        container.addEventListener('touchstart', e => { touchstartY = e.touches[0].clientY; });
-        container.addEventListener('touchend', e => {
-            const touchendY = e.changedTouches[0].clientY;
-            if (container.scrollTop === 0 && touchendY > touchstartY + 100) {
-                document.getElementById('ptr-indicator').style.display = 'block';
-                setTimeout(() => {
-                    document.getElementById('ptr-indicator').style.display = 'none';
-                    if(currentUser) showToast("পেইজ রিফ্রেশ হয়েছে");
-                }, 1000);
+                createUserWithEmailAndPassword(auth, email, password).catch(e => errorMsg.innerText = "রেজিস্ট্রেশন ব্যর্থ: " + e.message);
             }
         });
 
-        // --- 5. Splash Screen Logic ---
-        window.onload = () => {
-            setTimeout(() => {
-                document.getElementById('splash-screen').style.display = 'none';
-                
-                // Auto login check
-                const savedPhone = localStorage.getItem('parkhali_user');
-                if(savedPhone) {
-                    showLoader();
-                    db.collection("users").doc(savedPhone).get().then((doc) => {
-                        hideLoader();
-                        if (doc.exists && doc.data().status !== 'banned') {
-                            currentUser = doc.data();
-                            setupUserSession();
-                        } else {
-                            showScreen('login-screen');
-                        }
-                    });
-                } else {
-                    showScreen('login-screen');
-                }
-            }, 2000); // 2 seconds animation
-        };
+        // Logout
+        logoutBtn.addEventListener('click', () => signOut(auth));
 
-        // --- 6. Auth Logic ---
-        function nextStepRegister() {
-            const phone = document.getElementById('reg-phone').value;
-            const pass = document.getElementById('reg-pass').value;
-            const pass2 = document.getElementById('reg-pass-confirm').value;
+        // Auth State Observer
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                authSection.style.display = "none";
+                logoutBtn.style.display = "block";
+                userDashboard.style.display = "block";
+                document.getElementById('user-email-display').innerText = user.email;
 
-            if(!phone || !pass) return showToast("সব তথ্য দিন");
-            if(pass !== pass2) return showToast("পাসওয়ার্ড মিলেনি!");
-
-            tempRegData = { phone, pass };
-            showScreen('register-step2-screen');
-        }
-
-        async function submitRegistration() {
-            const name = document.getElementById('reg-name').value;
-            const profession = document.getElementById('reg-profession').value;
-            const blood = document.getElementById('reg-blood').value;
-            const para = document.getElementById('reg-para').value;
-
-            if(!name || !profession || !blood || !para) return showToast("সব তথ্য পূরণ করুন");
-
-            showLoader();
-            try {
-                // Check if user already exists
-                const doc = await db.collection("users").doc(tempRegData.phone).get();
-                if(doc.exists) {
-                    hideLoader();
-                    return showToast("এই নম্বরে ইতিমধ্যে একাউন্ট আছে!");
-                }
-
-                await db.collection("users").doc(tempRegData.phone).set({
-                    phone: tempRegData.phone,
-                    password: tempRegData.pass, // Note: Storing plain text to meet admin view requirement
-                    name, profession, blood, para,
-                    status: 'active',
-                    role: tempRegData.phone === ADMIN_NUMBER ? 'admin' : 'user',
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
-
-                hideLoader();
-                showToast("রেজিস্ট্রেশন সফল হয়েছে!");
-                
-                // Auto Login
-                document.getElementById('login-phone').value = tempRegData.phone;
-                document.getElementById('login-pass').value = tempRegData.pass;
-                login();
-
-            } catch(e) {
-                hideLoader();
-                showToast("সমস্যা হয়েছে: " + e.message);
-            }
-        }
-
-        async function login() {
-            const phone = document.getElementById('login-phone').value;
-            const pass = document.getElementById('login-pass').value;
-
-            if(!phone || !pass) return showToast("নম্বর ও পাসওয়ার্ড দিন");
-
-            showLoader();
-            try {
-                const doc = await db.collection("users").doc(phone).get();
-                hideLoader();
-                
-                if (doc.exists) {
-                    const data = doc.data();
-                    if(data.status === 'banned') return showToast("আপনার একাউন্ট ব্যান করা হয়েছে!");
-                    if(data.password === pass) {
-                        currentUser = data;
-                        localStorage.setItem('parkhali_user', phone);
-                        showToast("সফলভাবে লগইন হয়েছে!");
-                        setupUserSession();
-                    } else {
-                        showToast("পাসওয়ার্ড ভুল!");
-                    }
-                } else {
-                    showToast("একাউন্ট পাওয়া যায়নি!");
-                }
-            } catch(e) {
-                hideLoader();
-                showToast("লগইন সমস্যা: " + e.message);
-            }
-        }
-
-        function setupUserSession() {
-            document.getElementById('user-display-name').innerText = currentUser.name;
-            if(currentUser.phone === ADMIN_NUMBER) {
-                document.getElementById('nav-admin').style.display = 'block';
+                adminPanel.style.display = (user.email === adminEmail) ? "block" : "none";
+                loadNotices(); // ইউজার লগইন করলেই নোটিশ লোড হবে
             } else {
-                document.getElementById('nav-admin').style.display = 'none';
+                authSection.style.display = "block";
+                logoutBtn.style.display = "none";
+                userDashboard.style.display = "none";
+                adminPanel.style.display = "none";
             }
-            showScreen('home-screen');
-        }
+        });
 
-        function logout() {
-            localStorage.removeItem('parkhali_user');
-            currentUser = null;
-            showScreen('login-screen');
-        }
+        // --- Firestore: Notice Board Logic --- //
 
-        // --- 7. Admin Logic ---
-        async function loadUsers() {
-            if(!currentUser || currentUser.phone !== ADMIN_NUMBER) return;
-            
-            const searchQ = document.getElementById('search-user').value;
-            const container = document.getElementById('user-list-container');
-            container.innerHTML = '<p>লোড হচ্ছে...</p>';
+        // 1. Add Notice (Admin Only)
+        document.getElementById('publish-notice-btn').addEventListener('click', async () => {
+            const title = document.getElementById('notice-title').value;
+            const desc = document.getElementById('notice-desc').value;
+            const msgBox = document.getElementById('admin-msg');
+
+            if(!title || !desc) {
+                msgBox.className = "error";
+                msgBox.innerText = "শিরোনাম এবং বিস্তারিত অংশ পূরণ করুন!";
+                return;
+            }
 
             try {
-                const snapshot = await db.collection('users').get();
-                container.innerHTML = '';
-                snapshot.forEach(doc => {
-                    const user = doc.data();
-                    if(user.phone === ADMIN_NUMBER) return; // Hide main admin
-                    if(searchQ && !user.phone.includes(searchQ)) return; // Filter
+                await addDoc(collection(db, "notices"), {
+                    title: title,
+                    description: desc,
+                    createdAt: serverTimestamp()
+                });
+                msgBox.className = "success";
+                msgBox.innerText = "নোটিশ সফলভাবে পাবলিশ হয়েছে!";
+                document.getElementById('notice-title').value = "";
+                document.getElementById('notice-desc').value = "";
+                loadNotices(); // নতুন নোটিশ দেওয়ার পর সাথে সাথে লিস্ট আপডেট হবে
+            } catch (e) {
+                msgBox.className = "error";
+                msgBox.innerText = "এরর: " + e.message;
+            }
+        });
 
-                    container.innerHTML += `
-                        <div class="user-list-item">
-                            <strong>${user.name}</strong> (${user.phone})<br>
-                            <small>পাসওয়ার্ড: ${user.password} | পেশা: ${user.profession}</small><br>
-                            <div style="margin-top:5px;">
-                                ${user.status === 'active' 
-                                    ? `<button class="action-btn btn-ban" onclick="changeUserStatus('${user.phone}', 'banned')">ব্যান করুন</button>` 
-                                    : `<button class="action-btn btn-unban" onclick="changeUserStatus('${user.phone}', 'active')">আনব্যান করুন</button>`}
-                                <button class="action-btn btn-del" onclick="deleteUser('${user.phone}')">ডিলিট</button>
-                            </div>
-                        </div>
+        // 2. Load Notices (Visible to all logged-in users)
+        async function loadNotices() {
+            const container = document.getElementById('notice-board-container');
+            container.innerHTML = "লোড হচ্ছে..."; // Loading state
+            
+            try {
+                // নোটিশগুলো সময়ের ভিত্তিতে সাজিয়ে আনা (নতুন নোটিশ আগে)
+                const q = query(collection(db, "notices"), orderBy("createdAt", "desc"));
+                const querySnapshot = await getDocs(q);
+                
+                container.innerHTML = ""; // Clear loading text
+                
+                if(querySnapshot.empty) {
+                    container.innerHTML = "<p>বর্তমানে কোনো নতুন নোটিশ নেই।</p>";
+                    return;
+                }
+
+                querySnapshot.forEach((doc) => {
+                    const notice = doc.data();
+                    const dateObj = notice.createdAt ? notice.createdAt.toDate() : new Date();
+                    const dateString = dateObj.toLocaleDateString('bn-BD') + " " + dateObj.toLocaleTimeString('bn-BD');
+
+                    const noticeDiv = document.createElement('div');
+                    noticeDiv.className = 'notice-item';
+                    noticeDiv.innerHTML = `
+                        <h4>${notice.title}</h4>
+                        <p>${notice.description}</p>
+                        <p class="notice-date">📅 প্রকাশিত: ${dateString}</p>
                     `;
+                    container.appendChild(noticeDiv);
                 });
-            } catch(e) {
-                container.innerHTML = '<p>ডেটা লোড করতে সমস্যা হয়েছে।</p>';
+            } catch (e) {
+                container.innerHTML = `<p class="error">নোটিশ লোড করতে সমস্যা হচ্ছে: ${e.message}</p>`;
             }
         }
-
-        async function changeUserStatus(phone, status) {
-            if(confirm('আপনি কি নিশ্চিত?')) {
-                showLoader();
-                await db.collection('users').doc(phone).update({ status });
-                hideLoader();
-                showToast("আপডেট সম্পন্ন হয়েছে");
-                loadUsers();
-            }
-        }
-
-        async function deleteUser(phone) {
-            if(confirm('সত্যিই ডিলিট করতে চান? এই একশন ফেরানো যাবে না!')) {
-                showLoader();
-                await db.collection('users').doc(phone).delete();
-                hideLoader();
-                showToast("ডিলিট সম্পন্ন হয়েছে");
-                loadUsers();
-            }
-        }
-
-        // --- 8. Cloudinary Image Upload Logic ---
-        document.getElementById('image-upload').addEventListener('change', async function(e) {
-            const file = e.target.files[0];
-            if(!file) return;
-
-            // Show Preview immediately
-            const preview = document.getElementById('image-preview');
-            preview.src = URL.createObjectURL(file);
-            preview.style.display = 'block';
-
-            showLoader();
-            try {
-                const formData = new FormData();
-                formData.append('file', file);
-                formData.append('upload_preset', 'parkhali'); 
-                // Using the preset and cloud name provided
-
-                const res = await fetch('https://api.cloudinary.com/v1_1/dwnpdwnvc/image/upload', {
-                    method: 'POST',
-                    body: formData
-                });
-                
-                const data = await res.json();
-                hideLoader();
-                
-                if(data.secure_url) {
-                    showToast("ছবি সফলভাবে আপলোড হয়েছে!");
-                    console.log("Image URL ready for Firebase:", data.secure_url);
-                    // Here you can add logic to save this data.secure_url to Firestore
-                } else {
-                    showToast("আপলোডে সমস্যা হয়েছে!");
-                }
-            } catch(error) {
-                hideLoader();
-                showToast("আপলোড ফেইল্ড!");
-                console.error(error);
-            }
-        });
-
     </script>
 </body>
 </html>
