@@ -26,7 +26,7 @@
         body { font-family: 'Hind Siliguri', sans-serif; margin: 0; padding: 0; background: var(--bg); color: var(--text-main); padding-bottom: 90px; }
         .container { max-width: 480px; margin: 0 auto; min-height: 100vh; position: relative; background: var(--bg); box-shadow: 0 0 20px rgba(0,0,0,0.05); }
 
-          /* ================== TOAST & LOADING ================== */
+        /* ================== TOAST & LOADING ================== */
         #toast-message {
             position: fixed; bottom: 100px; left: 20px; right: 20px; max-width: 400px; margin: 0 auto;
             background: #1e293b; color: white; padding: 12px 20px; border-radius: 30px;
@@ -49,13 +49,33 @@
         header { background: var(--header-grad); color: white; padding: 1rem 1.2rem 1.8rem; border-bottom-left-radius: 25px; border-bottom-right-radius: 25px; position: relative; z-index: 10; transition: var(--transition); }
         .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
         .app-title { font-size: 1.3rem; font-weight: 700; display: flex; align-items: center; gap: 5px; }
-        .header-search { flex: 1; margin-left: 12px; position: relative; }
-        .header-search input { width: 100%; padding: 8px 16px 8px 36px; border-radius: 30px; border: none; background: rgba(255,255,255,0.2); backdrop-filter: blur(5px); color: white; font-family: inherit; font-size: 0.9rem; }
-        .header-search input::placeholder { color: rgba(255,255,255,0.7); }
-        .header-search .material-icons-round { position: absolute; left: 8px; top: 6px; font-size: 20px; color: white; opacity: 0.9; }
+        /* datetime display - new */
+        .datetime-display {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            font-family: 'Poppins', 'Hind Siliguri', sans-serif;
+            line-height: 1.3;
+        }
+        .time {
+            font-size: 1.2rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        .date {
+            font-size: 0.85rem;
+            font-weight: 300;
+            opacity: 0.9;
+        }
         .hero-text { margin-top: 5px; }
         .hero-text h2 { margin: 0; font-size: 1.6rem; }
-        .hero-text p { margin: 0; font-size: 0.9rem; opacity: 0.9; }
+        .user-large {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-top: 4px;
+            line-height: 1.2;
+            word-break: break-word;
+        }
 
         /* ================== MAIN & CARDS ================== */
         main { padding: 0 1rem; margin-top: -1.5rem; position: relative; z-index: 20; }
@@ -110,11 +130,37 @@
         .service-card:active { transform: scale(0.97); }
         .s-icon { width: 55px; height: 55px; margin: 0 auto 10px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 28px; }
 
-        /* ================== GALLERY GRID (updated with click) ================== */
+        /* ================== GALLERY GRID ================== */
         .gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 10px; }
         .gallery-item { position: relative; aspect-ratio: 1/1; border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); cursor: pointer; }
         .gallery-item img { width: 100%; height: 100%; object-fit: cover; }
         .gallery-download { position: absolute; bottom: 5px; right: 5px; background: rgba(0,0,0,0.5); color: white; border-radius: 50%; padding: 4px; cursor: pointer; z-index: 2; }
+
+        /* ================== SPORTS CARD (new) ================== */
+        .sports-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            margin-top: 10px;
+        }
+        .sports-card {
+            background: white;
+            border-radius: 20px;
+            padding: 15px;
+            box-shadow: var(--shadow);
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .sports-card:active { transform: scale(0.98); }
+        .sports-card img {
+            width: 100%;
+            max-height: 180px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 10px;
+        }
+        .sports-card h3 { margin: 0 0 5px; font-size: 1.2rem; color: var(--primary); }
+        .sports-card p { margin: 0; color: var(--text-sub); font-size: 0.9rem; }
 
         /* ================== BOTTOM NAV ================== */
         .bottom-nav { position: fixed; bottom: 15px; left: 15px; right: 15px; max-width: 450px; margin: 0 auto; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); padding: 8px 20px; border-radius: 30px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); display: none; justify-content: space-between; align-items: center; z-index: 100; }
@@ -122,19 +168,44 @@
         .nav-btn.active { color: var(--primary); }
         .nav-center { width: 60px; height: 60px; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-top: -35px; border: 4px solid white; box-shadow: 0 5px 15px rgba(37,99,235,0.4); transition: var(--transition); }
 
-        /* ================== MODALS ================== */
-        .modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 200; display: none; align-items: flex-end; justify-content: center; }
-        .modal-content { background: white; width: 100%; max-width: 480px; padding: 20px; border-top-left-radius: 25px; border-top-right-radius: 25px; max-height: 85vh; overflow-y: auto; transform: translateY(100%); transition: transform 0.3s ease; }
-        .modal-bg.show .modal-content { transform: translateY(0); }
+        /* ================== MODALS (updated to center) ================== */
+        .modal-bg {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 200;
+            display: none; align-items: center; justify-content: center;
+        }
+        .modal-content {
+            background: white; width: 90%; max-width: 400px; padding: 20px;
+            border-radius: 25px; max-height: 85vh; overflow-y: auto;
+            transform: scale(0.8); opacity: 0;
+            transition: transform 0.3s ease, opacity 0.2s ease;
+        }
+        .modal-bg.show .modal-content {
+            transform: scale(1); opacity: 1;
+        }
         .close-icon { float: right; background: #f1f5f9; border-radius: 50%; padding: 5px; cursor: pointer; color: #64748b; }
 
-        /* Image view modal for gallery */
+        /* Image view modal (already centered) */
         #image-view-modal .modal-content { text-align: center; }
         #image-view-modal img { max-width: 100%; max-height: 60vh; border-radius: 12px; margin: 15px 0; }
         .download-btn { background: var(--primary); color: white; border: none; padding: 12px 25px; border-radius: 30px; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; font-size: 1rem; }
 
-        /* ================== SPLASH ================== */
-        #splash { position: fixed; inset: 0; background: var(--header-grad); z-index: 999; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; transition: 0.5s; }
+        /* ================== SPLASH (with animation) ================== */
+        #splash {
+            position: fixed; inset: 0; background: var(--header-grad); z-index: 999;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            color: white; transition: 0.5s;
+        }
+        .splash-text {
+            font-size: 3rem;
+            font-weight: 700;
+            animation: bounceText 1.2s infinite alternate ease-in-out;
+            letter-spacing: 2px;
+            text-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        @keyframes bounceText {
+            0% { transform: scale(1); letter-spacing: 2px; }
+            100% { transform: scale(1.1); letter-spacing: 6px; }
+        }
         .loader { border: 4px solid rgba(255,255,255,0.3); border-top: 4px solid white; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin-top: 20px; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
@@ -179,11 +250,13 @@
         }
         .info-chip .material-icons-round { font-size: 18px; color: var(--primary); }
 
-        /* ================== NOTICE CARD ================== */
+        /* ================== NOTICE CARD (clickable) ================== */
         .notice-card {
             background: white; padding: 12px; border-left: 4px solid var(--primary);
             border-radius: 12px; margin-bottom: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            cursor: pointer; transition: 0.2s;
         }
+        .notice-card:active { background: #f8fafc; }
         .notice-card h4 { margin: 0 0 5px; }
         .notice-card p { margin: 0 0 8px; font-size: 0.85rem; color: #64748b; }
         .notice-img { width: 100%; max-height: 150px; object-fit: cover; border-radius: 8px; margin-top: 8px; }
@@ -205,7 +278,7 @@
         .admin-banner-img { height: 50px; width: 80px; object-fit: cover; border-radius: 6px; }
         .action-btn { padding: 6px 12px; border: none; border-radius: 30px; color: white; cursor: pointer; font-size: 0.8rem; }
 
-        /* ================== THEME SELECTOR (expanded) ================== */
+        /* ================== THEME SELECTOR ================== */
         .theme-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 15px; }
         .theme-item { height: 60px; border-radius: 12px; cursor: pointer; border: 2px solid transparent; transition: 0.2s; background-size: cover; }
         .theme-item.active { border-color: var(--primary); transform: scale(1.02); }
@@ -213,10 +286,12 @@
 </head>
 <body>
 
-    <!-- Splash Screen -->
+    <!-- Splash Screen with animated text -->
     <div id="splash">
         <span class="material-icons-round" style="font-size: 70px;">holiday_village</span>
-        <h2>পারখালী</h2><p>স্মার্ট ভিলেজ অ্যাপ</p><div class="loader"></div>
+        <div class="splash-text">পারখালী</div>
+        <p style="margin:5px 0 10px;">স্মার্ট ভিলেজ অ্যাপ</p>
+        <div class="loader"></div>
     </div>
 
     <!-- Success View -->
@@ -236,13 +311,16 @@
         <header>
             <div class="header-top">
                 <div class="app-title"><span class="material-icons-round">widgets</span> পারখালী</div>
-                <div class="header-search">
-                    <span class="material-icons-round">search</span>
-                    <input type="text" id="global-search" placeholder="সার্চ (গ্রামবাসী, সেবা...)" autocomplete="off">
+                <!-- New datetime display (replaces search) -->
+                <div class="datetime-display">
+                    <span class="time" id="current-time">--:--:--</span>
+                    <span class="date" id="current-date">---, -- --- ----</span>
                 </div>
             </div>
             <div class="hero-text">
-                <h2 id="h-title">স্বাগতম!</h2><p id="h-sub">ডিজিটাল সেবায় আপনার গ্রাম</p>
+                <h2 id="h-title">স্বাগতম!</h2>
+                <!-- Large user name appears here -->
+                <div class="user-large" id="user-large-name"></div>
             </div>
         </header>
 
@@ -317,8 +395,9 @@
                     </div>
                 </div>
 
-                <button class="btn btn-outline" onclick="switchTab('villagers')" style="margin-bottom: 15px;">
-                    <span class="material-icons-round">groups</span> গ্রামবাসী তালিকা দেখুন
+                <!-- Changed button: from villagers to sports -->
+                <button class="btn btn-outline" onclick="switchTab('sports')" style="margin-bottom: 15px;">
+                    <span class="material-icons-round">sports_soccer</span> খেলাধুলা
                 </button>
 
                 <div class="card" style="padding: 15px 10px;">
@@ -345,7 +424,7 @@
                 <div id="shop-list"><p style="text-align:center; color:#94a3b8">লোড হচ্ছে...</p></div>
             </div>
 
-            <!-- MAP VIEW (dynamic link) -->
+            <!-- MAP VIEW -->
             <div id="view-map" style="display: none;">
                 <div class="title-sec"><span class="material-icons-round" style="cursor:pointer; margin-right:5px" onclick="switchTab('home')">arrow_back</span> গ্রামের ম্যাপ</div>
                 <div style="width: 100%; height: 400px; background: #e2e8f0; border-radius: 12px; overflow: hidden; box-shadow: var(--shadow);">
@@ -383,7 +462,7 @@
                 </div>
             </div>
 
-            <!-- PROFILE VIEW (with logout inside) -->
+            <!-- PROFILE VIEW -->
             <div id="view-profile" style="display: none;">
                 <div class="card" style="padding: 0; overflow: hidden;">
                     <div class="profile-cover"></div>
@@ -430,6 +509,14 @@
                 </div>
             </div>
 
+            <!-- NEW SPORTS VIEW -->
+            <div id="view-sports" style="display: none;">
+                <div class="title-sec"><span class="material-icons-round" style="cursor:pointer; margin-right:5px" onclick="switchTab('home')">arrow_back</span> খেলাধুলার খবর</div>
+                <div id="sports-list" class="sports-grid">
+                    <p style="text-align:center; color:#94a3b8">লোড হচ্ছে...</p>
+                </div>
+            </div>
+
             <!-- ADMIN VIEW -->
             <div id="view-admin" style="display: none;">
                 <!-- Admin Main Dashboard -->
@@ -467,6 +554,11 @@
                         <div class="exampro-card" onclick="openAdminSub('map')">
                             <span class="material-icons-round">map</span>
                             <span>ম্যাপ লিংক</span>
+                        </div>
+                        <!-- NEW SPORTS ADMIN CARD -->
+                        <div class="exampro-card" onclick="openAdminSub('sports')">
+                            <span class="material-icons-round">sports_volleyball</span>
+                            <span>খেলাধুলা</span>
                         </div>
                     </div>
                 </div>
@@ -582,10 +674,30 @@
                         <p class="hint" style="font-size:0.8rem; color:var(--text-sub); margin-top:8px;">বর্তমান লিংক: <span id="current-map-link"></span></p>
                     </div>
                 </div>
+
+                <!-- NEW ADMIN SUB: SPORTS -->
+                <div id="admin-sub-sports" style="display:none;">
+                    <div class="title-sec"><span class="material-icons-round" style="cursor:pointer; margin-right:5px" onclick="closeAdminSub()">arrow_back</span> খেলাধুলা ম্যানেজমেন্ট</div>
+                    <div class="card">
+                        <input id="sports-title" class="input-box" placeholder="শিরোনাম">
+                        <textarea id="sports-desc" class="input-box" rows="2" placeholder="বিস্তারিত"></textarea>
+                        <div class="file-upload-area" id="sports-upload-area">
+                            <input type="file" id="sports-image" accept="image/*">
+                            <span class="material-icons-round">add_photo_alternate</span>
+                            <p>ছবি আপলোড (ঐচ্ছিক)</p>
+                        </div>
+                        <img id="sports-preview" class="image-preview" style="display:none;">
+                        <button id="sports-add-btn" class="btn btn-primary" style="background:var(--accent)">পোস্ট করুন</button>
+                        
+                        <hr style="border:0; border-top:1px solid #e2e8f0; margin:15px 0">
+                        <div class="title-sec" style="font-size:1rem">সকল পোস্ট</div>
+                        <div id="admin-sports-list" style="max-height: 250px; overflow-y: auto;"></div>
+                    </div>
+                </div>
             </div>
         </main>
 
-        <!-- Bottom Navigation (logout removed from header, now in profile) -->
+        <!-- Bottom Navigation -->
         <nav class="bottom-nav" id="b-nav">
             <div class="nav-btn active" id="tab-home"><span class="material-icons-round" style="font-size:26px">home</span>হোম</div>
             <div class="nav-btn" id="tab-services"><div class="nav-center"><span class="material-icons-round" style="font-size:30px">grid_view</span></div></div>
@@ -593,10 +705,10 @@
             <div class="nav-btn" id="tab-profile"><span class="material-icons-round" style="font-size:26px">person</span>প্রোফাইল</div>
         </nav>
 
-        <!-- MODALS -->
+        <!-- MODALS (all centered now) -->
 
         <!-- User Detail Modal -->
-        <div id="user-modal" class="modal-bg">
+        <div id="user-modal" class="modal-bg" onclick="if(event.target===this) closeModal('user-modal')">
             <div class="modal-content" style="text-align: center;">
                 <span class="material-icons-round close-icon" onclick="closeModal('user-modal')">close</span>
                 <div id="um-av" style="width:60px; height:60px; background:#eff6ff; color:var(--primary); border-radius:50%; font-size:28px; font-weight:bold; display:flex; align-items:center; justify-content:center; margin: 0 auto 10px; overflow:hidden;">
@@ -615,7 +727,7 @@
         </div>
 
         <!-- Place Detail Modal -->
-        <div id="place-modal" class="modal-bg">
+        <div id="place-modal" class="modal-bg" onclick="if(event.target===this) closeModal('place-modal')">
             <div class="modal-content">
                 <span class="material-icons-round close-icon" onclick="closeModal('place-modal')">close</span>
                 <img id="place-modal-img" src="" style="width:100%; max-height:200px; object-fit:cover; border-radius:12px; margin-bottom:10px;">
@@ -625,7 +737,7 @@
         </div>
 
         <!-- Blood Modal -->
-        <div id="blood-modal" class="modal-bg">
+        <div id="blood-modal" class="modal-bg" onclick="if(event.target===this) closeModal('blood-modal')">
             <div class="modal-content">
                 <span class="material-icons-round close-icon" onclick="closeModal('blood-modal')">close</span>
                 <h3 style="color:var(--danger); margin:0 0 15px;"><span class="material-icons-round" style="vertical-align:middle">bloodtype</span> রক্তদাতা</h3>
@@ -641,7 +753,7 @@
         </div>
 
         <!-- Emergency Modal -->
-        <div id="emergency-modal" class="modal-bg">
+        <div id="emergency-modal" class="modal-bg" onclick="if(event.target===this) closeModal('emergency-modal')">
             <div class="modal-content">
                 <span class="material-icons-round close-icon" onclick="closeModal('emergency-modal')">close</span>
                 <h3 style="color:var(--warning); margin:0 0 15px;">☎️ জরুরী সেবা</h3>
@@ -651,7 +763,7 @@
         </div>
 
         <!-- Agri Modal -->
-        <div id="agri-modal" class="modal-bg">
+        <div id="agri-modal" class="modal-bg" onclick="if(event.target===this) closeModal('agri-modal')">
             <div class="modal-content">
                 <span class="material-icons-round close-icon" onclick="closeModal('agri-modal')">close</span>
                 <h3 style="color:var(--accent); margin:0 0 15px;">🌾 কৃষি তথ্য</h3>
@@ -661,7 +773,7 @@
         </div>
 
         <!-- Image View Modal for Gallery -->
-                <div id="gallery-modal" class="modal-bg">
+        <div id="gallery-modal" class="modal-bg" onclick="if(event.target===this) closeModal('gallery-modal')">
             <div class="modal-content" style="text-align: center;">
                 <span class="material-icons-round close-icon" onclick="closeModal('gallery-modal')">close</span>
                 <h3 style="margin:0 0 10px; color:var(--text-main); text-align: left;">ছবি দেখুন</h3>
@@ -669,6 +781,16 @@
                 <a id="gallery-modal-download" href="#" class="btn btn-success" style="text-decoration: none; display: flex; justify-content: center; gap: 8px;">
                     <span class="material-icons-round">download</span> ডাউনলোড করুন
                 </a>
+            </div>
+        </div>
+
+        <!-- NEW NOTICE DETAIL MODAL -->
+        <div id="notice-detail-modal" class="modal-bg" onclick="if(event.target===this) closeModal('notice-detail-modal')">
+            <div class="modal-content" style="text-align: center;">
+                <span class="material-icons-round close-icon" onclick="closeModal('notice-detail-modal')">close</span>
+                <h3 id="notice-modal-title" style="margin:0 0 10px; color:var(--primary);"></h3>
+                <img id="notice-modal-img" src="" style="width:100%; max-height:250px; object-fit:contain; border-radius:12px; margin-bottom:15px; background:#f8fafc; display:none;">
+                <p id="notice-modal-desc" style="color:var(--text-main); font-size:1rem; text-align:left;"></p>
             </div>
         </div>
 
@@ -740,7 +862,7 @@
         window.openModal = (id) => { const m=document.getElementById(id); m.style.display='flex'; setTimeout(()=>m.classList.add('show'), 10); }
         window.closeModal = (id) => { const m=document.getElementById(id); m.classList.remove('show'); setTimeout(()=>m.style.display='none', 300); }
 
-        // ========== THEME MANAGEMENT (expanded) ==========
+        // ========== THEME MANAGEMENT ==========
         const themes = [
             { name: 'নীল', primary: '#2563eb', accent: '#10b981', grad: 'linear-gradient(135deg, #2563eb, #0891b2)' },
             { name: 'সবুজ', primary: '#059669', accent: '#f59e0b', grad: 'linear-gradient(135deg, #059669, #10b981)' },
@@ -813,11 +935,29 @@
             saveTheme(themes[idx]);
         });
 
-        // ========== NAVIGATION & HISTORY (double back) ==========
-        const tabs = { home:'view-home', services:'view-services', villagers:'view-villagers', profile:'view-profile', admin:'view-admin', auth:'view-auth', setup:'view-setup', mosque:'view-mosque', school:'view-school', shop:'view-shop', map:'view-map', gallery:'view-gallery' };
+        // ========== DATETIME DISPLAY (new) ==========
+        function updateDateTime() {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('bn-BD', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
+            const dateStr = now.toLocaleDateString('bn-BD', options);
+            document.getElementById('current-time').innerText = timeStr;
+            document.getElementById('current-date').innerText = dateStr;
+        }
+        setInterval(updateDateTime, 1000);
+
+        // ========== NAVIGATION & HISTORY ==========
+        const tabs = { 
+            home:'view-home', services:'view-services', villagers:'view-villagers', profile:'view-profile', 
+            admin:'view-admin', auth:'view-auth', setup:'view-setup', mosque:'view-mosque', school:'view-school', 
+            shop:'view-shop', map:'view-map', gallery:'view-gallery', sports:'view-sports'   // added sports
+        };
         const navBtns = { home:'tab-home', services:'tab-services', profile:'tab-profile', admin:'tab-admin' };
         let backCount = 0;
         let backTimer;
+
+        // Store current user data for name display
+        let currentUserData = null;
 
         window.switchTab = (tabName, pushState = true) => {
             Object.values(tabs).forEach(id => document.getElementById(id).style.display = 'none');
@@ -825,27 +965,76 @@
 
             document.getElementById(tabs[tabName]).style.display = 'block';
 
-            if(['villagers', 'mosque', 'school', 'shop', 'map', 'gallery'].includes(tabName)) { 
+            if(['villagers', 'mosque', 'school', 'shop', 'map', 'gallery', 'sports'].includes(tabName)) { 
                 document.getElementById('tab-home').classList.add('active'); 
             } else if(navBtns[tabName]) { 
                 document.getElementById(navBtns[tabName]).classList.add('active'); 
             }
 
-            const hTitle = document.getElementById('h-title'); const hSub = document.getElementById('h-sub');
-            if(tabName === 'home') { hTitle.innerText="স্বাগতম!"; hSub.innerText=auth.currentUser?.email.split('@')[0]||''; loadBanners(); loadNotices(); }
-            else if(tabName === 'services') { hTitle.innerText="সেবাসমূহ"; hSub.innerText="প্রয়োজনীয় সকল সেবা"; }
-            else if(tabName === 'villagers') { hTitle.innerText="গ্রামবাসী"; hSub.innerText="তালিকা ও যোগাযোগ"; loadVillagers(); }
-            else if(tabName === 'profile') { hTitle.innerText="প্রোফাইল"; hSub.innerText="ব্যক্তিগত তথ্য"; loadProfile(); }
+            const hTitle = document.getElementById('h-title'); 
+            const hSub = document.getElementById('h-sub'); // kept for other tabs
+            const userLarge = document.getElementById('user-large-name');
+
+            if(tabName === 'home') { 
+                hTitle.innerText="স্বাগতম!"; 
+                // Show user name in large font
+                if (currentUserData && currentUserData.name) {
+                    userLarge.innerText = currentUserData.name;
+                } else if (auth.currentUser) {
+                    userLarge.innerText = auth.currentUser.email.split('@')[0] || '';
+                } else {
+                    userLarge.innerText = '';
+                }
+                loadBanners(); 
+                loadNotices(); 
+            }
+            else if(tabName === 'services') { 
+                hTitle.innerText="সেবাসমূহ"; 
+                userLarge.innerText = ''; 
+            }
+            else if(tabName === 'villagers') { 
+                hTitle.innerText="গ্রামবাসী"; 
+                userLarge.innerText = ''; 
+                loadVillagers(); 
+            }
+            else if(tabName === 'profile') { 
+                hTitle.innerText="প্রোফাইল"; 
+                userLarge.innerText = ''; 
+                loadProfile(); 
+            }
             else if(tabName === 'admin') { 
-                hTitle.innerText="অ্যাডমিন প্যানেল"; hSub.innerText="কন্ট্রোল ড্যাশবোর্ড"; 
+                hTitle.innerText="অ্যাডমিন প্যানেল"; 
+                userLarge.innerText = ''; 
                 window.closeAdminSub(); 
                 loadAdminData(); 
             }
-            else if(tabName === 'mosque') { hTitle.innerText="মসজিদ"; hSub.innerText="গ্রামের মসজিদসমূহ"; }
-            else if(tabName === 'school') { hTitle.innerText="বিদ্যালয়"; hSub.innerText="শিক্ষাপ্রতিষ্ঠানসমূহ"; }
-            else if(tabName === 'shop') { hTitle.innerText="দোকান"; hSub.innerText="স্থানীয় বাজার ও দোকান"; }
-            else if(tabName === 'map') { hTitle.innerText="ম্যাপ"; hSub.innerText="গ্রামের অবস্থান"; loadMapLink(); }
-            else if(tabName === 'gallery') { hTitle.innerText="গ্যালারি"; hSub.innerText="গ্রামের ছবি"; loadGallery(); }
+            else if(tabName === 'mosque') { 
+                hTitle.innerText="মসজিদ"; 
+                userLarge.innerText = ''; 
+            }
+            else if(tabName === 'school') { 
+                hTitle.innerText="বিদ্যালয়"; 
+                userLarge.innerText = ''; 
+            }
+            else if(tabName === 'shop') { 
+                hTitle.innerText="দোকান"; 
+                userLarge.innerText = ''; 
+            }
+            else if(tabName === 'map') { 
+                hTitle.innerText="ম্যাপ"; 
+                userLarge.innerText = ''; 
+                loadMapLink(); 
+            }
+            else if(tabName === 'gallery') { 
+                hTitle.innerText="গ্যালারি"; 
+                userLarge.innerText = ''; 
+                loadGallery(); 
+            }
+            else if(tabName === 'sports') { 
+                hTitle.innerText="খেলাধুলা"; 
+                userLarge.innerText = ''; 
+                loadSportsPosts(); 
+            }
 
             if (pushState) {
                 history.pushState({ tab: tabName }, '');
@@ -867,21 +1056,18 @@
                     } else if (backCount >= 2) {
                         clearTimeout(backTimer);
                         backCount = 0;
-                        // Exit app - close window or just hide
                         if (navigator.app) {
-                            navigator.app.exitApp(); // for Cordova
+                            navigator.app.exitApp();
                         } else {
-                            window.close(); // may not work in browser
+                            window.close();
                         }
                     }
                 } else {
-                    // Go to home
                     switchTab('home', true);
                 }
             }
         });
 
-        // Initialize history
         history.replaceState({ tab: 'home' }, '');
 
         Object.keys(navBtns).forEach(k => document.getElementById(navBtns[k]).addEventListener('click', () => switchTab(k)));
@@ -894,6 +1080,7 @@
                 const uDoc = await getDoc(doc(db, "users", user.uid));
                 if(uDoc.exists()) {
                     const data = uDoc.data();
+                    currentUserData = data;  // store for later use
                     if(data.status === "banned" && user.email !== adminEmail) { signOut(auth); alert("আপনার অ্যাকাউন্ট ব্যান করা হয়েছে!"); return; }
                     
                     if(!data.name && user.email !== adminEmail) {
@@ -935,7 +1122,6 @@
             } catch(er) { alert("Error: " + er.message); }
         };
 
-        // Logout moved to profile
         document.getElementById('profile-logout').onclick = () => signOut(auth);
 
         // ========== SETUP ==========
@@ -1028,7 +1214,7 @@
             }, 3500);
         }
 
-        // ========== NOTICES ==========
+        // ========== NOTICES (with click modal) ==========
         document.getElementById('an-image')?.addEventListener('change', function(e) {
             if (e.target.files[0]) {
                 const reader = new FileReader();
@@ -1070,19 +1256,34 @@
             loadAdminData(); 
         };
 
+        function showNoticeDetail(notice) {
+            document.getElementById('notice-modal-title').innerText = notice.title;
+            document.getElementById('notice-modal-desc').innerText = notice.description || '';
+            const imgEl = document.getElementById('notice-modal-img');
+            if (notice.imageUrl) {
+                imgEl.src = notice.imageUrl;
+                imgEl.style.display = 'block';
+            } else {
+                imgEl.style.display = 'none';
+            }
+            openModal('notice-detail-modal');
+        }
+
         async function loadNotices() {
             const n = document.getElementById('notice-list');
             const d = await getDocs(query(collection(db, "notices"), orderBy("createdAt", "desc")));
             n.innerHTML = d.empty ? "<p style='text-align:center;color:#94a3b8'>নোটিশ নেই</p>" : "";
             d.forEach(doc => {
                 const data = doc.data();
-                n.innerHTML += `
-                    <div class="notice-card">
-                        <h4>${data.title}</h4>
-                        <p>${data.description || ''}</p>
-                        ${data.imageUrl ? `<img src="${data.imageUrl}" class="notice-img">` : ''}
-                    </div>
+                const noticeDiv = document.createElement('div');
+                noticeDiv.className = 'notice-card';
+                noticeDiv.onclick = () => showNoticeDetail(data);
+                noticeDiv.innerHTML = `
+                    <h4>${data.title}</h4>
+                    <p>${data.description || ''}</p>
+                    ${data.imageUrl ? `<img src="${data.imageUrl}" class="notice-img">` : ''}
                 `;
+                n.appendChild(noticeDiv);
             });
         }
 
@@ -1187,12 +1388,13 @@
             if(!n||!g||!p)return; await addDoc(collection(db,"blood_donors"),{name:n,bloodGroup:g,phone:p,createdAt:serverTimestamp()}); showToast('রক্তদাতা যুক্ত হয়েছে'); loadDonors('All');
         };
 
-        // ========== PROFILE (updated with blood & address) ==========
+        // ========== PROFILE ==========
         async function loadProfile() {
             if(!auth.currentUser) return;
             const d = await getDoc(doc(db,"users",auth.currentUser.uid));
             if(d.exists()) {
                 const u = d.data();
+                currentUserData = u; // update global
                 document.getElementById('my-name').innerText = u.name;
                 document.getElementById('my-role').innerText = u.email;
                 document.getElementById('up-name').value = u.name || '';
@@ -1259,19 +1461,14 @@
             fileInput.value = '';
         };
 
-                        // ========== GALLERY ==========
+        // ========== GALLERY ==========
         window.viewGalleryImage = (url) => {
-            // মডালে ছবি সেট করা হচ্ছে
             document.getElementById('gallery-modal-img').src = url;
-            
-            // সরাসরি ডাউনলোডের জন্য লিংক মডিফাই করা হচ্ছে
             let downloadUrl = url;
             if (url.includes('/upload/')) {
                 downloadUrl = url.replace('/upload/', '/upload/fl_attachment/');
             }
             document.getElementById('gallery-modal-download').href = downloadUrl;
-            
-            // মডাল ওপেন করা হচ্ছে
             openModal('gallery-modal');
         };
 
@@ -1286,7 +1483,6 @@
             grid.innerHTML = '';
             snaps.forEach(doc => {
                 const imgUrl = doc.data().imageUrl;
-                // ছবিতে ক্লিক করলে viewGalleryImage ফাংশন কল হবে
                 grid.innerHTML += `
                     <div class="gallery-item" onclick="viewGalleryImage('${imgUrl}')" style="cursor: pointer;">
                         <img src="${imgUrl}" loading="lazy">
@@ -1295,12 +1491,101 @@
             });
         }
 
+        // ========== SPORTS (new) ==========
+        // Admin sports management
+        document.getElementById('sports-image')?.addEventListener('change', function(e) {
+            if (e.target.files[0]) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    document.getElementById('sports-preview').src = event.target.result;
+                    document.getElementById('sports-preview').style.display = 'block';
+                };
+                reader.readAsDataURL(e.target.files[0]);
+            }
+        });
 
-        window.openImageView = (url) => {
-            document.getElementById('image-view-img').src = url;
-            document.getElementById('image-view-download').href = url;
-            openModal('image-view-modal');
+        document.getElementById('sports-add-btn').onclick = async () => {
+            const title = document.getElementById('sports-title').value;
+            if (!title) return alert('শিরোনাম দিন');
+            let imageUrl = '';
+            const file = document.getElementById('sports-image').files[0];
+            if (file) {
+                const finish = showLoading(document.getElementById('sports-add-btn'));
+                try {
+                    imageUrl = await uploadToCloudinary(file);
+                } catch (err) {
+                    finish();
+                    alert('ছবি আপলোড ব্যর্থ');
+                    return;
+                }
+                finish();
+            }
+            await addDoc(collection(db, "sports_posts"), {
+                title: title,
+                description: document.getElementById('sports-desc').value,
+                imageUrl: imageUrl,
+                createdAt: serverTimestamp()
+            });
+            document.getElementById('sports-title').value = '';
+            document.getElementById('sports-desc').value = '';
+            document.getElementById('sports-image').value = '';
+            document.getElementById('sports-preview').style.display = 'none';
+            showToast('পোস্ট প্রকাশিত হয়েছে', 'sports_soccer');
+            loadAdminSportsPosts();
         };
+
+        async function loadAdminSportsPosts() {
+            const listDiv = document.getElementById('admin-sports-list');
+            listDiv.innerHTML = '<p style="text-align:center; color:#94a3b8;">লোড হচ্ছে...</p>';
+            const snaps = await getDocs(query(collection(db, "sports_posts"), orderBy("createdAt", "desc")));
+            if (snaps.empty) {
+                listDiv.innerHTML = '<p style="text-align:center; color:#94a3b8;">কোনো পোস্ট নেই</p>';
+                return;
+            }
+            listDiv.innerHTML = '';
+            snaps.forEach(doc => {
+                const data = doc.data();
+                listDiv.innerHTML += `
+                    <div class="admin-banner-item">
+                        <div style="flex:1"><b>${data.title}</b></div>
+                        <button onclick="window.delSportsPost('${doc.id}')" class="action-btn" style="background:var(--danger)">Delete</button>
+                    </div>
+                `;
+            });
+        }
+
+        window.delSportsPost = async (id) => {
+            if (confirm('পোস্টটি ডিলিট করতে চান?')) {
+                await deleteDoc(doc(db, "sports_posts", id));
+                loadAdminSportsPosts();
+                if (document.getElementById('view-sports').style.display === 'block') loadSportsPosts();
+                showToast('পোস্ট ডিলিট');
+            }
+        };
+
+        // User sports view
+        async function loadSportsPosts() {
+            const listDiv = document.getElementById('sports-list');
+            listDiv.innerHTML = '<p style="text-align:center; color:#94a3b8;">লোড হচ্ছে...</p>';
+            const snaps = await getDocs(query(collection(db, "sports_posts"), orderBy("createdAt", "desc")));
+            if (snaps.empty) {
+                listDiv.innerHTML = '<p style="text-align:center; color:#94a3b8;">কোনো খবর নেই</p>';
+                return;
+            }
+            listDiv.innerHTML = '';
+            snaps.forEach(doc => {
+                const data = doc.data();
+                const card = document.createElement('div');
+                card.className = 'sports-card';
+                card.onclick = () => showNoticeDetail(data); // reuse notice detail modal
+                let html = '';
+                if (data.imageUrl) html += `<img src="${data.imageUrl}" loading="lazy">`;
+                html += `<h3>${data.title}</h3>`;
+                if (data.description) html += `<p>${data.description}</p>`;
+                card.innerHTML = html;
+                listDiv.appendChild(card);
+            });
+        }
 
         // ========== MAP LINK MANAGEMENT ==========
         async function loadMapLink() {
@@ -1332,10 +1617,12 @@
             document.getElementById('admin-sub-gallery').style.display = 'none';
             document.getElementById('admin-sub-theme').style.display = 'none';
             document.getElementById('admin-sub-map').style.display = 'none';
+            document.getElementById('admin-sub-sports').style.display = 'none';
             document.getElementById('admin-sub-' + id).style.display = 'block';
             if (id === 'gallery') loadAdminGallery();
             if (id === 'theme') renderThemeGrid();
             if (id === 'map') loadMapLink();
+            if (id === 'sports') loadAdminSportsPosts();
         };
 
         window.closeAdminSub = () => {
@@ -1346,6 +1633,7 @@
             document.getElementById('admin-sub-gallery').style.display = 'none';
             document.getElementById('admin-sub-theme').style.display = 'none';
             document.getElementById('admin-sub-map').style.display = 'none';
+            document.getElementById('admin-sub-sports').style.display = 'none';
             document.getElementById('admin-main').style.display = 'block';
         };
 
@@ -1506,23 +1794,9 @@
             if (document.getElementById('view-gallery').style.display === 'block') loadGallery();
         };
 
-        // ========== GLOBAL SEARCH (header) ==========
-        document.getElementById('global-search').addEventListener('input', (e) => {
-            const term = e.target.value.trim().toLowerCase();
-            if (!term) return;
-            // If current view is villagers, filter that
-            if (document.getElementById('view-villagers').style.display === 'block') {
-                document.getElementById('search-villager').value = term;
-                document.getElementById('search-villager').dispatchEvent(new Event('input'));
-            } else {
-                // Otherwise go to villagers with search
-                switchTab('villagers');
-                setTimeout(() => {
-                    document.getElementById('search-villager').value = term;
-                    document.getElementById('search-villager').dispatchEvent(new Event('input'));
-                }, 300);
-            }
-        });
+        // Remove global search listener as it's removed from header
+        // ========== INIT ==========
+        updateDateTime(); // initial call
     </script>
 </body>
     </html>
