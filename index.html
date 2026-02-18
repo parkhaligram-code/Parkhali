@@ -3,306 +3,279 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>পারখালী গ্রাম - স্মার্ট সেবা</title>
+    <title>পারখালী স্মার্ট গ্রাম</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
     <style>
-        /* --- CSS Styles --- */
+        /* --- Modern CSS Styles with Blue-Green Theme --- */
+        :root {
+            --primary-blue: #1976d2;
+            --primary-green: #2e7d32;
+            --accent-blue: #e3f2fd;
+            --light-bg: #f0f4f7;
+            --dark-text: #333;
+            --light-text: #666;
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Poppins', sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f7f6;
-            color: #333;
+            background-color: var(--light-bg);
+            color: var(--dark-text);
+        }
+
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            padding-bottom: 70px; /* Space for bottom nav */
+            position: relative;
+            overflow: hidden;
         }
 
         header {
-            background-color: #2e7d32;
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
             color: white;
-            padding: 1rem 2rem;
+            padding: 1.5rem 1.5rem 2.5rem;
+            border-bottom-left-radius: 25px;
+            border-bottom-right-radius: 25px;
+        }
+
+        .header-top {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            margin-bottom: 1rem;
         }
 
-        header button {
-            background-color: #d32f2f;
+        .header-top h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .logout-btn {
+            background: rgba(255,255,255,0.2);
             color: white;
             border: none;
-            padding: 8px 15px;
+            padding: 6px 12px;
             cursor: pointer;
-            border-radius: 5px;
-            font-weight: bold;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .hero-section h2 {
+            font-size: 1.8rem;
+            margin: 0 0 0.5rem 0;
+        }
+
+        .hero-section p {
+            font-size: 1rem;
+            opacity: 0.9;
+            margin: 0;
         }
 
         main {
-            padding: 2rem;
-            max-width: 900px;
-            margin: 0 auto;
+            padding: 1.5rem;
+            margin-top: -1.5rem; /* Overlap header */
         }
 
-        .form-container, .dashboard-section, .admin-section {
+        .section-card {
             background: white;
-            padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
+            padding: 1.2rem;
+            border-radius: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 1.5rem;
         }
 
-        .form-container {
-            max-width: 400px;
-            margin: 0 auto;
-            text-align: center;
+        h3 {
+            font-size: 1.2rem;
+            color: var(--primary-blue);
+            margin: 0 0 1rem 0;
+            font-weight: 600;
         }
 
-        input, textarea {
-            width: 100%;
-            box-sizing: border-box;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        button.action-btn {
-            width: 100%;
-            padding: 10px;
-            background-color: #2e7d32;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: bold;
-        }
-
-        button.action-btn:hover { background-color: #1b5e20; }
-
-        .link {
-            color: #1976d2;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        .error { color: red; font-size: 14px; margin-top: 10px; }
-        .success { color: green; font-size: 14px; margin-top: 10px; }
-
+        /* --- Services Grid --- */
         .services-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+            gap: 1rem;
         }
 
-        .card {
-            background: #e8f5e9;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        .service-item {
             text-align: center;
-            font-weight: bold;
             cursor: pointer;
-            transition: 0.3s;
-            border: 1px solid #c8e6c9;
+            transition: transform 0.2s;
         }
 
-        .card:hover { transform: translateY(-5px); background-color: #c8e6c9; }
+        .service-item:hover { transform: translateY(-3px); }
 
-        /* Notice Board Styles */
+        .service-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--accent-blue);
+            color: var(--primary-blue);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 0.5rem;
+            font-size: 24px;
+        }
+
+        .service-label {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--dark-text);
+        }
+
+        /* --- Notice Board & Admin --- */
         .notice-item {
-            background: #fff3e0;
-            padding: 15px;
-            border-left: 5px solid #ff9800;
-            margin-bottom: 10px;
-            border-radius: 4px;
+            background: #fefefe;
+            padding: 1rem;
+            border-radius: 10px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+            margin-bottom: 0.8rem;
+            border-left: 4px solid var(--primary-green);
         }
-        .notice-date { font-size: 12px; color: #666; }
-        
-        #admin-panel { border: 2px solid #0277bd; }
-        .admin-title { color: #0277bd; }
+        .notice-item h4 { margin: 0 0 0.5rem; color: var(--primary-blue); }
+        .notice-date { font-size: 0.8rem; color: var(--light-text); display: flex; align-items: center; gap: 5px;}
+
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-family: inherit;
+            box-sizing: border-box;
+        }
+        .btn-primary {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(to right, var(--primary-blue), var(--primary-green));
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        /* --- Bottom Navigation --- */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            max-width: 480px;
+            margin: 0 auto;
+            background: white;
+            display: flex;
+            justify-content: space-around;
+            padding: 0.8rem 0;
+            box-shadow: 0 -2px 8px rgba(0,0,0,0.05);
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+        }
+
+        .nav-item {
+            color: var(--light-text);
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        .nav-item.active { color: var(--primary-blue); }
+        .nav-icon { font-size: 24px; margin-bottom: 2px; }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>পারখালী স্মার্ট গ্রাম</h1>
-        <button id="logout-btn" style="display: none;">লগআউট</button>
-    </header>
-
-    <main>
-        <section id="auth-section" class="form-container">
-            <h2 id="form-title">লগইন করুন</h2>
-            <input type="email" id="email" placeholder="আপনার ইমেইল" required>
-            <input type="password" id="password" placeholder="পাসওয়ার্ড" required>
-            <button id="auth-action-btn" class="action-btn">লগইন</button>
-            <p id="toggle-auth">অ্যাকাউন্ট নেই? <span class="link">রেজিস্ট্রেশন করুন</span></p>
-            <p id="error-msg" class="error"></p>
-        </section>
-
-        <section id="admin-panel" class="admin-section" style="display: none;">
-            <h2 class="admin-title">অ্যাডমিন প্যানেল (কন্ট্রোল রুম)</h2>
-            <p>নতুন নোটিশ প্রকাশ করুন:</p>
-            <input type="text" id="notice-title" placeholder="নোটিশের শিরোনাম">
-            <textarea id="notice-desc" rows="3" placeholder="নোটিশের বিস্তারিত..."></textarea>
-            <button id="publish-notice-btn" class="action-btn" style="background-color: #0277bd;">নোটিশ পাবলিশ করুন</button>
-            <p id="admin-msg"></p>
-        </section>
-
-        <section id="user-dashboard" class="dashboard-section" style="display: none;">
-            <h2>স্বাগতম, <span id="user-email-display" style="color:#2e7d32;"></span></h2>
-            
-            <h3>সেবাসমূহ</h3>
-            <div class="services-grid">
-                <div class="card">🩸 ব্লাড ডোনার লিস্ট</div>
-                <div class="card">☎️ জরুরী যোগাযোগ</div>
-                <div class="card">🌾 কৃষি পরামর্শ</div>
+    <div class="container">
+        <header>
+            <div class="header-top">
+                <h1>পারখালী স্মার্ট গ্রাম</h1>
+                <button class="logout-btn"><span class="material-icons-round" style="font-size: 18px;">logout</span> লগআউট</button>
             </div>
-
-            <h3 style="margin-top: 30px;">📢 নোটিশ বোর্ড</h3>
-            <div id="notice-board-container">
-                <p>নোটিশ লোড হচ্ছে...</p>
+            <div class="hero-section">
+                <h2>হ্যালো!</h2>
+                <p>ডিজিটাল সেবায় আপনার গ্রাম।</p>
             </div>
-        </section>
-    </main>
+        </header>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { getFirestore, collection, addDoc, getDocs, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        <main>
+            <section class="section-card" style="border: 2px solid var(--primary-blue); display: none;">
+                <h3><span class="material-icons-round" style="vertical-align: middle; margin-right: 5px;">admin_panel_settings</span> অ্যাডমিন প্যানেল</h3>
+                <p style="font-size: 0.9rem; color: var(--light-text); margin-bottom: 1rem;">নতুন নোটিশ প্রকাশ করুন:</p>
+                <input type="text" class="form-input" placeholder="নোটিশের শিরোনাম">
+                <textarea class="form-input" rows="3" placeholder="নোটিশের বিস্তারিত..."></textarea>
+                <button class="btn-primary" style="background: var(--primary-blue);">নোটিশ পাবলিশ করুন</button>
+                <p class="error" style="font-size: 0.85rem; margin-top: 10px; color: #d32f2f;">এরর: Missing or insufficient permissions.</p>
+            </section>
 
-        // Firebase Configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyAuqcDRrtuQi2tdWXA2E_UWyq7pCrGpoy4",
-            authDomain: "parkhali-village.firebaseapp.com",
-            projectId: "parkhali-village",
-            storageBucket: "parkhali-village.firebasestorage.app",
-            messagingSenderId: "645968583344",
-            appId: "1:645968583344:web:89a049e6ffaba4af33b975",
-            measurementId: "G-WD2LSS97KC"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-
-        // UI Elements
-        const authSection = document.getElementById('auth-section');
-        const userDashboard = document.getElementById('user-dashboard');
-        const adminPanel = document.getElementById('admin-panel');
-        const logoutBtn = document.getElementById('logout-btn');
-        const errorMsg = document.getElementById('error-msg');
-        
-        let isLogin = true;
-        const adminEmail = "admin@parkhali.com"; // অ্যাডমিন ইমেইল সেট করুন
-
-        // Auth Toggle
-        document.getElementById('toggle-auth').addEventListener('click', () => {
-            isLogin = !isLogin;
-            document.getElementById('form-title').innerText = isLogin ? "লগইন করুন" : "রেজিস্ট্রেশন করুন";
-            document.getElementById('auth-action-btn').innerText = isLogin ? "লগইন" : "রেজিস্টার";
-            document.getElementById('toggle-auth').innerHTML = isLogin ? 'অ্যাকাউন্ট নেই? <span class="link">রেজিস্ট্রেশন করুন</span>' : 'অ্যাকাউন্ট আছে? <span class="link">লগইন করুন</span>';
-            errorMsg.innerText = "";
-        });
-
-        // Login / Register Action
-        document.getElementById('auth-action-btn').addEventListener('click', () => {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            
-            if(!email || !password) return errorMsg.innerText = "ইমেইল এবং পাসওয়ার্ড দিন!";
-
-            if(isLogin) {
-                signInWithEmailAndPassword(auth, email, password).catch(e => errorMsg.innerText = "লগইন ব্যর্থ: " + e.message);
-            } else {
-                createUserWithEmailAndPassword(auth, email, password).catch(e => errorMsg.innerText = "রেজিস্ট্রেশন ব্যর্থ: " + e.message);
-            }
-        });
-
-        // Logout
-        logoutBtn.addEventListener('click', () => signOut(auth));
-
-        // Auth State Observer
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                authSection.style.display = "none";
-                logoutBtn.style.display = "block";
-                userDashboard.style.display = "block";
-                document.getElementById('user-email-display').innerText = user.email;
-
-                adminPanel.style.display = (user.email === adminEmail) ? "block" : "none";
-                loadNotices(); // ইউজার লগইন করলেই নোটিশ লোড হবে
-            } else {
-                authSection.style.display = "block";
-                logoutBtn.style.display = "none";
-                userDashboard.style.display = "none";
-                adminPanel.style.display = "none";
-            }
-        });
-
-        // --- Firestore: Notice Board Logic --- //
-
-        // 1. Add Notice (Admin Only)
-        document.getElementById('publish-notice-btn').addEventListener('click', async () => {
-            const title = document.getElementById('notice-title').value;
-            const desc = document.getElementById('notice-desc').value;
-            const msgBox = document.getElementById('admin-msg');
-
-            if(!title || !desc) {
-                msgBox.className = "error";
-                msgBox.innerText = "শিরোনাম এবং বিস্তারিত অংশ পূরণ করুন!";
-                return;
-            }
-
-            try {
-                await addDoc(collection(db, "notices"), {
-                    title: title,
-                    description: desc,
-                    createdAt: serverTimestamp()
-                });
-                msgBox.className = "success";
-                msgBox.innerText = "নোটিশ সফলভাবে পাবলিশ হয়েছে!";
-                document.getElementById('notice-title').value = "";
-                document.getElementById('notice-desc').value = "";
-                loadNotices(); // নতুন নোটিশ দেওয়ার পর সাথে সাথে লিস্ট আপডেট হবে
-            } catch (e) {
-                msgBox.className = "error";
-                msgBox.innerText = "এরর: " + e.message;
-            }
-        });
-
-        // 2. Load Notices (Visible to all logged-in users)
-        async function loadNotices() {
-            const container = document.getElementById('notice-board-container');
-            container.innerHTML = "লোড হচ্ছে..."; // Loading state
-            
-            try {
-                // নোটিশগুলো সময়ের ভিত্তিতে সাজিয়ে আনা (নতুন নোটিশ আগে)
-                const q = query(collection(db, "notices"), orderBy("createdAt", "desc"));
-                const querySnapshot = await getDocs(q);
+            <section class="section-card" style="margin-top: 1rem;">
+                <h3>স্বাগতম, <span style="color: var(--primary-green);">admin@parkhali.com</span></h3>
                 
-                container.innerHTML = ""; // Clear loading text
-                
-                if(querySnapshot.empty) {
-                    container.innerHTML = "<p>বর্তমানে কোনো নতুন নোটিশ নেই।</p>";
-                    return;
-                }
+                <h3 style="margin-top: 1.5rem;">সেবাসমূহ</h3>
+                <div class="services-grid">
+                    <div class="service-item">
+                        <div class="service-icon"><span class="material-icons-round">bloodtype</span></div>
+                        <div class="service-label">ব্লাড ডোনার</div>
+                    </div>
+                    <div class="service-item">
+                        <div class="service-icon"><span class="material-icons-round">call</span></div>
+                        <div class="service-label">জরুরী সেবা</div>
+                    </div>
+                    <div class="service-item">
+                        <div class="service-icon"><span class="material-icons-round">agriculture</span></div>
+                        <div class="service-label">কৃষি পরামর্শ</div>
+                    </div>
+                    <div class="service-item">
+                        <div class="service-icon"><span class="material-icons-round">school</span></div>
+                        <div class="service-label">শিক্ষা তথ্য</div>
+                    </div>
+                </div>
+            </section>
 
-                querySnapshot.forEach((doc) => {
-                    const notice = doc.data();
-                    const dateObj = notice.createdAt ? notice.createdAt.toDate() : new Date();
-                    const dateString = dateObj.toLocaleDateString('bn-BD') + " " + dateObj.toLocaleTimeString('bn-BD');
+            <section class="section-card">
+                <h3><span class="material-icons-round" style="vertical-align: middle; margin-right: 5px;">campaign</span> নোটিশ বোর্ড</h3>
+                <div class="notice-item">
+                    <h4>গ্রামের রাস্তা সংস্কার</h4>
+                    <p>আগামীকাল থেকে ১নং ওয়ার্ডের রাস্তা সংস্কার কাজ শুরু হবে।</p>
+                    <p class="notice-date"><span class="material-icons-round" style="font-size: 14px;">schedule</span> ১৮ ফেব্রুয়ারি, ২০২৬, সকাল ১০:০০</p>
+                </div>
+                <p style="text-align: center; color: var(--light-text); font-size: 0.9rem;">আরও নোটিশ লোড হচ্ছে...</p>
+            </section>
+        </main>
 
-                    const noticeDiv = document.createElement('div');
-                    noticeDiv.className = 'notice-item';
-                    noticeDiv.innerHTML = `
-                        <h4>${notice.title}</h4>
-                        <p>${notice.description}</p>
-                        <p class="notice-date">📅 প্রকাশিত: ${dateString}</p>
-                    `;
-                    container.appendChild(noticeDiv);
-                });
-            } catch (e) {
-                container.innerHTML = `<p class="error">নোটিশ লোড করতে সমস্যা হচ্ছে: ${e.message}</p>`;
-            }
-        }
-    </script>
+        <nav class="bottom-nav">
+            <a href="#" class="nav-item active">
+                <span class="material-icons-round nav-icon">home</span>
+                হোম
+            </a>
+            <a href="#" class="nav-item">
+                <span class="material-icons-round nav-icon">grid_view</span>
+                সেবা
+            </a>
+            <a href="#" class="nav-item">
+                <span class="material-icons-round nav-icon">notifications</span>
+                নোটিশ
+            </a>
+            <a href="#" class="nav-item">
+                <span class="material-icons-round nav-icon">person</span>
+                প্রোফাইল
+            </a>
+        </nav>
+    </div>
+
 </body>
 </html>
