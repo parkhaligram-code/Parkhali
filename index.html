@@ -26,7 +26,7 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         /* Splash Screen */
-        #splash-screen { background: var(--primary-color); display: flex; justify-content: center; align-items: center; z-index: 1000; }
+        #splash-screen { background: var(--primary-color); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 1000; }
         .splash-text { font-size: 3rem; color: white; font-weight: 700; letter-spacing: 2px; animation: pulseText 2s infinite; }
         @keyframes pulseText { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.1); opacity: 0.8; } 100% { transform: scale(1); opacity: 1; } }
 
@@ -71,7 +71,9 @@
     <div id="loader"><div class="spinner"></div></div>
     <div id="toast">সাকসেসফুল!</div>
 
-    <div id="splash-screen" class="page active-page"><div class="splash-text">পারখালী</div></div>
+    <div id="splash-screen" class="page active-page">
+        <div class="splash-text">পারখালী</div>
+    </div>
 
     <div id="login-screen" class="page">
         <div class="form-container">
@@ -152,21 +154,8 @@
     </div>
 </div>
 
-<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
-
 <script>
-    // 1. UI functions (Safely kept at the top)
-    const showLoader = () => document.getElementById('loader').style.display = 'flex';
-    const hideLoader = () => document.getElementById('loader').style.display = 'none';
-    const showToast = (msg, isError = false) => {
-        const toast = document.getElementById('toast');
-        toast.innerText = msg;
-        toast.style.background = isError ? "var(--danger)" : "var(--success)";
-        toast.style.display = 'block';
-        setTimeout(() => toast.style.display = 'none', 3000);
-    };
-
+    // এই কোডটি সবার আগে রান হবে, ফায়ারবেস লোড হোক বা না হোক।
     function navigate(pageId) {
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active-page'));
         document.getElementById(pageId).classList.add('active-page');
@@ -176,6 +165,16 @@
             document.getElementById('bottom-navigation').style.display = 'none';
         }
     }
+
+    const showLoader = () => document.getElementById('loader').style.display = 'flex';
+    const hideLoader = () => document.getElementById('loader').style.display = 'none';
+    const showToast = (msg, isError = false) => {
+        const toast = document.getElementById('toast');
+        toast.innerText = msg;
+        toast.style.background = isError ? "var(--danger)" : "var(--success)";
+        toast.style.display = 'block';
+        setTimeout(() => toast.style.display = 'none', 3000);
+    };
 
     function setupUserSession(phone, name) {
         document.getElementById('user-greeting').innerText = `হ্যালো, ${name || phone}!`;
@@ -189,43 +188,43 @@
         navigate('login-screen');
     }
 
-    // 2. Splash Screen Logic (Guaranteed to run after 2.5 seconds)
-    window.onload = () => {
-        setTimeout(() => {
-            try {
-                const userPhone = localStorage.getItem('userPhone');
-                if (userPhone) {
-                    setupUserSession(userPhone, localStorage.getItem('userName'));
-                } else {
-                    navigate('login-screen');
-                }
-            } catch (error) {
-                console.error("Storage error:", error);
-                navigate('login-screen'); // Fallback if browser blocks LocalStorage
+    // ২ সেকেন্ড পর স্প্ল্যাশ স্ক্রিন হাইড করার ডাইরেক্ট কমান্ড
+    setTimeout(() => {
+        try {
+            const userPhone = localStorage.getItem('userPhone');
+            if (userPhone) {
+                setupUserSession(userPhone, localStorage.getItem('userName'));
+            } else {
+                navigate('login-screen');
             }
-        }, 2500);
-    };
+        } catch(e) {
+            navigate('login-screen');
+        }
+    }, 2000);
+</script>
 
-    // 3. Firebase Initialization
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+<script>
     let db;
-    try {
-        const firebaseConfig = {
-            apiKey: "AIzaSyAuqcDRrtuQi2tdWXA2E_UWyq7pCrGpoy4",
-            authDomain: "parkhali-village.firebaseapp.com",
-            projectId: "parkhali-village",
-            storageBucket: "parkhali-village.firebasestorage.app",
-            messagingSenderId: "645968583344",
-            appId: "1:645968583344:web:89a049e6ffaba4af33b975",
-            measurementId: "G-WD2LSS97KC"
-        };
-        firebase.initializeApp(firebaseConfig);
-        db = firebase.firestore();
-    } catch (error) {
-        console.error("Firebase load error:", error);
-        setTimeout(() => showToast("ইন্টারনেট কানেকশন নেই বা ফায়ারবেস লোড হয়নি!", true), 3000);
-    }
+    // ফায়ারবেস লোড চেক করা
+    setTimeout(() => {
+        if(typeof firebase !== 'undefined') {
+            const firebaseConfig = {
+                apiKey: "AIzaSyAuqcDRrtuQi2tdWXA2E_UWyq7pCrGpoy4",
+                authDomain: "parkhali-village.firebaseapp.com",
+                projectId: "parkhali-village",
+                storageBucket: "parkhali-village.firebasestorage.app",
+                messagingSenderId: "645968583344",
+                appId: "1:645968583344:web:89a049e6ffaba4af33b975",
+                measurementId: "G-WD2LSS97KC"
+            };
+            firebase.initializeApp(firebaseConfig);
+            db = firebase.firestore();
+        }
+    }, 500);
 
-    // 4. App Logic
     let tempRegData = {};
 
     document.getElementById('btn-login').addEventListener('click', async () => {
@@ -242,10 +241,7 @@
                 if (userData.status === 'banned') {
                     showToast("আপনার একাউন্ট ব্যান করা হয়েছে!", true);
                 } else if (userData.password === pass) {
-                    try {
-                        localStorage.setItem('userPhone', phone);
-                        localStorage.setItem('userName', userData.fullName);
-                    } catch(e){}
+                    try { localStorage.setItem('userPhone', phone); localStorage.setItem('userName', userData.fullName); } catch(e){}
                     showToast("লগইন সফল হয়েছে");
                     setupUserSession(phone, userData.fullName);
                 } else {
@@ -254,9 +250,7 @@
             } else {
                 showToast("এই নম্বরে কোনো একাউন্ট নেই", true);
             }
-        } catch (error) {
-            showToast("সার্ভার এরর!", true);
-        }
+        } catch (error) { showToast("সার্ভার এরর!", true); }
         hideLoader();
     });
 
@@ -277,9 +271,7 @@
                 tempRegData = { phone, password: pass };
                 navigate('register-step-2');
             }
-        } catch (e) {
-            showToast("নেটওয়ার্ক সমস্যা", true);
-        }
+        } catch (e) { showToast("নেটওয়ার্ক সমস্যা", true); }
         hideLoader();
     });
 
@@ -298,9 +290,7 @@
             try { localStorage.setItem('userPhone', finalData.phone); localStorage.setItem('userName', finalData.fullName); } catch(e){}
             showToast("রেজিস্ট্রেশন সফল হয়েছে!");
             setupUserSession(finalData.phone, finalData.fullName);
-        } catch(e) {
-            showToast("রেজিস্ট্রেশন ব্যর্থ হয়েছে", true);
-        }
+        } catch(e) { showToast("রেজিস্ট্রেশন ব্যর্থ হয়েছে", true); }
         hideLoader();
     });
 
