@@ -1284,10 +1284,17 @@
 
         Object.keys(navBtns).forEach(k => document.getElementById(navBtns[k]).addEventListener('click', () => switchTab(k)));
 
-        // ========== AUTH ==========
+                // ========== AUTH ==========
         onAuthStateChanged(auth, async (user) => {
             setTimeout(() => document.getElementById('splash').style.display = 'none', 1500);
-            await loadTheme();
+            
+            // Fix: ডাটাবেস এরর এর কারণে যেন অ্যাপ সাদা না হয়ে যায় তাই try-catch ব্যবহার করা হলো
+            try {
+                await loadTheme();
+            } catch (error) {
+                console.log("Theme load failed, applying default.", error);
+            }
+
             if(user) {
                 const uDoc = await getDoc(doc(db, "users", user.uid));
                 if(uDoc.exists()) {
@@ -1312,6 +1319,7 @@
                 switchTab('auth');
             }
         });
+
 
         let isLog = true;
         document.getElementById('auth-toggle').onclick = () => {
