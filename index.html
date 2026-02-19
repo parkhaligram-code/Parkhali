@@ -1113,35 +1113,38 @@
             document.documentElement.style.setProperty('--header-grad', theme.grad);
         }
 
-        async function saveTheme(theme) {
-            await setDoc(doc(db, "settings", "appearance"), theme);
+                async function saveTheme(theme) {
+            // ১. বোতামে চাপলেই আগে অ্যাপের কালার পরিবর্তন হয়ে যাবে
             applyTheme(theme);
-            showToast('থিম আপডেট হয়েছে', 'palette');
+            
+            // ২. এরপর ডাটাবেসে সেভ করার চেষ্টা করবে
+            try {
+                await setDoc(doc(db, "settings", "appearance"), theme);
+                showToast('থিম আপডেট হয়েছে', 'palette');
+            } catch (error) {
+                console.error("Theme save error:", error);
+                showToast('ডাটাবেসে থিম সেভ হয়নি! পারমিশন চেক করুন।', 'error');
+            }
         }
 
-        function renderThemeGrid() {
-            const grid = document.getElementById('theme-grid');
-            grid.innerHTML = '';
-            themes.forEach((t, idx) => {
-                const div = document.createElement('div');
-                div.className = 'theme-item';
-                div.style.background = t.grad;
-                div.setAttribute('data-index', idx);
-                div.onclick = () => {
-                    document.querySelectorAll('.theme-item').forEach(el => el.classList.remove('active'));
-                    div.classList.add('active');
-                };
-                grid.appendChild(div);
-            });
-            getDoc(doc(db, "settings", "appearance")).then(doc => {
-                if (doc.exists()) {
-                    const curr = doc.data();
-                    const index = themes.findIndex(t => t.primary === curr.primary);
-                    if (index !== -1) grid.children[index]?.classList.add('active');
-                } else {
-                    grid.children[0]?.classList.add('active');
-                }
-            });
+        // থিম সেভ করার বাটনের কাজ
+        document.getElementById('save-theme-btn').onclick = async () => {
+            const active = document.querySelector('.theme-item.active');
+            if (!active) {
+                showToast('আগে একটি থিম নির্বাচন করুন!', 'warning');
+                return;
+            }
+            const idx = active.getAttribute('data-index');
+            
+            // সেভ বাটনে লোডিং এনিমেশন দেখানোর জন্য
+            const originalText = document.getElementById('save-theme-btn').innerText;
+            document.getElementById('save-theme-btn').innerText = "সেভ হচ্ছে...";
+            
+            await saveTheme(themes[idx]);
+            
+            document.getElementById('save-theme-btn').innerText = originalText;
+        };
+
         }
 
         document.getElementById('save-theme-btn')?.addEventListener('click', () => {
