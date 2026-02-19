@@ -45,7 +45,7 @@
         }
         .spinner-small { width: 20px; height: 20px; border: 2px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 0.8s linear infinite; }
 
-        /* ================== HEADER (enhanced welcome) ================== */
+        /* ================== HEADER (enhanced welcome & clock) ================== */
         header { background: var(--header-grad); color: white; padding: 1rem 1.2rem 1.8rem; border-bottom-left-radius: 25px; border-bottom-right-radius: 25px; position: relative; z-index: 10; transition: var(--transition); }
         .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
         .app-title { font-size: 1.3rem; font-weight: 700; display: flex; align-items: center; gap: 5px; }
@@ -57,9 +57,10 @@
             line-height: 1.3;
         }
         .time {
-            font-size: 1.2rem;
-            font-weight: 600;
+            font-size: 1.6rem;   /* increased for readability */
+            font-weight: 700;     /* bolder */
             letter-spacing: 0.5px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2); /* subtle shadow */
         }
         .date {
             font-size: 0.85rem;
@@ -323,6 +324,18 @@
         }
         .info-chip .material-icons-round { font-size: 18px; color: var(--primary); }
 
+        /* Social Icons in Profile */
+        .social-icons {
+            display: flex; gap: 20px; justify-content: center; margin: 15px 0;
+        }
+        .social-icons a {
+            text-decoration: none;
+            transition: transform 0.2s;
+        }
+        .social-icons a:hover {
+            transform: scale(1.1);
+        }
+
         /* ================== NOTICE CARD ================== */
         .notice-card {
             background: white; padding: 12px; border-left: 4px solid var(--primary);
@@ -355,6 +368,15 @@
         .theme-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 15px; }
         .theme-item { height: 60px; border-radius: 12px; cursor: pointer; border: 2px solid transparent; transition: 0.2s; background-size: cover; }
         .theme-item.active { border-color: var(--primary); transform: scale(1.02); }
+
+        /* ================== WEATHER CARDS ================== */
+        .weather-current-card {
+            background: linear-gradient(145deg, #0ea5e9, #38bdf8);
+            padding: 15px;
+            border-radius: 20px;
+            color: white;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
     </style>
 </head>
 <body>
@@ -445,6 +467,10 @@
                         <option value="">রক্তের গ্রুপ নির্বাচন করুন</option><option>A+</option><option>A-</option><option>B+</option><option>B-</option><option>O+</option><option>O-</option><option>AB+</option><option>AB-</option>
                     </select>
                     <input type="tel" id="set-phone" class="input-box" placeholder="মোবাইল নম্বর">
+                    <!-- Social Media Fields -->
+                    <input id="set-facebook" class="input-box" placeholder="Facebook (username বা link)">
+                    <input id="set-whatsapp" class="input-box" placeholder="WhatsApp (নম্বর)">
+                    <input id="set-telegram" class="input-box" placeholder="Telegram (username)">
                     <input id="set-addr" class="input-box" placeholder="গ্রামের পাড়া/ওয়ার্ড">
                     <div class="file-upload-area" id="setup-upload-area">
                         <input type="file" id="setup-photo" accept="image/*">
@@ -526,7 +552,7 @@
                 </div>
             </div>
 
-            <!-- SERVICES VIEW (updated with Transport card) -->
+            <!-- SERVICES VIEW (updated with Weather, Ambulance, Police, Fire) -->
             <div id="view-services" style="display: none;">
                 <div class="title-sec" style="margin-bottom: 20px; font-size: 1.2rem;">জনপ্রিয় সেবাসমূহ</div>
                 <div class="service-grid">
@@ -542,10 +568,29 @@
                         <div class="s-icon" style="background:#dcfce7; color:var(--accent)"><span class="material-icons-round">agriculture</span></div>
                         <b>কৃষি তথ্য</b>
                     </div>
-                    <!-- NEW Transport card -->
                     <div class="service-card" onclick="openModal('transport-modal'); loadDrivers()">
                         <div class="s-icon" style="background:#e0f2fe; color:#0284c7"><span class="material-icons-round">local_shipping</span></div>
                         <b>যানবাহন</b>
+                    </div>
+                    <!-- NEW Weather card -->
+                    <div class="service-card" onclick="openModal('weather-modal'); loadWeather()">
+                        <div class="s-icon" style="background:#e0f2fe; color:#0284c7"><span class="material-icons-round">wb_sunny</span></div>
+                        <b>আবহাওয়া</b>
+                    </div>
+                    <!-- NEW Ambulance card -->
+                    <div class="service-card" onclick="openModal('ambulance-modal'); loadAmbulance()">
+                        <div class="s-icon" style="background:#fee2e2; color:var(--danger)"><span class="material-icons-round">local_hospital</span></div>
+                        <b>অ্যাম্বুলেন্স</b>
+                    </div>
+                    <!-- NEW Police card -->
+                    <div class="service-card" onclick="openModal('police-modal'); loadPolice()">
+                        <div class="s-icon" style="background:#e0f2fe; color:var(--primary)"><span class="material-icons-round">local_police</span></div>
+                        <b>পুলিশ</b>
+                    </div>
+                    <!-- NEW Fire Service card -->
+                    <div class="service-card" onclick="openModal('fire-modal'); loadFire()">
+                        <div class="s-icon" style="background:#ffedd5; color:var(--warning)"><span class="material-icons-round">fire_truck</span></div>
+                        <b>ফায়ার সার্ভিস</b>
                     </div>
                 </div>
             </div>
@@ -561,7 +606,7 @@
                 </div>
             </div>
 
-            <!-- PROFILE VIEW (updated with dynamic fields) -->
+            <!-- PROFILE VIEW (updated with social media fields) -->
             <div id="view-profile" style="display: none;">
                 <div class="card" style="padding: 0; overflow: hidden;">
                     <div class="profile-cover"></div>
@@ -580,6 +625,12 @@
                     </div>
                     <div class="info-grid" id="profile-info-grid">
                         <!-- Dynamically filled -->
+                    </div>
+                    <!-- Social Icons for Profile -->
+                    <div class="social-icons" id="profile-social-icons">
+                        <a id="profile-facebook" href="#" target="_blank" style="display: none;"><span class="material-icons-round" style="font-size: 30px; color: #1877f2;">thumb_up</span></a>
+                        <a id="profile-whatsapp" href="#" target="_blank" style="display: none;"><span class="material-icons-round" style="font-size: 30px; color: #25D366;">chat</span></a>
+                        <a id="profile-telegram" href="#" target="_blank" style="display: none;"><span class="material-icons-round" style="font-size: 30px; color: #0088cc;">send</span></a>
                     </div>
                     <div style="padding: 0 1.2rem 1.2rem;">
                         <button id="profile-logout" class="btn btn-outline" style="color:var(--danger); border-color:var(--danger);"><span class="material-icons-round">logout</span> লগআউট</button>
@@ -613,6 +664,10 @@
                     </div>
 
                     <input id="up-phone" class="input-box" placeholder="মোবাইল">
+                    <!-- Social Media Fields in Profile Update -->
+                    <input id="up-facebook" class="input-box" placeholder="Facebook (username বা link)">
+                    <input id="up-whatsapp" class="input-box" placeholder="WhatsApp (নম্বর)">
+                    <input id="up-telegram" class="input-box" placeholder="Telegram (username)">
                     <select id="up-blood" class="input-box">
                         <option value="">রক্তের গ্রুপ</option><option>A+</option><option>A-</option><option>B+</option><option>B-</option><option>O+</option><option>O-</option><option>AB+</option><option>AB-</option>
                     </select>
@@ -681,7 +736,7 @@
                             <span class="material-icons-round">sports_volleyball</span>
                             <span>খেলাধুলা</span>
                         </div>
-                        <!-- NEW ADMIN CARDS -->
+                        <!-- Existing Admin Cards -->
                         <div class="exampro-card" onclick="openAdminSub('blood')">
                             <span class="material-icons-round">bloodtype</span>
                             <span>ব্লাড ডোনার</span>
@@ -697,6 +752,19 @@
                         <div class="exampro-card" onclick="openAdminSub('transport')">
                             <span class="material-icons-round">local_shipping</span>
                             <span>যানবাহন</span>
+                        </div>
+                        <!-- NEW Admin Cards for Ambulance, Police, Fire -->
+                        <div class="exampro-card" onclick="openAdminSub('ambulance')">
+                            <span class="material-icons-round">local_hospital</span>
+                            <span>অ্যাম্বুলেন্স</span>
+                        </div>
+                        <div class="exampro-card" onclick="openAdminSub('police')">
+                            <span class="material-icons-round">local_police</span>
+                            <span>পুলিশ</span>
+                        </div>
+                        <div class="exampro-card" onclick="openAdminSub('fire')">
+                            <span class="material-icons-round">fire_truck</span>
+                            <span>ফায়ার সার্ভিস</span>
                         </div>
                     </div>
                 </div>
@@ -833,7 +901,7 @@
                     </div>
                 </div>
 
-                <!-- NEW Admin Sub: Blood Donor Management -->
+                <!-- Admin Sub: Blood Donor Management -->
                 <div id="admin-sub-blood" style="display:none;">
                     <div class="title-sec"><span class="material-icons-round" style="cursor:pointer; margin-right:5px" onclick="closeAdminSub()">arrow_back</span> ব্লাড ডোনার ম্যানেজমেন্ট</div>
                     <div class="card">
@@ -852,7 +920,7 @@
                     </div>
                 </div>
 
-                <!-- NEW Admin Sub: Emergency Services Management -->
+                <!-- Admin Sub: Emergency Services Management -->
                 <div id="admin-sub-emergency" style="display:none;">
                     <div class="title-sec"><span class="material-icons-round" style="cursor:pointer; margin-right:5px" onclick="closeAdminSub()">arrow_back</span> জরুরী সেবা ম্যানেজমেন্ট</div>
                     <div class="card">
@@ -866,7 +934,7 @@
                     </div>
                 </div>
 
-                <!-- NEW Admin Sub: Agriculture Information Management -->
+                <!-- Admin Sub: Agriculture Information Management -->
                 <div id="admin-sub-agri" style="display:none;">
                     <div class="title-sec"><span class="material-icons-round" style="cursor:pointer; margin-right:5px" onclick="closeAdminSub()">arrow_back</span> কৃষি তথ্য ম্যানেজমেন্ট</div>
                     <div class="card">
@@ -881,7 +949,7 @@
                     </div>
                 </div>
 
-                <!-- NEW Admin Sub: Transport/Driver Management -->
+                <!-- Admin Sub: Transport/Driver Management -->
                 <div id="admin-sub-transport" style="display:none;">
                     <div class="title-sec"><span class="material-icons-round" style="cursor:pointer; margin-right:5px" onclick="closeAdminSub()">arrow_back</span> যানবাহন ম্যানেজমেন্ট</div>
                     <div class="card">
@@ -902,6 +970,45 @@
                         <div id="admin-driver-list" style="max-height: 300px; overflow-y: auto;"></div>
                     </div>
                 </div>
+
+                <!-- NEW Admin Sub: Ambulance Management -->
+                <div id="admin-sub-ambulance" style="display:none;">
+                    <div class="title-sec"><span class="material-icons-round" style="cursor:pointer; margin-right:5px" onclick="closeAdminSub()">arrow_back</span> অ্যাম্বুলেন্স ম্যানেজমেন্ট</div>
+                    <div class="card">
+                        <input id="aamb-name" class="input-box" placeholder="নাম (যেমন: সিটি অ্যাম্বুলেন্স)">
+                        <input id="aamb-phone" class="input-box" placeholder="ফোন নম্বর">
+                        <button id="aamb-add" class="btn btn-success">যোগ করুন</button>
+                        <hr>
+                        <div class="title-sec">বর্তমান তালিকা</div>
+                        <div id="admin-ambulance-list" style="max-height: 300px; overflow-y: auto;"></div>
+                    </div>
+                </div>
+
+                <!-- NEW Admin Sub: Police Management -->
+                <div id="admin-sub-police" style="display:none;">
+                    <div class="title-sec"><span class="material-icons-round" style="cursor:pointer; margin-right:5px" onclick="closeAdminSub()">arrow_back</span> পুলিশ ম্যানেজমেন্ট</div>
+                    <div class="card">
+                        <input id="apol-name" class="input-box" placeholder="নাম (যেমন: থানা)">
+                        <input id="apol-phone" class="input-box" placeholder="ফোন নম্বর">
+                        <button id="apol-add" class="btn btn-success">যোগ করুন</button>
+                        <hr>
+                        <div class="title-sec">বর্তমান তালিকা</div>
+                        <div id="admin-police-list" style="max-height: 300px; overflow-y: auto;"></div>
+                    </div>
+                </div>
+
+                <!-- NEW Admin Sub: Fire Service Management -->
+                <div id="admin-sub-fire" style="display:none;">
+                    <div class="title-sec"><span class="material-icons-round" style="cursor:pointer; margin-right:5px" onclick="closeAdminSub()">arrow_back</span> ফায়ার সার্ভিস ম্যানেজমেন্ট</div>
+                    <div class="card">
+                        <input id="afire-name" class="input-box" placeholder="নাম (যেমন: ফায়ার স্টেশন)">
+                        <input id="afire-phone" class="input-box" placeholder="ফোন নম্বর">
+                        <button id="afire-add" class="btn btn-success">যোগ করুন</button>
+                        <hr>
+                        <div class="title-sec">বর্তমান তালিকা</div>
+                        <div id="admin-fire-list" style="max-height: 300px; overflow-y: auto;"></div>
+                    </div>
+                </div>
             </div>
         </main>
 
@@ -915,7 +1022,7 @@
 
         <!-- MODALS -->
 
-        <!-- User Detail Modal (unchanged) -->
+        <!-- User Detail Modal (updated with social icons) -->
         <div id="user-modal" class="modal-bg" onclick="if(event.target===this) closeModal('user-modal')">
             <div class="modal-content" style="text-align: center;">
                 <span class="material-icons-round close-icon" onclick="closeModal('user-modal')">close</span>
@@ -929,6 +1036,12 @@
                     <div style="display:flex; justify-content:space-between; margin-bottom:8px"><span>মোবাইল:</span><b id="um-phone">-</b></div>
                     <div style="display:flex; justify-content:space-between; margin-bottom:8px"><span>রক্তের গ্রুপ:</span><b id="um-blood" style="color:var(--danger)">-</b></div>
                     <div style="display:flex; justify-content:space-between"><span>ঠিকানা:</span><b id="um-addr">-</b></div>
+                </div>
+                <!-- Social Icons in User Modal -->
+                <div class="social-icons" style="justify-content: center; margin-top: 15px;">
+                    <a id="um-facebook" href="#" target="_blank" style="display: none;"><span class="material-icons-round" style="font-size: 30px; color: #1877f2;">thumb_up</span></a>
+                    <a id="um-whatsapp" href="#" target="_blank" style="display: none;"><span class="material-icons-round" style="font-size: 30px; color: #25D366;">chat</span></a>
+                    <a id="um-telegram" href="#" target="_blank" style="display: none;"><span class="material-icons-round" style="font-size: 30px; color: #0088cc;">send</span></a>
                 </div>
                 <a id="um-call" href="#" class="btn btn-success" style="margin-top: 15px; text-decoration: none;"><span class="material-icons-round">call</span> সরাসরি কল করুন</a>
             </div>
@@ -944,7 +1057,7 @@
             </div>
         </div>
 
-        <!-- Blood Modal (unchanged but will load from Firestore) -->
+        <!-- Blood Modal (unchanged) -->
         <div id="blood-modal" class="modal-bg" onclick="if(event.target===this) closeModal('blood-modal')">
             <div class="modal-content">
                 <span class="material-icons-round close-icon" onclick="closeModal('blood-modal')">close</span>
@@ -960,7 +1073,7 @@
             </div>
         </div>
 
-        <!-- Emergency Modal (dynamic) -->
+        <!-- Emergency Modal (unchanged) -->
         <div id="emergency-modal" class="modal-bg" onclick="if(event.target===this) closeModal('emergency-modal')">
             <div class="modal-content">
                 <span class="material-icons-round close-icon" onclick="closeModal('emergency-modal')">close</span>
@@ -969,7 +1082,7 @@
             </div>
         </div>
 
-        <!-- Agri Modal (dynamic) -->
+        <!-- Agri Modal (unchanged) -->
         <div id="agri-modal" class="modal-bg" onclick="if(event.target===this) closeModal('agri-modal')">
             <div class="modal-content">
                 <span class="material-icons-round close-icon" onclick="closeModal('agri-modal')">close</span>
@@ -978,13 +1091,57 @@
             </div>
         </div>
 
-        <!-- NEW Transport Modal -->
+        <!-- Transport Modal (unchanged) -->
         <div id="transport-modal" class="modal-bg" onclick="if(event.target===this) closeModal('transport-modal')">
             <div class="modal-content">
                 <span class="material-icons-round close-icon" onclick="closeModal('transport-modal')">close</span>
                 <h3 style="color:#0284c7; margin:0 0 15px;">🚛 যানবাহন ও ড্রাইভার</h3>
                 <input type="text" id="driver-search" class="input-box" placeholder="🔍 নাম, নম্বর বা গাড়ির ধরন খুঁজুন..." style="border-radius: 30px;">
                 <div id="driver-list" style="max-height: 400px; overflow-y: auto;"></div>
+            </div>
+        </div>
+
+        <!-- NEW Weather Modal -->
+        <div id="weather-modal" class="modal-bg" onclick="if(event.target===this) closeModal('weather-modal')">
+            <div class="modal-content" style="max-width: 500px;">
+                <span class="material-icons-round close-icon" onclick="closeModal('weather-modal')">close</span>
+                <h3 style="margin:0 0 10px; color:var(--primary);">🌤️ আবহাওয়া</h3>
+                <div id="weather-loading" style="text-align:center;">লোড হচ্ছে...</div>
+                <div id="weather-content" style="display:none;">
+                    <div style="display: flex; gap: 15px; margin-bottom: 20px;">
+                        <div class="weather-current-card" id="weather-parkhali" style="flex:1;"></div>
+                        <div class="weather-current-card" id="weather-terokhada" style="flex:1;"></div>
+                    </div>
+                    <div class="title-sec" style="margin-bottom: 10px;">১০ দিনের পূর্বাভাস</div>
+                    <div id="weather-forecast" style="display: flex; flex-direction: column; gap: 8px; max-height: 300px; overflow-y: auto;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- NEW Ambulance Modal -->
+        <div id="ambulance-modal" class="modal-bg" onclick="if(event.target===this) closeModal('ambulance-modal')">
+            <div class="modal-content">
+                <span class="material-icons-round close-icon" onclick="closeModal('ambulance-modal')">close</span>
+                <h3 style="color:var(--danger); margin:0 0 15px;">🚑 অ্যাম্বুলেন্স</h3>
+                <div id="ambulance-list" style="max-height: 400px; overflow-y: auto;"></div>
+            </div>
+        </div>
+
+        <!-- NEW Police Modal -->
+        <div id="police-modal" class="modal-bg" onclick="if(event.target===this) closeModal('police-modal')">
+            <div class="modal-content">
+                <span class="material-icons-round close-icon" onclick="closeModal('police-modal')">close</span>
+                <h3 style="color:var(--primary); margin:0 0 15px;">👮 পুলিশ</h3>
+                <div id="police-list" style="max-height: 400px; overflow-y: auto;"></div>
+            </div>
+        </div>
+
+        <!-- NEW Fire Service Modal -->
+        <div id="fire-modal" class="modal-bg" onclick="if(event.target===this) closeModal('fire-modal')">
+            <div class="modal-content">
+                <span class="material-icons-round close-icon" onclick="closeModal('fire-modal')">close</span>
+                <h3 style="color:var(--warning); margin:0 0 15px;">🔥 ফায়ার সার্ভিস</h3>
+                <div id="fire-list" style="max-height: 400px; overflow-y: auto;"></div>
             </div>
         </div>
 
@@ -1284,11 +1441,10 @@
 
         Object.keys(navBtns).forEach(k => document.getElementById(navBtns[k]).addEventListener('click', () => switchTab(k)));
 
-                // ========== AUTH ==========
+        // ========== AUTH ==========
         onAuthStateChanged(auth, async (user) => {
             setTimeout(() => document.getElementById('splash').style.display = 'none', 1500);
             
-            // Fix: ডাটাবেস এরর এর কারণে যেন অ্যাপ সাদা না হয়ে যায় তাই try-catch ব্যবহার করা হলো
             try {
                 await loadTheme();
             } catch (error) {
@@ -1397,9 +1553,8 @@
 
         // Helper to update driver collection based on user
         async function updateDriverFromUser(userId, userData) {
-            // If profession is Driver, add/update in drivers collection
             if (userData.profession === 'ড্রাইভার') {
-                const driverRef = doc(db, "drivers", userId); // use userId as doc id to keep unique
+                const driverRef = doc(db, "drivers", userId);
                 await setDoc(driverRef, {
                     name: userData.name,
                     phone: userData.phone,
@@ -1409,7 +1564,6 @@
                     updatedAt: serverTimestamp()
                 }, { merge: true });
             } else {
-                // If not driver, remove from drivers collection if exists
                 try {
                     await deleteDoc(doc(db, "drivers", userId));
                 } catch (e) { /* ignore if not exists */ }
@@ -1445,12 +1599,14 @@
                 photoURL: photoURL,
                 vehicleType: document.getElementById('set-vehicle')?.value || '',
                 country: document.getElementById('set-country')?.value || '',
-                institution: document.getElementById('set-institution')?.value || ''
+                institution: document.getElementById('set-institution')?.value || '',
+                facebook: document.getElementById('set-facebook').value,
+                whatsapp: document.getElementById('set-whatsapp').value,
+                telegram: document.getElementById('set-telegram').value
             };
 
             await updateDoc(doc(db, "users", auth.currentUser.uid), userData);
             
-            // Handle driver list update
             await updateDriverFromUser(auth.currentUser.uid, userData);
 
             showSuccessFull();
@@ -1504,7 +1660,7 @@
             }, 3500);
         }
 
-        // ========== NOTICES (unchanged) ==========
+        // ========== NOTICES ==========
         document.getElementById('an-image')?.addEventListener('change', function(e) {
             if (e.target.files[0]) {
                 const reader = new FileReader();
@@ -1577,7 +1733,7 @@
             });
         }
 
-        // ========== PLACES (unchanged) ==========
+        // ========== PLACES ==========
         window.loadPlaces = async (collectionName, listId) => {
             const l = document.getElementById(listId);
             l.innerHTML = "<p style='text-align:center;color:#94a3b8'>লোড হচ্ছে...</p>";
@@ -1614,7 +1770,7 @@
             openModal('place-modal');
         };
 
-        // ========== VILLAGERS (unchanged) ==========
+        // ========== VILLAGERS ==========
         let cachedV = [];
         async function loadVillagers() {
             const l = document.getElementById('villager-list');
@@ -1661,8 +1817,37 @@
             document.getElementById('um-blood').innerText = u.bloodGroup||'-';
             document.getElementById('um-addr').innerText = u.address||'-';
             document.getElementById('um-call').href = `tel:${u.phone}`;
+            
+            // Social links in user modal
+            const fbLink = document.getElementById('um-facebook');
+            const waLink = document.getElementById('um-whatsapp');
+            const tgLink = document.getElementById('um-telegram');
+            if (u.facebook) { fbLink.href = formatFacebook(u.facebook); fbLink.style.display = 'inline-block'; } else fbLink.style.display = 'none';
+            if (u.whatsapp) { waLink.href = formatWhatsApp(u.whatsapp); waLink.style.display = 'inline-block'; } else waLink.style.display = 'none';
+            if (u.telegram) { tgLink.href = formatTelegram(u.telegram); tgLink.style.display = 'inline-block'; } else tgLink.style.display = 'none';
+            
             openModal('user-modal');
         };
+
+        // ========== SOCIAL MEDIA LINK FORMATTING ==========
+        function formatFacebook(input) {
+            if (!input) return '#';
+            if (input.startsWith('http')) return input;
+            let username = input.replace(/[^a-zA-Z0-9.]/g, '');
+            return `https://facebook.com/${username}`;
+        }
+        function formatWhatsApp(input) {
+            if (!input) return '#';
+            if (input.includes('wa.me') || input.includes('whatsapp.com')) return input;
+            let phone = input.replace(/\D/g, '');
+            return `https://wa.me/${phone}`;
+        }
+        function formatTelegram(input) {
+            if (!input) return '#';
+            if (input.includes('t.me')) return input;
+            let username = input.replace(/[@\s]/g, '');
+            return `https://t.me/${username}`;
+        }
 
         // ========== BLOOD DONORS (now using Firestore collection 'blood_donors') ==========
         window.loadDonors = async (filter) => {
@@ -1692,7 +1877,7 @@
             loadDonors(document.getElementById('bd-filter').value);
         };
 
-        // ========== EMERGENCY SERVICES (Firestore collection 'emergency') ==========
+        // ========== EMERGENCY SERVICES ==========
         async function loadEmergencyContacts() {
             const list = document.getElementById('emergency-list');
             list.innerHTML = 'লোড হচ্ছে...';
@@ -1713,7 +1898,7 @@
             });
         }
 
-        // ========== AGRICULTURE INFO (Firestore collection 'agri_info') ==========
+        // ========== AGRICULTURE INFO ==========
         async function loadAgriInfo() {
             const list = document.getElementById('agri-list');
             list.innerHTML = 'লোড হচ্ছে...';
@@ -1779,7 +1964,7 @@
             loadDrivers(e.target.value);
         });
 
-        // ========== PROFILE (updated with conditional fields) ==========
+        // ========== PROFILE (updated with conditional fields and social) ==========
         async function loadProfile() {
             if(!auth.currentUser) return;
             const d = await getDoc(doc(db,"users",auth.currentUser.uid));
@@ -1793,6 +1978,11 @@
                 document.getElementById('up-phone').value = u.phone || '';
                 document.getElementById('up-blood').value = u.bloodGroup || '';
                 document.getElementById('up-addr').value = u.address || '';
+
+                // Social media fields in profile update
+                document.getElementById('up-facebook').value = u.facebook || '';
+                document.getElementById('up-whatsapp').value = u.whatsapp || '';
+                document.getElementById('up-telegram').value = u.telegram || '';
 
                 // Conditional fields
                 document.getElementById('up-vehicle').value = u.vehicleType || '';
@@ -1819,6 +2009,14 @@
                     <div class="info-chip"><span class="material-icons-round">bloodtype</span> ${u.bloodGroup || 'নেই'}</div>
                     <div class="info-chip"><span class="material-icons-round">location_on</span> ${u.address || 'নেই'}</div>
                 `;
+
+                // Social icons in profile view
+                const fbLink = document.getElementById('profile-facebook');
+                const waLink = document.getElementById('profile-whatsapp');
+                const tgLink = document.getElementById('profile-telegram');
+                if (u.facebook) { fbLink.href = formatFacebook(u.facebook); fbLink.style.display = 'inline-block'; } else fbLink.style.display = 'none';
+                if (u.whatsapp) { waLink.href = formatWhatsApp(u.whatsapp); waLink.style.display = 'inline-block'; } else waLink.style.display = 'none';
+                if (u.telegram) { tgLink.href = formatTelegram(u.telegram); tgLink.style.display = 'inline-block'; } else tgLink.style.display = 'none';
             }
         }
 
@@ -1845,7 +2043,10 @@
                 address: document.getElementById('up-addr').value,
                 vehicleType: document.getElementById('up-vehicle').value,
                 country: document.getElementById('up-country').value,
-                institution: document.getElementById('up-institution').value
+                institution: document.getElementById('up-institution').value,
+                facebook: document.getElementById('up-facebook').value,
+                whatsapp: document.getElementById('up-whatsapp').value,
+                telegram: document.getElementById('up-telegram').value
             };
             const fileInput = document.getElementById('profile-photo');
             if (fileInput.files[0]) {
@@ -1861,7 +2062,6 @@
             }
             await updateDoc(doc(db, "users", auth.currentUser.uid), updates);
             
-            // Update driver collection if needed
             await updateDriverFromUser(auth.currentUser.uid, updates);
 
             showToast('প্রোফাইল আপডেট হয়েছে');
@@ -1870,7 +2070,7 @@
             fileInput.value = '';
         };
 
-        // ========== GALLERY (unchanged) ==========
+        // ========== GALLERY ==========
         window.viewGalleryImage = (url) => {
             document.getElementById('gallery-modal-img').src = url;
             let downloadUrl = url;
@@ -1900,7 +2100,7 @@
             });
         }
 
-        // ========== SPORTS (unchanged) ==========
+        // ========== SPORTS ==========
         document.getElementById('sports-image')?.addEventListener('change', function(e) {
             if (e.target.files[0]) {
                 const reader = new FileReader();
@@ -1994,7 +2194,7 @@
             });
         }
 
-        // ========== MAP LINK (unchanged) ==========
+        // ========== MAP LINK ==========
         async function loadMapLink() {
             const mapDoc = await getDoc(doc(db, "settings", "map"));
             let mapUrl = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3690.697669145946!2d91.78287341535794!3d22.32712954756306!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30acd8000676fef3%3A0x6d9f8df5b6d519ff!2sChittagong!5e0!3m2!1sen!2sbd!4v1708240000000!5m2!1sen!2sbd";
@@ -2029,6 +2229,9 @@
             document.getElementById('admin-sub-emergency').style.display = 'none';
             document.getElementById('admin-sub-agri').style.display = 'none';
             document.getElementById('admin-sub-transport').style.display = 'none';
+            document.getElementById('admin-sub-ambulance').style.display = 'none';
+            document.getElementById('admin-sub-police').style.display = 'none';
+            document.getElementById('admin-sub-fire').style.display = 'none';
             document.getElementById('admin-sub-' + id).style.display = 'block';
             if (id === 'gallery') loadAdminGallery();
             if (id === 'theme') renderThemeGrid();
@@ -2038,6 +2241,9 @@
             if (id === 'emergency') loadAdminEmergency();
             if (id === 'agri') loadAdminAgri();
             if (id === 'transport') loadAdminDrivers();
+            if (id === 'ambulance') loadAdminAmbulance();
+            if (id === 'police') loadAdminPolice();
+            if (id === 'fire') loadAdminFire();
         };
 
         window.closeAdminSub = () => {
@@ -2053,6 +2259,9 @@
             document.getElementById('admin-sub-emergency').style.display = 'none';
             document.getElementById('admin-sub-agri').style.display = 'none';
             document.getElementById('admin-sub-transport').style.display = 'none';
+            document.getElementById('admin-sub-ambulance').style.display = 'none';
+            document.getElementById('admin-sub-police').style.display = 'none';
+            document.getElementById('admin-sub-fire').style.display = 'none';
             document.getElementById('admin-main').style.display = 'block';
         };
 
@@ -2062,7 +2271,6 @@
             document.getElementById('st-user').innerText = us.size; 
             document.getElementById('st-note').innerText = ns.size;
             
-            // Enhanced user list with name, phone, profession
             const ul = document.getElementById('admin-users'); ul.innerHTML="";
             us.forEach(d => {
                 const u=d.data();
@@ -2074,7 +2282,6 @@
                 </div>`;
             });
 
-            // Add search functionality for admin users
             document.getElementById('au-search').addEventListener('input', (e) => {
                 const q = e.target.value.toLowerCase();
                 document.querySelectorAll('#admin-users .list-item').forEach(el => {
@@ -2106,7 +2313,7 @@
             }
         };
 
-        // Admin Places (unchanged)
+        // Admin Places
         document.getElementById('ap-image').addEventListener('change', function(e) {
             if (e.target.files[0]) {
                 const reader = new FileReader();
@@ -2174,7 +2381,7 @@
         window.delU=async(id)=>{if(confirm('ইউজারকে ডিলিট করতে চান?')){await deleteDoc(doc(db,"users",id)); loadAdminData(); showToast('ইউজার ডিলিট');}};
         window.delB=async(id)=>{if(confirm('ব্যানারটি ডিলিট করতে চান?')){await deleteDoc(doc(db,"banners",id)); loadAdminData(); showToast('ব্যানার ডিলিট');}};
 
-        // Admin Gallery (unchanged)
+        // Admin Gallery
         async function loadAdminGallery() {
             const listDiv = document.getElementById('admin-gallery-list');
             listDiv.innerHTML = '<p style="text-align:center; color:#94a3b8;">লোড হচ্ছে...</p>';
@@ -2471,6 +2678,191 @@
                 el.style.display = text.includes(q) ? 'flex' : 'none';
             });
         });
+
+        // ========== WEATHER ==========
+        window.loadWeather = async function() {
+            document.getElementById('weather-loading').style.display = 'block';
+            document.getElementById('weather-content').style.display = 'none';
+            const locs = [
+                { name: 'পারখালী', lat: 22.95, lon: 89.68 },
+                { name: 'তেরখাদা', lat: 22.94, lon: 89.67 }
+            ];
+            try {
+                const promises = locs.map(loc => 
+                    fetch(`https://api.open-meteo.com/v1/forecast?latitude=${loc.lat}&longitude=${loc.lon}&current_weather=true&daily=weathercode,temperature_2m_max,temperature_2m_min&timezone=auto&forecast_days=10`)
+                    .then(res => res.json())
+                );
+                const results = await Promise.all(promises);
+                document.getElementById('weather-parkhali').innerHTML = formatCurrentWeather(locs[0], results[0]);
+                document.getElementById('weather-terokhada').innerHTML = formatCurrentWeather(locs[1], results[1]);
+                
+                const forecast = results[0].daily;
+                let forecastHtml = '';
+                for (let i = 0; i < forecast.time.length; i++) {
+                    const date = new Date(forecast.time[i]).toLocaleDateString('bn-BD', { weekday: 'short', day: 'numeric', month: 'short' });
+                    const max = forecast.temperature_2m_max[i];
+                    const min = forecast.temperature_2m_min[i];
+                    const weatherCode = forecast.weathercode[i];
+                    const condition = getWeatherCondition(weatherCode);
+                    forecastHtml += `
+                        <div style="display: flex; justify-content: space-between; align-items: center; background: #f8fafc; padding: 10px 15px; border-radius: 15px;">
+                            <span style="font-weight: 600;">${date}</span>
+                            <span>${condition}</span>
+                            <span><span style="color:var(--danger);">${max}°</span> / <span style="color:var(--primary);">${min}°</span></span>
+                        </div>
+                    `;
+                }
+                document.getElementById('weather-forecast').innerHTML = forecastHtml;
+                document.getElementById('weather-loading').style.display = 'none';
+                document.getElementById('weather-content').style.display = 'block';
+            } catch (e) {
+                document.getElementById('weather-loading').innerHTML = 'ডেটা লোড করতে সমস্যা হয়েছে';
+            }
+        };
+
+        function formatCurrentWeather(loc, data) {
+            const current = data.current_weather;
+            const condition = getWeatherCondition(current.weathercode);
+            return `
+                <h4 style="margin:0 0 5px;">${loc.name}</h4>
+                <div style="font-size: 2rem; font-weight: 700;">${current.temperature}°C</div>
+                <div>${condition}</div>
+                <div style="font-size:0.9rem;">বাতাস: ${current.windspeed} km/h</div>
+            `;
+        }
+
+        function getWeatherCondition(code) {
+            if (code === 0) return 'পরিষ্কার';
+            if (code === 1 || code === 2 || code === 3) return 'আংশিক মেঘলা';
+            if (code >= 45 && code <= 48) return 'কুয়াশা';
+            if (code >= 51 && code <= 55) return 'হালকা বৃষ্টি';
+            if (code >= 61 && code <= 65) return 'বৃষ্টি';
+            if (code >= 71 && code <= 75) return 'তুষার';
+            if (code >= 80 && code <= 82) return 'ঝড়ো বৃষ্টি';
+            return 'অন্যান্য';
+        }
+
+        // ========== NEW EMERGENCY SERVICES (Ambulance, Police, Fire) ==========
+        async function loadAmbulance() {
+            const list = document.getElementById('ambulance-list');
+            list.innerHTML = 'লোড হচ্ছে...';
+            const snaps = await getDocs(query(collection(db, "ambulance"), orderBy("createdAt", "desc")));
+            renderEmergencyList(list, snaps);
+        }
+        async function loadPolice() {
+            const list = document.getElementById('police-list');
+            list.innerHTML = 'লোড হচ্ছে...';
+            const snaps = await getDocs(query(collection(db, "police"), orderBy("createdAt", "desc")));
+            renderEmergencyList(list, snaps);
+        }
+        async function loadFire() {
+            const list = document.getElementById('fire-list');
+            list.innerHTML = 'লোড হচ্ছে...';
+            const snaps = await getDocs(query(collection(db, "fire"), orderBy("createdAt", "desc")));
+            renderEmergencyList(list, snaps);
+        }
+        function renderEmergencyList(container, snaps) {
+            container.innerHTML = '';
+            if (snaps.empty) {
+                container.innerHTML = '<p style="text-align:center; color:#94a3b8">কোনো তথ্য নেই</p>';
+                return;
+            }
+            snaps.forEach(doc => {
+                const data = doc.data();
+                container.innerHTML += `
+                    <div class="list-item">
+                        <div><h4 style="margin:0">${data.name}</h4><small>${data.phone}</small></div>
+                        <a href="tel:${data.phone}" class="call-btn" style="background:#e0f2fe; color:var(--primary)"><span class="material-icons-round">call</span></a>
+                    </div>
+                `;
+            });
+        }
+
+        // Admin functions for Ambulance, Police, Fire
+        async function loadAdminAmbulance() {
+            const list = document.getElementById('admin-ambulance-list');
+            list.innerHTML = 'লোড হচ্ছে...';
+            const snaps = await getDocs(query(collection(db, "ambulance"), orderBy("createdAt", "desc")));
+            renderAdminEmergencyList(list, snaps, 'ambulance');
+        }
+        async function loadAdminPolice() {
+            const list = document.getElementById('admin-police-list');
+            list.innerHTML = 'লোড হচ্ছে...';
+            const snaps = await getDocs(query(collection(db, "police"), orderBy("createdAt", "desc")));
+            renderAdminEmergencyList(list, snaps, 'police');
+        }
+        async function loadAdminFire() {
+            const list = document.getElementById('admin-fire-list');
+            list.innerHTML = 'লোড হচ্ছে...';
+            const snaps = await getDocs(query(collection(db, "fire"), orderBy("createdAt", "desc")));
+            renderAdminEmergencyList(list, snaps, 'fire');
+        }
+        function renderAdminEmergencyList(container, snaps, type) {
+            container.innerHTML = '';
+            snaps.forEach(doc => {
+                const data = doc.data();
+                container.innerHTML += `
+                    <div class="admin-banner-item">
+                        <div><b>${data.name}</b> - ${data.phone}</div>
+                        <div>
+                            <button onclick="editEmergencyItem('${type}', '${doc.id}', '${data.name}', '${data.phone}')" class="action-btn" style="background:var(--primary)">Edit</button>
+                            <button onclick="deleteEmergencyItem('${type}', '${doc.id}')" class="action-btn" style="background:var(--danger)">Del</button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+        window.editEmergencyItem = async (type, id, name, phone) => {
+            const newName = prompt('নাম পরিবর্তন করুন:', name);
+            if (newName === null) return;
+            const newPhone = prompt('ফোন নম্বর পরিবর্তন করুন:', phone);
+            if (newPhone === null) return;
+            await updateDoc(doc(db, type, id), { name: newName, phone: newPhone });
+            showToast('আপডেট হয়েছে');
+            if (type === 'ambulance') loadAdminAmbulance();
+            else if (type === 'police') loadAdminPolice();
+            else if (type === 'fire') loadAdminFire();
+        };
+        window.deleteEmergencyItem = async (type, id) => {
+            if (confirm('ডিলিট করতে চান?')) {
+                await deleteDoc(doc(db, type, id));
+                showToast('ডিলিট হয়েছে');
+                if (type === 'ambulance') loadAdminAmbulance();
+                else if (type === 'police') loadAdminPolice();
+                else if (type === 'fire') loadAdminFire();
+            }
+        };
+
+        document.getElementById('aamb-add').onclick = async () => {
+            const name = document.getElementById('aamb-name').value;
+            const phone = document.getElementById('aamb-phone').value;
+            if (!name || !phone) return alert('নাম ও ফোন দিন');
+            await addDoc(collection(db, "ambulance"), { name, phone, createdAt: serverTimestamp() });
+            showToast('যোগ হয়েছে');
+            document.getElementById('aamb-name').value = '';
+            document.getElementById('aamb-phone').value = '';
+            loadAdminAmbulance();
+        };
+        document.getElementById('apol-add').onclick = async () => {
+            const name = document.getElementById('apol-name').value;
+            const phone = document.getElementById('apol-phone').value;
+            if (!name || !phone) return alert('নাম ও ফোন দিন');
+            await addDoc(collection(db, "police"), { name, phone, createdAt: serverTimestamp() });
+            showToast('যোগ হয়েছে');
+            document.getElementById('apol-name').value = '';
+            document.getElementById('apol-phone').value = '';
+            loadAdminPolice();
+        };
+        document.getElementById('afire-add').onclick = async () => {
+            const name = document.getElementById('afire-name').value;
+            const phone = document.getElementById('afire-phone').value;
+            if (!name || !phone) return alert('নাম ও ফোন দিন');
+            await addDoc(collection(db, "fire"), { name, phone, createdAt: serverTimestamp() });
+            showToast('যোগ হয়েছে');
+            document.getElementById('afire-name').value = '';
+            document.getElementById('afire-phone').value = '';
+            loadAdminFire();
+        };
 
         // ========== INIT ==========
         setupProfessionListeners();
