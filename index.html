@@ -6,8 +6,6 @@
     <title>পারখালী স্মার্ট গ্রাম</title>
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
-    <!-- Font Awesome 6 (official colored icons) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         /* ================== THEME VARIABLES ================== */
         :root {
@@ -26,7 +24,7 @@
         }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
         body { font-family: 'Hind Siliguri', sans-serif; margin: 0; padding: 0; background: var(--bg); color: var(--text-main); padding-bottom: 90px; }
-        .container { max-width: 480px; margin: 0 auto; min-height: 100vh; position: relative; background: var(--bg); box-shadow: 0 0 20px rgba(0,0,0,0.05); }
+        .container { max-width: 480px; margin: 0 auto; min-height: 100vh; position: relative; background: var(--bg); box-shadow: 0 0 20px rgba(0,0,0,0.05); overflow-x: hidden; }
 
         /* ================== TOAST & LOADING ================== */
         #toast-message {
@@ -47,7 +45,7 @@
         }
         .spinner-small { width: 20px; height: 20px; border: 2px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 0.8s linear infinite; }
 
-        /* ================== HEADER (enhanced welcome & clock) ================== */
+        /* ================== HEADER (with text slider) ================== */
         header { background: var(--header-grad); color: white; padding: 1rem 1.2rem 1.8rem; border-bottom-left-radius: 25px; border-bottom-right-radius: 25px; position: relative; z-index: 10; transition: var(--transition); }
         .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
         .app-title { font-size: 1.3rem; font-weight: 700; display: flex; align-items: center; gap: 5px; }
@@ -59,70 +57,54 @@
             line-height: 1.3;
         }
         .time {
-            font-size: 1.6rem;   /* increased for readability */
-            font-weight: 700;     /* bolder */
+            font-size: 1.6rem;
+            font-weight: 700;
             letter-spacing: 0.5px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.2); /* subtle shadow */
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
         .date {
             font-size: 0.85rem;
             font-weight: 300;
             opacity: 0.9;
         }
-        .hero-text { margin-top: 5px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-        .hero-text h2 { margin: 0; font-size: 1.4rem; font-weight: 500; opacity: 0.9; }
-        .user-large {
-            font-size: 2rem;
-            font-weight: 700;
-            line-height: 1.2;
-            word-break: break-word;
-            background: rgba(255,255,255,0.15);
-            padding: 0.3rem 1rem;
-            border-radius: 50px;
-            backdrop-filter: blur(5px);
-            display: inline-block;
-            margin-top: 4px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            border: 1px solid rgba(255,255,255,0.3);
-            animation: fadeInUp 0.5s ease;
-        }
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* ---------- News Ticker (Header) ---------- */
-        .ticker-container {
-            width: 100%;
-            overflow: hidden;
-            background: rgba(0,0,0,0.15);
+        /* Premium Text Slider */
+        .text-slider {
+            margin-top: 8px;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
             border-radius: 40px;
-            margin-top: 12px;
-            padding: 8px 0;
-            white-space: nowrap;
-            backdrop-filter: blur(4px);
-            border: 1px solid rgba(255,255,255,0.2);
+            padding: 0.6rem 1rem;
+            border: 1px solid rgba(255,255,255,0.3);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            overflow: hidden;
+            height: 3.2rem;
+            display: flex;
+            align-items: center;
+            position: relative;
         }
-        .ticker-content {
-            display: inline-block;
-            animation: ticker 25s linear infinite;
-            font-family: 'Hind Siliguri', sans-serif;
-            font-size: 1rem;
-            font-weight: 500;
+        .slider-content {
+            display: flex;
+            transition: transform 0.5s ease;
+            width: 100%;
+        }
+        .slider-item {
+            flex: 0 0 100%;
+            text-align: center;
+            font-size: 1.3rem;
+            font-weight: 600;
             color: white;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
-            padding-left: 20px;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            padding: 0 0.5rem;
         }
-        .ticker-content:hover {
-            animation-play-state: paused;
-        }
-        @keyframes ticker {
-            0% { transform: translateX(100%); }
-            100% { transform: translateX(-100%); }
-        }
-        /* hide ticker by default (will be shown only on home via js) */
-        #header-ticker {
-            display: none;
+        /* Fallback for no texts */
+        .slider-placeholder {
+            color: white;
+            text-align: center;
+            font-size: 1.2rem;
+            width: 100%;
         }
 
         /* ================== MAIN & CARDS ================== */
@@ -163,36 +145,10 @@
         .glance-card .material-icons-round { font-size: 26px; padding: 10px; border-radius: 50%; margin-bottom: 2px; }
         .glance-title { font-size: 0.85rem; font-weight: 600; color: var(--text-main); }
 
-        /* Two-column row for Sports & Group Chat */
-        .sports-chat-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-        .action-card {
-            background: white;
-            padding: 15px 5px;
-            border-radius: 16px;
-            text-align: center;
-            box-shadow: var(--shadow);
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            border: 1px solid #f1f5f9;
-            transition: 0.2s;
-        }
-        .action-card:active { transform: scale(0.95); }
-        .action-card .material-icons-round { font-size: 26px; padding: 10px; border-radius: 50%; margin-bottom: 2px; }
-        .action-title { font-size: 0.9rem; font-weight: 600; color: var(--text-main); }
-
         /* ================== LISTS & CARDS ================== */
         .list-item { background: white; padding: 15px; border-radius: 16px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border: 1px solid #f1f5f9; cursor: pointer; transition: 0.2s; }
         .list-item:active { background: #f8fafc; }
-        .avatar { width: 45px; height: 45px; background: #eff6ff; color: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: bold; margin-right: 15px; overflow: hidden; cursor: pointer; }
+        .avatar { width: 45px; height: 45px; background: #eff6ff; color: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: bold; margin-right: 15px; overflow: hidden; }
         .avatar img { width: 100%; height: 100%; object-fit: cover; }
         .info h4 { margin: 0 0 3px; font-size: 1.05rem; }
         .info p { margin: 0; font-size: 0.85rem; color: var(--text-sub); }
@@ -205,47 +161,6 @@
         .service-card:active { transform: scale(0.97); }
         .s-icon { width: 55px; height: 55px; margin: 0 auto 10px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 28px; }
 
-        /* ================== IMPORTANT PERSONS GRID ================== */
-        .persons-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            margin-top: 10px;
-        }
-        .person-card {
-            background: white;
-            border-radius: 20px;
-            padding: 15px 10px;
-            text-align: center;
-            box-shadow: var(--shadow);
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .person-card:active { transform: scale(0.97); }
-        .person-avatar {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            margin: 0 auto 10px;
-            overflow: hidden;
-            background: #e2e8f0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 2px solid var(--primary);
-        }
-        .person-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        .person-avatar span { font-size: 40px; color: #94a3b8; }
-        .person-name {
-            font-weight: 700;
-            font-size: 1rem;
-            color: var(--text-main);
-        }
-
         /* ================== GALLERY GRID ================== */
         .gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 10px; }
         .gallery-item { position: relative; aspect-ratio: 1/1; border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); cursor: pointer; }
@@ -253,28 +168,10 @@
         .gallery-download { position: absolute; bottom: 5px; right: 5px; background: rgba(0,0,0,0.5); color: white; border-radius: 50%; padding: 4px; cursor: pointer; z-index: 2; }
 
         /* ================== SPORTS CARD ================== */
-        .sports-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 15px;
-            margin-top: 10px;
-        }
-        .sports-card {
-            background: white;
-            border-radius: 20px;
-            padding: 15px;
-            box-shadow: var(--shadow);
-            cursor: pointer;
-            transition: 0.2s;
-        }
+        .sports-grid { display: grid; grid-template-columns: 1fr; gap: 15px; margin-top: 10px; }
+        .sports-card { background: white; border-radius: 20px; padding: 15px; box-shadow: var(--shadow); cursor: pointer; transition: 0.2s; }
         .sports-card:active { transform: scale(0.98); }
-        .sports-card img {
-            width: 100%;
-            max-height: 180px;
-            object-fit: cover;
-            border-radius: 12px;
-            margin-bottom: 10px;
-        }
+        .sports-card img { width: 100%; max-height: 180px; object-fit: cover; border-radius: 12px; margin-bottom: 10px; }
         .sports-card h3 { margin: 0 0 5px; font-size: 1.2rem; color: var(--primary); }
         .sports-card p { margin: 0; color: var(--text-sub); font-size: 0.9rem; }
 
@@ -427,14 +324,13 @@
         }
         .info-chip .material-icons-round { font-size: 18px; color: var(--primary); }
 
-        /* Social Icons in Profile (now using Font Awesome) */
+        /* Social Icons in Profile */
         .social-icons {
             display: flex; gap: 20px; justify-content: center; margin: 15px 0;
         }
         .social-icons a {
             text-decoration: none;
             transition: transform 0.2s;
-            font-size: 30px;
         }
         .social-icons a:hover {
             transform: scale(1.1);
@@ -473,24 +369,258 @@
         .theme-item { height: 60px; border-radius: 12px; cursor: pointer; border: 2px solid transparent; transition: 0.2s; background-size: cover; }
         .theme-item.active { border-color: var(--primary); transform: scale(1.02); }
 
-        /* ================== WEATHER CARDS ================== */
-        .weather-current-card {
+        /* ================== WEATHER MODULE ================== */
+        .weather-large-card {
             background: linear-gradient(145deg, #0ea5e9, #38bdf8);
             padding: 15px;
             border-radius: 20px;
             color: white;
             box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            margin-bottom: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+        .weather-large-card h3 { margin: 0 0 5px; font-size: 1.3rem; }
+        .weather-temp-today { font-size: 3rem; font-weight: 700; line-height: 1; }
+        .weather-temp-tomorrow { font-size: 2rem; font-weight: 600; }
+        .weather-forecast-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f8fafc;
+            padding: 10px 15px;
+            border-radius: 15px;
+            margin-bottom: 5px;
+        }
+        /* Weather animations container */
+        .weather-animation {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        /* Rain */
+        .rain {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+        }
+        .rain:after {
+            content: '';
+            position: absolute;
+            top: -30%;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(transparent 0%, rgba(255,255,255,0.3) 30%, transparent 70%);
+            animation: rain-fall 0.5s linear infinite;
+            opacity: 0.4;
+        }
+        .rain.heavy:after {
+            animation-duration: 0.2s;
+            opacity: 0.8;
+            background: linear-gradient(transparent 0%, rgba(255,255,255,0.6) 30%, transparent 70%);
+        }
+        @keyframes rain-fall {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100%); }
+        }
+        /* Cloudy */
+        .cloud {
+            position: absolute;
+            top: 10%;
+            left: -10%;
+            width: 150px;
+            height: 70px;
+            background: rgba(255,255,255,0.7);
+            border-radius: 100px;
+            filter: blur(8px);
+            animation: cloud-move 15s linear infinite;
+            opacity: 0.5;
+        }
+        .cloud:before, .cloud:after {
+            content: '';
+            position: absolute;
+            background: rgba(255,255,255,0.7);
+            border-radius: 50%;
+        }
+        .cloud:before {
+            width: 70px;
+            height: 70px;
+            top: -30px;
+            left: 20px;
+        }
+        .cloud:after {
+            width: 90px;
+            height: 90px;
+            top: -40px;
+            left: 60px;
+        }
+        @keyframes cloud-move {
+            0% { left: -20%; }
+            100% { left: 120%; }
+        }
+        /* Sunny */
+        .sun {
+            position: absolute;
+            top: 10%;
+            right: 10%;
+            width: 60px;
+            height: 60px;
+            background: #ffeb3b;
+            border-radius: 50%;
+            box-shadow: 0 0 40px #ffeb3b;
+            animation: sun-pulse 3s infinite alternate;
+        }
+        @keyframes sun-pulse {
+            0% { transform: scale(0.9); opacity: 0.7; }
+            100% { transform: scale(1.1); opacity: 1; }
+        }
+        /* Windy/Stormy */
+        .wind {
+            position: absolute;
+            top: 20%;
+            left: 0;
+            width: 100%;
+            height: 10px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: wind-blow 2s linear infinite;
+        }
+        .wind:nth-child(2) { top: 40%; animation-delay: 0.5s; }
+        .wind:nth-child(3) { top: 60%; animation-delay: 1s; }
+        @keyframes wind-blow {
+            0% { transform: translateX(-100%); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translateX(100%); opacity: 0; }
+        }
+        /* Theme animations */
+        .theme-animation-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 5;
+            overflow: hidden;
+        }
+        /* Bangladesh flag */
+        .flag-bd {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 100px;
+            height: 60px;
+            background: #006a4e;
+            overflow: hidden;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+        }
+        .flag-bd .circle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 40px;
+            height: 40px;
+            background: #f42a41;
+            border-radius: 50%;
+            animation: flag-wave 0.3s infinite alternate ease-in-out;
+        }
+        @keyframes flag-wave {
+            0% { transform: translate(-50%, -50%) skewX(0deg); }
+            100% { transform: translate(-50%, -50%) skewX(3deg); }
+        }
+        /* Night sky */
+        .moon {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: #f5f0d7;
+            border-radius: 50%;
+            box-shadow: 0 0 30px #fff8e7;
+        }
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 0 10px white;
+            animation: twinkle 1.5s infinite alternate;
+        }
+        @keyframes twinkle {
+            0% { opacity: 0.2; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1.2); }
+        }
+        /* Language Movement */
+        .shaheed-minar {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            width: 80px;
+            height: 50px;
+            background: #b87333;
+            clip-path: polygon(0% 100%, 20% 0%, 40% 100%, 60% 0%, 80% 100%, 100% 0%);
+            animation: fade-pulse 2s infinite;
+        }
+        @keyframes fade-pulse {
+            0% { opacity: 0.4; }
+            100% { opacity: 1; }
+        }
+        /* Ramadan */
+        .crescent {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background: #f9e076;
+            border-radius: 50%;
+            box-shadow: -10px 0 0 0 #f9e076;
+            transform: rotate(25deg);
+        }
+        .lantern {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            width: 30px;
+            height: 40px;
+            background: #f39c12;
+            border-radius: 50% 50% 30% 30%;
+            animation: lantern-sway 2s infinite alternate;
+        }
+        .lantern:before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 10px;
+            height: 15px;
+            background: #f1c40f;
+            border-radius: 5px;
+        }
+        @keyframes lantern-sway {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(5deg); }
         }
 
-        /* ================== PROFILE IMAGE MODAL ================== */
-        #profile-image-modal .modal-content {
-            text-align: center;
-        }
-        #profile-image-modal img {
-            max-width: 100%;
-            max-height: 70vh;
-            border-radius: 12px;
-            margin: 15px 0;
+        /* ================== TEXT SLIDE ADMIN ================== */
+        .text-slide-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background: #f8fafc;
+            border-radius: 10px;
+            margin-bottom: 10px;
         }
     </style>
 </head>
@@ -517,6 +647,9 @@
         <span id="toast-text">Message</span>
     </div>
 
+    <!-- Theme Animation Container (for dynamic themes) -->
+    <div id="theme-animation" class="theme-animation-container"></div>
+
     <div class="container">
         <header>
             <div class="header-top">
@@ -526,14 +659,12 @@
                     <span class="date" id="current-date">---, -- --- ----</span>
                 </div>
             </div>
-            <div class="hero-text">
-                <h2 id="h-title">স্বাগতম!</h2>
-                <!-- Enhanced large user name with icon -->
-                <div class="user-large" id="user-large-name"></div>
-            </div>
-            <!-- News Ticker (visible only on home) -->
-            <div id="header-ticker" class="ticker-container">
-                <div class="ticker-content" id="ticker-text">শিরোনাম লোড হচ্ছে...</div>
+            <!-- Premium Text Slider (replaces static welcome & user name) -->
+            <div id="text-slider-container" class="text-slider">
+                <div id="slider-content" class="slider-content">
+                    <!-- Dynamic items will be inserted here -->
+                </div>
+                <div id="slider-placeholder" class="slider-placeholder" style="display: none;">Welcome to Parkhali</div>
             </div>
         </header>
 
@@ -635,17 +766,9 @@
                     </div>
                 </div>
 
-                <!-- New row: Sports and Group Chat (50/50 split) -->
-                <div class="sports-chat-row">
-                    <div class="action-card" onclick="switchTab('sports')">
-                        <span class="material-icons-round" style="color:#10b981; background:#d1fae5">sports_soccer</span>
-                        <span class="action-title">খেলাধুলা</span>
-                    </div>
-                    <div class="action-card" onclick="window.open('https://m.me/j/Abaz6EIudL4KyMZP/', '_blank')">
-                        <span class="material-icons-round" style="color:#2563eb; background:#dbeafe">chat</span>
-                        <span class="action-title">গ্রুপ চ্যাট</span>
-                    </div>
-                </div>
+                <button class="btn btn-outline" onclick="switchTab('sports')" style="margin-bottom: 15px;">
+                    <span class="material-icons-round">sports_soccer</span> খেলাধুলা
+                </button>
 
                 <div class="card" style="padding: 15px 10px;">
                     <div class="title-sec" style="margin-left: 5px;"><span class="material-icons-round">campaign</span> নোটিশ বোর্ড</div>
@@ -679,7 +802,7 @@
                 </div>
             </div>
 
-            <!-- SERVICES VIEW (updated with Weather, Ambulance, Police, Fire, and Important Persons) -->
+            <!-- SERVICES VIEW -->
             <div id="view-services" style="display: none;">
                 <div class="title-sec" style="margin-bottom: 20px; font-size: 1.2rem;">জনপ্রিয় সেবাসমূহ</div>
                 <div class="service-grid">
@@ -699,32 +822,26 @@
                         <div class="s-icon" style="background:#e0f2fe; color:#0284c7"><span class="material-icons-round">local_shipping</span></div>
                         <b>যানবাহন</b>
                     </div>
-                    <!-- NEW Weather card -->
+                    <!-- Weather card -->
                     <div class="service-card" onclick="openModal('weather-modal'); loadWeather()">
                         <div class="s-icon" style="background:#e0f2fe; color:#0284c7"><span class="material-icons-round">wb_sunny</span></div>
                         <b>আবহাওয়া</b>
                     </div>
-                    <!-- NEW Ambulance card -->
+                    <!-- Ambulance card -->
                     <div class="service-card" onclick="openModal('ambulance-modal'); loadAmbulance()">
                         <div class="s-icon" style="background:#fee2e2; color:var(--danger)"><span class="material-icons-round">local_hospital</span></div>
                         <b>অ্যাম্বুলেন্স</b>
                     </div>
-                    <!-- NEW Police card -->
+                    <!-- Police card -->
                     <div class="service-card" onclick="openModal('police-modal'); loadPolice()">
                         <div class="s-icon" style="background:#e0f2fe; color:var(--primary)"><span class="material-icons-round">local_police</span></div>
                         <b>পুলিশ</b>
                     </div>
-                    <!-- NEW Fire Service card -->
+                    <!-- Fire Service card -->
                     <div class="service-card" onclick="openModal('fire-modal'); loadFire()">
                         <div class="s-icon" style="background:#ffedd5; color:var(--warning)"><span class="material-icons-round">fire_truck</span></div>
                         <b>ফায়ার সার্ভিস</b>
                     </div>
-                </div>
-
-                <!-- Important Persons Section -->
-                <div class="title-sec" style="margin-top: 20px;">গুরুত্বপূর্ণ ব্যক্তি</div>
-                <div id="important-persons-grid" class="persons-grid">
-                    <p style="text-align:center; color:#94a3b8">লোড হচ্ছে...</p>
                 </div>
             </div>
 
@@ -739,7 +856,7 @@
                 </div>
             </div>
 
-            <!-- PROFILE VIEW (updated with social media fields) -->
+            <!-- PROFILE VIEW -->
             <div id="view-profile" style="display: none;">
                 <div class="card" style="padding: 0; overflow: hidden;">
                     <div class="profile-cover"></div>
@@ -759,11 +876,11 @@
                     <div class="info-grid" id="profile-info-grid">
                         <!-- Dynamically filled -->
                     </div>
-                    <!-- Social Icons for Profile (official colors) -->
+                    <!-- Social Icons for Profile -->
                     <div class="social-icons" id="profile-social-icons">
-                        <a id="profile-facebook" href="#" target="_blank" style="display: none;"><i class="fab fa-facebook-square" style="color: #1877f2;"></i></a>
-                        <a id="profile-whatsapp" href="#" target="_blank" style="display: none;"><i class="fab fa-whatsapp-square" style="color: #25D366;"></i></a>
-                        <a id="profile-telegram" href="#" target="_blank" style="display: none;"><i class="fab fa-telegram-plane" style="color: #0088cc;"></i></a>
+                        <a id="profile-facebook" href="#" target="_blank" style="display: none;"><span class="material-icons-round" style="font-size: 30px; color: #1877f2;">thumb_up</span></a>
+                        <a id="profile-whatsapp" href="#" target="_blank" style="display: none;"><span class="material-icons-round" style="font-size: 30px; color: #25D366;">chat</span></a>
+                        <a id="profile-telegram" href="#" target="_blank" style="display: none;"><span class="material-icons-round" style="font-size: 30px; color: #0088cc;">send</span></a>
                     </div>
                     <div style="padding: 0 1.2rem 1.2rem;">
                         <button id="profile-logout" class="btn btn-outline" style="color:var(--danger); border-color:var(--danger);"><span class="material-icons-round">logout</span> লগআউট</button>
@@ -829,7 +946,7 @@
 
             <!-- ADMIN VIEW -->
             <div id="view-admin" style="display: none;">
-                <!-- Admin Main Dashboard (updated with new cards) -->
+                <!-- Admin Main Dashboard -->
                 <div id="admin-main">
                     <div style="display: flex; gap: 10px; margin-bottom: 15px;">
                         <div class="admin-stat"><h2 id="st-user" style="margin:0">0</h2><small>Users</small></div>
@@ -869,7 +986,6 @@
                             <span class="material-icons-round">sports_volleyball</span>
                             <span>খেলাধুলা</span>
                         </div>
-                        <!-- Existing Admin Cards -->
                         <div class="exampro-card" onclick="openAdminSub('blood')">
                             <span class="material-icons-round">bloodtype</span>
                             <span>ব্লাড ডোনার</span>
@@ -886,7 +1002,7 @@
                             <span class="material-icons-round">local_shipping</span>
                             <span>যানবাহন</span>
                         </div>
-                        <!-- NEW Admin Cards for Ambulance, Police, Fire -->
+                        <!-- New Admin Cards -->
                         <div class="exampro-card" onclick="openAdminSub('ambulance')">
                             <span class="material-icons-round">local_hospital</span>
                             <span>অ্যাম্বুলেন্স</span>
@@ -899,15 +1015,15 @@
                             <span class="material-icons-round">fire_truck</span>
                             <span>ফায়ার সার্ভিস</span>
                         </div>
-                        <!-- NEW Important Persons Card -->
-                        <div class="exampro-card" onclick="openAdminSub('importantpersons')">
-                            <span class="material-icons-round">star</span>
-                            <span>গুরুত্বপূর্ণ ব্যক্তি</span>
+                        <!-- NEW: Text Slide Admin Card -->
+                        <div class="exampro-card" onclick="openAdminSub('textslide')">
+                            <span class="material-icons-round">subtitles</span>
+                            <span>টেক্সট স্লাইড</span>
                         </div>
                     </div>
                 </div>
 
-                <!-- Admin Sub: Places (unchanged) -->
+                <!-- Admin Sub: Places -->
                 <div id="admin-sub-places" style="display:none;">
                     <div class="title-sec"><span class="material-icons-round" style="cursor:pointer; margin-right:5px" onclick="closeAdminSub()">arrow_back</span> প্রতিষ্ঠান/স্থান যোগ করুন</div>
                     <div class="card">
@@ -937,7 +1053,7 @@
                     </div>
                 </div>
 
-                <!-- Admin Sub: Users (enhanced search) -->
+                <!-- Admin Sub: Users -->
                 <div id="admin-sub-users" style="display:none;">
                     <div class="title-sec"><span class="material-icons-round" style="cursor:pointer; margin-right:5px" onclick="closeAdminSub()">arrow_back</span> ইউজার কন্ট্রোল</div>
                     <div class="card">
@@ -946,7 +1062,7 @@
                     </div>
                 </div>
 
-                <!-- Admin Sub: Notices (unchanged) -->
+                <!-- Admin Sub: Notices -->
                 <div id="admin-sub-notices" style="display:none;">
                     <div class="title-sec"><span class="material-icons-round" style="cursor:pointer; margin-right:5px" onclick="closeAdminSub()">arrow_back</span> নোটিশ ম্যানেজমেন্ট</div>
                     <div class="card">
@@ -966,7 +1082,7 @@
                     </div>
                 </div>
 
-                <!-- Admin Sub: Banners (unchanged) -->
+                <!-- Admin Sub: Banners -->
                 <div id="admin-sub-banners" style="display:none;">
                     <div class="title-sec"><span class="material-icons-round" style="cursor:pointer; margin-right:5px" onclick="closeAdminSub()">arrow_back</span> ব্যানার ম্যানেজমেন্ট</div>
                     <div class="card">
@@ -982,7 +1098,7 @@
                     </div>
                 </div>
 
-                <!-- Admin Sub: Gallery (unchanged) -->
+                <!-- Admin Sub: Gallery -->
                 <div id="admin-sub-gallery" style="display:none;">
                     <div class="title-sec"><span class="material-icons-round" style="cursor:pointer; margin-right:5px" onclick="closeAdminSub()">arrow_back</span> গ্যালারি ম্যানেজমেন্ট</div>
                     <div class="card">
@@ -996,7 +1112,7 @@
                     </div>
                 </div>
 
-                <!-- Admin Sub: Theme (unchanged) -->
+                <!-- Admin Sub: Theme -->
                 <div id="admin-sub-theme" style="display:none;">
                     <div class="title-sec"><span class="material-icons-round" style="cursor:pointer; margin-right:5px" onclick="closeAdminSub()">arrow_back</span> থিম কাস্টমাইজার</div>
                     <div class="card">
@@ -1008,7 +1124,7 @@
                     </div>
                 </div>
 
-                <!-- Admin Sub: Map link (unchanged) -->
+                <!-- Admin Sub: Map link -->
                 <div id="admin-sub-map" style="display:none;">
                     <div class="title-sec"><span class="material-icons-round" style="cursor:pointer; margin-right:5px" onclick="closeAdminSub()">arrow_back</span> ম্যাপ লিংক সেটিংস</div>
                     <div class="card">
@@ -1019,7 +1135,7 @@
                     </div>
                 </div>
 
-                <!-- Admin Sub: Sports (unchanged) -->
+                <!-- Admin Sub: Sports -->
                 <div id="admin-sub-sports" style="display:none;">
                     <div class="title-sec"><span class="material-icons-round" style="cursor:pointer; margin-right:5px" onclick="closeAdminSub()">arrow_back</span> খেলাধুলা ম্যানেজমেন্ট</div>
                     <div class="card">
@@ -1109,7 +1225,7 @@
                     </div>
                 </div>
 
-                <!-- NEW Admin Sub: Ambulance Management -->
+                <!-- Admin Sub: Ambulance Management -->
                 <div id="admin-sub-ambulance" style="display:none;">
                     <div class="title-sec"><span class="material-icons-round" style="cursor:pointer; margin-right:5px" onclick="closeAdminSub()">arrow_back</span> অ্যাম্বুলেন্স ম্যানেজমেন্ট</div>
                     <div class="card">
@@ -1122,7 +1238,7 @@
                     </div>
                 </div>
 
-                <!-- NEW Admin Sub: Police Management -->
+                <!-- Admin Sub: Police Management -->
                 <div id="admin-sub-police" style="display:none;">
                     <div class="title-sec"><span class="material-icons-round" style="cursor:pointer; margin-right:5px" onclick="closeAdminSub()">arrow_back</span> পুলিশ ম্যানেজমেন্ট</div>
                     <div class="card">
@@ -1135,7 +1251,7 @@
                     </div>
                 </div>
 
-                <!-- NEW Admin Sub: Fire Service Management -->
+                <!-- Admin Sub: Fire Service Management -->
                 <div id="admin-sub-fire" style="display:none;">
                     <div class="title-sec"><span class="material-icons-round" style="cursor:pointer; margin-right:5px" onclick="closeAdminSub()">arrow_back</span> ফায়ার সার্ভিস ম্যানেজমেন্ট</div>
                     <div class="card">
@@ -1148,24 +1264,15 @@
                     </div>
                 </div>
 
-                <!-- NEW Admin Sub: Important Persons Management -->
-                <div id="admin-sub-importantpersons" style="display:none;">
-                    <div class="title-sec"><span class="material-icons-round" style="cursor:pointer; margin-right:5px" onclick="closeAdminSub()">arrow_back</span> গুরুত্বপূর্ণ ব্যক্তি</div>
+                <!-- NEW Admin Sub: Text Slide Management -->
+                <div id="admin-sub-textslide" style="display:none;">
+                    <div class="title-sec"><span class="material-icons-round" style="cursor:pointer; margin-right:5px" onclick="closeAdminSub()">arrow_back</span> টেক্সট স্লাইড ম্যানেজমেন্ট</div>
                     <div class="card">
-                        <input id="ip-name" class="input-box" placeholder="নাম">
-                        <input id="ip-phone" class="input-box" placeholder="মোবাইল নম্বর">
-                        <textarea id="ip-details" class="input-box" rows="2" placeholder="বিস্তারিত (ঐচ্ছিক)"></textarea>
-                        <div class="file-upload-area" id="ip-upload-area">
-                            <input type="file" id="ip-photo" accept="image/*">
-                            <span class="material-icons-round">add_photo_alternate</span>
-                            <p>ছবি আপলোড (আবশ্যক)</p>
-                        </div>
-                        <img id="ip-preview" class="image-preview" style="display:none;">
-                        <button id="ip-add" class="btn btn-success">যোগ করুন</button>
-                        
+                        <input id="ts-text" class="input-box" placeholder="স্লাইডের টেক্সট লিখুন">
+                        <button id="ts-add" class="btn btn-success">টেক্সট যোগ করুন</button>
                         <hr>
-                        <div class="title-sec">বর্তমান তালিকা</div>
-                        <div id="admin-importantpersons-list" style="max-height: 300px; overflow-y: auto;"></div>
+                        <div class="title-sec">বর্তমান টেক্সট সমূহ</div>
+                        <div id="admin-textslide-list" style="max-height: 300px; overflow-y: auto;"></div>
                     </div>
                 </div>
             </div>
@@ -1181,13 +1288,13 @@
 
         <!-- MODALS -->
 
-        <!-- User Detail Modal (updated: centered image, social icons with official colors) -->
+        <!-- User Detail Modal -->
         <div id="user-modal" class="modal-bg" onclick="if(event.target===this) closeModal('user-modal')">
             <div class="modal-content" style="text-align: center;">
                 <span class="material-icons-round close-icon" onclick="closeModal('user-modal')">close</span>
-                <div id="um-image-container" style="margin: 0 auto 15px; width: 120px; height: 120px; border-radius: 50%; overflow: hidden; background: #eff6ff; display: flex; align-items: center; justify-content: center; cursor: pointer;" onclick="window.showProfileImageModal('um-av-img-src')">
+                <div id="um-av" style="width:60px; height:60px; background:#eff6ff; color:var(--primary); border-radius:50%; font-size:28px; font-weight:bold; display:flex; align-items:center; justify-content:center; margin: 0 auto 10px; overflow:hidden;">
                     <img id="um-av-img" src="" style="width:100%; height:100%; object-fit:cover; display:none;">
-                    <span id="um-av-text" style="font-size: 48px; color: var(--primary);">A</span>
+                    <span id="um-av-text">A</span>
                 </div>
                 <h3 id="um-name" style="margin: 0;">Name</h3>
                 <p id="um-role" style="color:var(--text-sub); margin: 5px 0 15px;">Role</p>
@@ -1196,17 +1303,17 @@
                     <div style="display:flex; justify-content:space-between; margin-bottom:8px"><span>রক্তের গ্রুপ:</span><b id="um-blood" style="color:var(--danger)">-</b></div>
                     <div style="display:flex; justify-content:space-between"><span>ঠিকানা:</span><b id="um-addr">-</b></div>
                 </div>
-                <!-- Social Icons in User Modal (official colors) -->
+                <!-- Social Icons in User Modal -->
                 <div class="social-icons" style="justify-content: center; margin-top: 15px;">
-                    <a id="um-facebook" href="#" target="_blank" style="display: none;"><i class="fab fa-facebook-square" style="color: #1877f2;"></i></a>
-                    <a id="um-whatsapp" href="#" target="_blank" style="display: none;"><i class="fab fa-whatsapp-square" style="color: #25D366;"></i></a>
-                    <a id="um-telegram" href="#" target="_blank" style="display: none;"><i class="fab fa-telegram-plane" style="color: #0088cc;"></i></a>
+                    <a id="um-facebook" href="#" target="_blank" style="display: none;"><span class="material-icons-round" style="font-size: 30px; color: #1877f2;">thumb_up</span></a>
+                    <a id="um-whatsapp" href="#" target="_blank" style="display: none;"><span class="material-icons-round" style="font-size: 30px; color: #25D366;">chat</span></a>
+                    <a id="um-telegram" href="#" target="_blank" style="display: none;"><span class="material-icons-round" style="font-size: 30px; color: #0088cc;">send</span></a>
                 </div>
                 <a id="um-call" href="#" class="btn btn-success" style="margin-top: 15px; text-decoration: none;"><span class="material-icons-round">call</span> সরাসরি কল করুন</a>
             </div>
         </div>
 
-        <!-- Place Detail Modal (unchanged) -->
+        <!-- Place Detail Modal -->
         <div id="place-modal" class="modal-bg" onclick="if(event.target===this) closeModal('place-modal')">
             <div class="modal-content">
                 <span class="material-icons-round close-icon" onclick="closeModal('place-modal')">close</span>
@@ -1216,7 +1323,7 @@
             </div>
         </div>
 
-        <!-- Blood Modal (unchanged) -->
+        <!-- Blood Modal -->
         <div id="blood-modal" class="modal-bg" onclick="if(event.target===this) closeModal('blood-modal')">
             <div class="modal-content">
                 <span class="material-icons-round close-icon" onclick="closeModal('blood-modal')">close</span>
@@ -1232,7 +1339,7 @@
             </div>
         </div>
 
-        <!-- Emergency Modal (unchanged) -->
+        <!-- Emergency Modal -->
         <div id="emergency-modal" class="modal-bg" onclick="if(event.target===this) closeModal('emergency-modal')">
             <div class="modal-content">
                 <span class="material-icons-round close-icon" onclick="closeModal('emergency-modal')">close</span>
@@ -1241,7 +1348,7 @@
             </div>
         </div>
 
-        <!-- Agri Modal (unchanged) -->
+        <!-- Agri Modal -->
         <div id="agri-modal" class="modal-bg" onclick="if(event.target===this) closeModal('agri-modal')">
             <div class="modal-content">
                 <span class="material-icons-round close-icon" onclick="closeModal('agri-modal')">close</span>
@@ -1250,7 +1357,7 @@
             </div>
         </div>
 
-        <!-- Transport Modal (unchanged) -->
+        <!-- Transport Modal -->
         <div id="transport-modal" class="modal-bg" onclick="if(event.target===this) closeModal('transport-modal')">
             <div class="modal-content">
                 <span class="material-icons-round close-icon" onclick="closeModal('transport-modal')">close</span>
@@ -1260,16 +1367,24 @@
             </div>
         </div>
 
-        <!-- NEW Weather Modal -->
+        <!-- NEW Weather Modal (Parkhali only) -->
         <div id="weather-modal" class="modal-bg" onclick="if(event.target===this) closeModal('weather-modal')">
             <div class="modal-content" style="max-width: 500px;">
                 <span class="material-icons-round close-icon" onclick="closeModal('weather-modal')">close</span>
-                <h3 style="margin:0 0 10px; color:var(--primary);">🌤️ আবহাওয়া</h3>
+                <h3 style="margin:0 0 10px; color:var(--primary);">🌤️ পারখালীর আবহাওয়া</h3>
                 <div id="weather-loading" style="text-align:center;">লোড হচ্ছে...</div>
                 <div id="weather-content" style="display:none;">
-                    <div style="display: flex; gap: 15px; margin-bottom: 20px;">
-                        <div class="weather-current-card" id="weather-parkhali" style="flex:1;"></div>
-                        <div class="weather-current-card" id="weather-terokhada" style="flex:1;"></div>
+                    <!-- Large Today/Tomorrow Card -->
+                    <div id="weather-large" class="weather-large-card">
+                        <div id="weather-animation" class="weather-animation"></div>
+                        <h3>আজ</h3>
+                        <div id="weather-today" class="weather-temp-today">--°C</div>
+                        <div id="weather-today-condition"></div>
+                        <div style="margin-top: 15px;">
+                            <h4>আগামীকাল</h4>
+                            <div id="weather-tomorrow" class="weather-temp-tomorrow">--°C</div>
+                            <div id="weather-tomorrow-condition"></div>
+                        </div>
                     </div>
                     <div class="title-sec" style="margin-bottom: 10px;">১০ দিনের পূর্বাভাস</div>
                     <div id="weather-forecast" style="display: flex; flex-direction: column; gap: 8px; max-height: 300px; overflow-y: auto;"></div>
@@ -1277,7 +1392,7 @@
             </div>
         </div>
 
-        <!-- NEW Ambulance Modal -->
+        <!-- Ambulance Modal -->
         <div id="ambulance-modal" class="modal-bg" onclick="if(event.target===this) closeModal('ambulance-modal')">
             <div class="modal-content">
                 <span class="material-icons-round close-icon" onclick="closeModal('ambulance-modal')">close</span>
@@ -1286,7 +1401,7 @@
             </div>
         </div>
 
-        <!-- NEW Police Modal -->
+        <!-- Police Modal -->
         <div id="police-modal" class="modal-bg" onclick="if(event.target===this) closeModal('police-modal')">
             <div class="modal-content">
                 <span class="material-icons-round close-icon" onclick="closeModal('police-modal')">close</span>
@@ -1295,7 +1410,7 @@
             </div>
         </div>
 
-        <!-- NEW Fire Service Modal -->
+        <!-- Fire Service Modal -->
         <div id="fire-modal" class="modal-bg" onclick="if(event.target===this) closeModal('fire-modal')">
             <div class="modal-content">
                 <span class="material-icons-round close-icon" onclick="closeModal('fire-modal')">close</span>
@@ -1304,18 +1419,7 @@
             </div>
         </div>
 
-        <!-- NEW Important Person Modal -->
-        <div id="important-person-modal" class="modal-bg" onclick="if(event.target===this) closeModal('important-person-modal')">
-            <div class="modal-content" style="text-align: center;">
-                <span class="material-icons-round close-icon" onclick="closeModal('important-person-modal')">close</span>
-                <img id="ip-modal-img" src="" style="width: 100%; max-height: 250px; object-fit: contain; border-radius: 12px; margin-bottom: 15px; background: #f8fafc;">
-                <h3 id="ip-modal-name" style="margin: 0 0 5px;"></h3>
-                <p id="ip-modal-details" style="color:var(--text-sub); margin-bottom: 10px;"></p>
-                <a id="ip-modal-call" href="#" class="btn btn-success" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px;"><span class="material-icons-round">call</span> কল করুন</a>
-            </div>
-        </div>
-
-        <!-- Image View Modal for Gallery (unchanged) -->
+        <!-- Image View Modal for Gallery -->
         <div id="gallery-modal" class="modal-bg" onclick="if(event.target===this) closeModal('gallery-modal')">
             <div class="modal-content" style="text-align: center;">
                 <span class="material-icons-round close-icon" onclick="closeModal('gallery-modal')">close</span>
@@ -1327,16 +1431,7 @@
             </div>
         </div>
 
-        <!-- NEW Profile Image Modal (for villager list & details) -->
-        <div id="profile-image-modal" class="modal-bg" onclick="if(event.target===this) closeModal('profile-image-modal')">
-            <div class="modal-content" style="text-align: center;">
-                <span class="material-icons-round close-icon" onclick="closeModal('profile-image-modal')">close</span>
-                <h3 style="margin:0 0 10px; color:var(--text-main);">প্রোফাইল ছবি</h3>
-                <img id="profile-modal-img" src="" style="width:100%; max-height:60vh; object-fit:contain; border-radius:12px; margin-bottom:15px; background: #f8fafc;">
-            </div>
-        </div>
-
-        <!-- Notice Detail Modal (unchanged) -->
+        <!-- Notice Detail Modal -->
         <div id="notice-detail-modal" class="modal-bg" onclick="if(event.target===this) closeModal('notice-detail-modal')">
             <div class="modal-content" style="text-align: center;">
                 <span class="material-icons-round close-icon" onclick="closeModal('notice-detail-modal')">close</span>
@@ -1414,23 +1509,28 @@
         window.openModal = (id) => { const m=document.getElementById(id); m.style.display='flex'; setTimeout(()=>m.classList.add('show'), 10); }
         window.closeModal = (id) => { const m=document.getElementById(id); m.classList.remove('show'); setTimeout(()=>m.style.display='none', 300); }
 
-        // ========== THEME MANAGEMENT (unchanged) ==========
+        // ========== THEME MANAGEMENT (enhanced with animations) ==========
         const themes = [
-            { name: 'নীল', primary: '#2563eb', accent: '#10b981', grad: 'linear-gradient(135deg, #2563eb, #0891b2)' },
-            { name: 'সবুজ', primary: '#059669', accent: '#f59e0b', grad: 'linear-gradient(135deg, #059669, #10b981)' },
-            { name: 'লাল', primary: '#dc2626', accent: '#f97316', grad: 'linear-gradient(135deg, #dc2626, #f97316)' },
-            { name: 'বেগুনি', primary: '#7c3aed', accent: '#ec4899', grad: 'linear-gradient(135deg, #7c3aed, #ec4899)' },
-            { name: 'কমলা', primary: '#ea580c', accent: '#eab308', grad: 'linear-gradient(135deg, #ea580c, #eab308)' },
-            { name: 'পিংক', primary: '#db2777', accent: '#7c3aed', grad: 'linear-gradient(135deg, #db2777, #7c3aed)' },
-            { name: 'ভাষা দিবস', primary: '#b45309', accent: '#f59e0b', grad: 'linear-gradient(135deg, #b45309, #fbbf24)' },
-            { name: 'স্বাধীনতা দিবস', primary: '#b91c1c', accent: '#16a34a', grad: 'linear-gradient(135deg, #b91c1c, #16a34a)' },
-            { name: 'বিজয় দিবস', primary: '#1e3a8a', accent: '#059669', grad: 'linear-gradient(135deg, #1e3a8a, #059669)' },
-            { name: 'রামাদান', primary: '#2c3e50', accent: '#f1c40f', grad: 'linear-gradient(135deg, #2c3e50, #f1c40f)' },
-            { name: 'ঈদ', primary: '#16a34a', accent: '#fbbf24', grad: 'linear-gradient(135deg, #16a34a, #fbbf24)' },
-            { name: 'নিউ ইয়ার', primary: '#6b21a8', accent: '#eab308', grad: 'linear-gradient(135deg, #6b21a8, #eab308)' },
-            { name: 'শীত', primary: '#0f172a', accent: '#38bdf8', grad: 'linear-gradient(135deg, #0f172a, #38bdf8)' },
-            { name: 'গ্রীষ্ম', primary: '#c2410c', accent: '#fde047', grad: 'linear-gradient(135deg, #c2410c, #fde047)' },
-            { name: 'বর্ষা', primary: '#0284c7', accent: '#22c55e', grad: 'linear-gradient(135deg, #0284c7, #22c55e)' }
+            { name: 'নীল', primary: '#2563eb', accent: '#10b981', grad: 'linear-gradient(135deg, #2563eb, #0891b2)', themeClass: '' },
+            { name: 'সবুজ', primary: '#059669', accent: '#f59e0b', grad: 'linear-gradient(135deg, #059669, #10b981)', themeClass: '' },
+            { name: 'লাল', primary: '#dc2626', accent: '#f97316', grad: 'linear-gradient(135deg, #dc2626, #f97316)', themeClass: '' },
+            { name: 'বেগুনি', primary: '#7c3aed', accent: '#ec4899', grad: 'linear-gradient(135deg, #7c3aed, #ec4899)', themeClass: '' },
+            { name: 'কমলা', primary: '#ea580c', accent: '#eab308', grad: 'linear-gradient(135deg, #ea580c, #eab308)', themeClass: '' },
+            { name: 'পিংক', primary: '#db2777', accent: '#7c3aed', grad: 'linear-gradient(135deg, #db2777, #7c3aed)', themeClass: '' },
+            { name: 'ভাষা দিবস', primary: '#b45309', accent: '#f59e0b', grad: 'linear-gradient(135deg, #b45309, #fbbf24)', themeClass: '' },
+            { name: 'স্বাধীনতা দিবস', primary: '#b91c1c', accent: '#16a34a', grad: 'linear-gradient(135deg, #b91c1c, #16a34a)', themeClass: '' },
+            { name: 'বিজয় দিবস', primary: '#1e3a8a', accent: '#059669', grad: 'linear-gradient(135deg, #1e3a8a, #059669)', themeClass: '' },
+            { name: 'রামাদান', primary: '#2c3e50', accent: '#f1c40f', grad: 'linear-gradient(135deg, #2c3e50, #f1c40f)', themeClass: 'ramadan-theme' },
+            { name: 'ঈদ', primary: '#16a34a', accent: '#fbbf24', grad: 'linear-gradient(135deg, #16a34a, #fbbf24)', themeClass: '' },
+            { name: 'নিউ ইয়ার', primary: '#6b21a8', accent: '#eab308', grad: 'linear-gradient(135deg, #6b21a8, #eab308)', themeClass: '' },
+            { name: 'শীত', primary: '#0f172a', accent: '#38bdf8', grad: 'linear-gradient(135deg, #0f172a, #38bdf8)', themeClass: '' },
+            { name: 'গ্রীষ্ম', primary: '#c2410c', accent: '#fde047', grad: 'linear-gradient(135deg, #c2410c, #fde047)', themeClass: '' },
+            { name: 'বর্ষা', primary: '#0284c7', accent: '#22c55e', grad: 'linear-gradient(135deg, #0284c7, #22c55e)', themeClass: '' },
+            // New animated themes
+            { name: 'বাংলাদেশ', primary: '#006a4e', accent: '#f42a41', grad: 'linear-gradient(135deg, #006a4e, #f42a41)', themeClass: 'bangladesh-theme' },
+            { name: 'নাইট স্কাই', primary: '#0f172a', accent: '#38bdf8', grad: 'linear-gradient(135deg, #0f172a, #1e293b)', themeClass: 'night-theme' },
+            { name: 'একুশে ফেব্রুয়ারি', primary: '#b91c1c', accent: '#f59e0b', grad: 'linear-gradient(135deg, #b91c1c, #f97316)', themeClass: 'language-theme' },
+            { name: 'রমজান', primary: '#2c3e50', accent: '#f1c40f', grad: 'linear-gradient(135deg, #2c3e50, #f39c12)', themeClass: 'ramadan-theme' }
         ];
 
         async function loadTheme() {
@@ -1447,6 +1547,43 @@
             document.documentElement.style.setProperty('--primary', theme.primary);
             document.documentElement.style.setProperty('--accent', theme.accent);
             document.documentElement.style.setProperty('--header-grad', theme.grad);
+            
+            // Update theme animations
+            const animContainer = document.getElementById('theme-animation');
+            animContainer.innerHTML = '';
+            if (theme.themeClass === 'bangladesh-theme') {
+                animContainer.innerHTML = '<div class="flag-bd"><div class="circle"></div></div>';
+            } else if (theme.themeClass === 'night-theme') {
+                animContainer.innerHTML = '<div class="moon"></div>';
+                // Add stars
+                for (let i = 0; i < 20; i++) {
+                    const star = document.createElement('div');
+                    star.className = 'star';
+                    star.style.top = Math.random() * 80 + '%';
+                    star.style.left = Math.random() * 80 + '%';
+                    star.style.width = Math.random() * 4 + 2 + 'px';
+                    star.style.height = star.style.width;
+                    star.style.animationDelay = Math.random() * 2 + 's';
+                    animContainer.appendChild(star);
+                }
+            } else if (theme.themeClass === 'language-theme') {
+                animContainer.innerHTML = '<div class="shaheed-minar"></div>';
+                for (let i = 0; i < 3; i++) {
+                    const ray = document.createElement('div');
+                    ray.style.position = 'absolute';
+                    ray.style.background = '#ffaa33';
+                    ray.style.width = '2px';
+                    ray.style.height = '20px';
+                    ray.style.bottom = '10px';
+                    ray.style.left = 20 + i * 15 + 'px';
+                    ray.style.transform = 'rotate(' + (i * 10 - 20) + 'deg)';
+                    ray.style.animation = 'fade-pulse 1.5s infinite alternate';
+                    ray.style.animationDelay = i * 0.2 + 's';
+                    animContainer.appendChild(ray);
+                }
+            } else if (theme.themeClass === 'ramadan-theme') {
+                animContainer.innerHTML = '<div class="crescent"></div><div class="lantern"></div>';
+            }
         }
 
         async function saveTheme(theme) {
@@ -1472,7 +1609,7 @@
             getDoc(doc(db, "settings", "appearance")).then(doc => {
                 if (doc.exists()) {
                     const curr = doc.data();
-                    const index = themes.findIndex(t => t.primary === curr.primary);
+                    const index = themes.findIndex(t => t.primary === curr.primary && t.accent === curr.accent);
                     if (index !== -1) grid.children[index]?.classList.add('active');
                 } else {
                     grid.children[0]?.classList.add('active');
@@ -1498,22 +1635,105 @@
         }
         setInterval(updateDateTime, 1000);
 
-        // ========== NEWS TICKER ==========
-        async function loadTicker() {
-            const tickerEl = document.getElementById('ticker-text');
-            try {
-                const snap = await getDocs(query(collection(db, "ticker_messages"), orderBy("order")));
-                if (!snap.empty) {
-                    const messages = snap.docs.map(d => d.data().text);
-                    tickerEl.innerText = messages.join('  •  ');
-                } else {
-                    // Default messages
-                    tickerEl.innerText = "পারখালী স্মার্ট গ্রামে আপনাকে স্বাগতম • নতুন বাজার উদ্বোধন • আগামী শুক্রবার বিশেষ মাহফিল";
-                }
-            } catch (e) {
-                tickerEl.innerText = "পারখালী স্মার্ট গ্রামে আপনাকে স্বাগতম";
+        // ========== TEXT SLIDER MANAGEMENT ==========
+        let sliderInterval;
+        let sliderTexts = [];
+
+        async function loadTextSlides() {
+            const snap = await getDocs(query(collection(db, "text_slides"), orderBy("order", "asc")));
+            sliderTexts = [];
+            snap.forEach(doc => sliderTexts.push({ id: doc.id, text: doc.data().text }));
+            renderTextSlider();
+        }
+
+        function renderTextSlider() {
+            const container = document.getElementById('slider-content');
+            const placeholder = document.getElementById('slider-placeholder');
+            if (sliderTexts.length === 0) {
+                container.innerHTML = '';
+                placeholder.style.display = 'block';
+                return;
+            }
+            placeholder.style.display = 'none';
+            container.innerHTML = '';
+            sliderTexts.forEach((item, index) => {
+                const div = document.createElement('div');
+                div.className = 'slider-item';
+                div.innerText = item.text;
+                container.appendChild(div);
+            });
+            // Start slider if more than one
+            if (sliderInterval) clearInterval(sliderInterval);
+            if (sliderTexts.length > 1) {
+                let current = 0;
+                container.style.transform = `translateX(-${current * 100}%)`;
+                sliderInterval = setInterval(() => {
+                    current = (current + 1) % sliderTexts.length;
+                    container.style.transform = `translateX(-${current * 100}%)`;
+                }, 4000);
+            } else {
+                container.style.transform = 'translateX(0)';
             }
         }
+
+        // Admin Text Slide Management
+        async function loadAdminTextSlides() {
+            const list = document.getElementById('admin-textslide-list');
+            list.innerHTML = 'লোড হচ্ছে...';
+            const snaps = await getDocs(query(collection(db, "text_slides"), orderBy("order", "asc")));
+            list.innerHTML = '';
+            if (snaps.empty) {
+                list.innerHTML = '<p style="text-align:center; color:#94a3b8;">কোনো টেক্সট নেই</p>';
+                return;
+            }
+            snaps.forEach((doc, index) => {
+                const data = doc.data();
+                list.innerHTML += `
+                    <div class="text-slide-item">
+                        <div style="flex:1">${data.text}</div>
+                        <div>
+                            <button onclick="editTextSlide('${doc.id}', '${data.text}')" class="action-btn" style="background:var(--primary)">Edit</button>
+                            <button onclick="deleteTextSlide('${doc.id}')" class="action-btn" style="background:var(--danger)">Del</button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        window.editTextSlide = (id, oldText) => {
+            const newText = prompt('টেক্সট পরিবর্তন করুন:', oldText);
+            if (newText && newText !== oldText) {
+                updateDoc(doc(db, "text_slides", id), { text: newText });
+                showToast('আপডেট হয়েছে');
+                loadAdminTextSlides();
+                loadTextSlides();
+            }
+        };
+
+        window.deleteTextSlide = async (id) => {
+            if (confirm('ডিলিট করতে চান?')) {
+                await deleteDoc(doc(db, "text_slides", id));
+                showToast('ডিলিট হয়েছে');
+                loadAdminTextSlides();
+                loadTextSlides();
+            }
+        };
+
+        document.getElementById('ts-add').onclick = async () => {
+            const text = document.getElementById('ts-text').value;
+            if (!text) return alert('টেক্সট দিন');
+            // Get current max order
+            const snaps = await getDocs(query(collection(db, "text_slides"), orderBy("order", "desc")));
+            let maxOrder = 0;
+            if (!snaps.empty) {
+                maxOrder = snaps.docs[0].data().order || 0;
+            }
+            await addDoc(collection(db, "text_slides"), { text, order: maxOrder + 1, createdAt: serverTimestamp() });
+            showToast('টেক্সট যোগ হয়েছে');
+            document.getElementById('ts-text').value = '';
+            loadAdminTextSlides();
+            loadTextSlides();
+        };
 
         // ========== NAVIGATION & HISTORY ==========
         const tabs = { 
@@ -1541,79 +1761,37 @@
             }
 
             const hTitle = document.getElementById('h-title'); 
-            const userLarge = document.getElementById('user-large-name');
-            const ticker = document.getElementById('header-ticker');
+            // hTitle no longer used; we have text slider
 
             if(tabName === 'home') { 
-                hTitle.innerText="স্বাগতম!"; 
-                if (currentUserData && currentUserData.name) {
-                    userLarge.innerText = currentUserData.name;
-                } else if (auth.currentUser) {
-                    userLarge.innerText = auth.currentUser.email.split('@')[0] || '';
-                } else {
-                    userLarge.innerText = '';
-                }
                 loadBanners(); 
                 loadNotices(); 
-                loadTicker(); // load ticker content
-                ticker.style.display = 'block'; // show ticker only on home
             }
             else if(tabName === 'services') { 
-                hTitle.innerText="সেবাসমূহ"; 
-                userLarge.innerText = ''; 
-                ticker.style.display = 'none';
-                loadImportantPersons(); // load important persons when services tab opened
             }
             else if(tabName === 'villagers') { 
-                hTitle.innerText="গ্রামবাসী"; 
-                userLarge.innerText = ''; 
-                ticker.style.display = 'none';
                 loadVillagers(); 
             }
             else if(tabName === 'profile') { 
-                hTitle.innerText="প্রোফাইল"; 
-                userLarge.innerText = ''; 
-                ticker.style.display = 'none';
                 loadProfile(); 
             }
             else if(tabName === 'admin') { 
-                hTitle.innerText="অ্যাডমিন প্যানেল"; 
-                userLarge.innerText = ''; 
-                ticker.style.display = 'none';
                 window.closeAdminSub(); 
                 loadAdminData(); 
             }
             else if(tabName === 'mosque') { 
-                hTitle.innerText="মসজিদ"; 
-                userLarge.innerText = ''; 
-                ticker.style.display = 'none';
             }
             else if(tabName === 'school') { 
-                hTitle.innerText="বিদ্যালয়"; 
-                userLarge.innerText = ''; 
-                ticker.style.display = 'none';
             }
             else if(tabName === 'shop') { 
-                hTitle.innerText="দোকান"; 
-                userLarge.innerText = ''; 
-                ticker.style.display = 'none';
             }
             else if(tabName === 'map') { 
-                hTitle.innerText="ম্যাপ"; 
-                userLarge.innerText = ''; 
-                ticker.style.display = 'none';
                 loadMapLink(); 
             }
             else if(tabName === 'gallery') { 
-                hTitle.innerText="গ্যালারি"; 
-                userLarge.innerText = ''; 
-                ticker.style.display = 'none';
                 loadGallery(); 
             }
             else if(tabName === 'sports') { 
-                hTitle.innerText="খেলাধুলা"; 
-                userLarge.innerText = ''; 
-                ticker.style.display = 'none';
                 loadSportsPosts(); 
             }
 
@@ -1657,6 +1835,7 @@
             
             try {
                 await loadTheme();
+                await loadTextSlides(); // Load text slider on startup
             } catch (error) {
                 console.log("Theme load failed, applying default.", error);
             }
@@ -1685,7 +1864,6 @@
                 switchTab('auth');
             }
         });
-
 
         let isLog = true;
         document.getElementById('auth-toggle').onclick = () => {
@@ -2000,10 +2178,7 @@
                 const avatarHtml = u.photoURL ? `<img src="${u.photoURL}">` : u.name.charAt(0);
                 l.innerHTML += `
                 <div class="list-item" onclick="window.showU('${sData}')">
-                    <div style="display:flex;align-items:center">
-                        <div class="avatar" onclick="event.stopPropagation(); window.showProfileImage('${u.photoURL || ''}')">${avatarHtml}</div>
-                        <div class="info"><h4>${u.name}</h4><p>${u.profession||'পেশা নেই'}</p></div>
-                    </div>
+                    <div style="display:flex;align-items:center"><div class="avatar">${avatarHtml}</div><div class="info"><h4>${u.name}</h4><p>${u.profession||'পেশা নেই'}</p></div></div>
                     <a href="tel:${u.phone}" class="call-btn" onclick="event.stopPropagation()"><span class="material-icons-round">call</span></a>
                 </div>`;
             });
@@ -2012,21 +2187,6 @@
             const q = e.target.value.toLowerCase();
             renderV(cachedV.filter(u => u.name?.toLowerCase().includes(q) || u.phone?.includes(q) || u.profession?.toLowerCase().includes(q)));
         });
-
-        // Show profile image modal
-        window.showProfileImage = (url) => {
-            if (!url) return;
-            document.getElementById('profile-modal-img').src = url;
-            openModal('profile-image-modal');
-        };
-
-        window.showProfileImageModal = (imgElementId) => {
-            const img = document.getElementById(imgElementId);
-            if (img && img.src) {
-                window.showProfileImage(img.src);
-            }
-        };
-
         window.showU = (d) => {
             const u = JSON.parse(decodeURIComponent(d));
             document.getElementById('um-av-text').innerText = u.name.charAt(0);
@@ -2035,8 +2195,6 @@
                 avImg.src = u.photoURL;
                 avImg.style.display = 'block';
                 document.getElementById('um-av-text').style.display = 'none';
-                // store src for modal
-                document.getElementById('um-av-img').setAttribute('data-src', u.photoURL);
             } else {
                 avImg.style.display = 'none';
                 document.getElementById('um-av-text').style.display = 'block';
@@ -2048,7 +2206,7 @@
             document.getElementById('um-addr').innerText = u.address||'-';
             document.getElementById('um-call').href = `tel:${u.phone}`;
             
-            // Social links in user modal (official colors)
+            // Social links in user modal
             const fbLink = document.getElementById('um-facebook');
             const waLink = document.getElementById('um-whatsapp');
             const tgLink = document.getElementById('um-telegram');
@@ -2079,7 +2237,7 @@
             return `https://t.me/${username}`;
         }
 
-        // ========== BLOOD DONORS (now using Firestore collection 'blood_donors') ==========
+        // ========== BLOOD DONORS ==========
         window.loadDonors = async (filter) => {
             const list = document.getElementById('bd-list');
             list.innerHTML = 'লোড হচ্ছে...';
@@ -2194,7 +2352,7 @@
             loadDrivers(e.target.value);
         });
 
-        // ========== PROFILE (updated with conditional fields and social) ==========
+        // ========== PROFILE ==========
         async function loadProfile() {
             if(!auth.currentUser) return;
             const d = await getDoc(doc(db,"users",auth.currentUser.uid));
@@ -2240,7 +2398,7 @@
                     <div class="info-chip"><span class="material-icons-round">location_on</span> ${u.address || 'নেই'}</div>
                 `;
 
-                // Social icons in profile view (official colors)
+                // Social icons in profile view
                 const fbLink = document.getElementById('profile-facebook');
                 const waLink = document.getElementById('profile-whatsapp');
                 const tgLink = document.getElementById('profile-telegram');
@@ -2444,124 +2602,7 @@
             closeAdminSub();
         });
 
-        // ========== IMPORTANT PERSONS ==========
-        async function loadImportantPersons() {
-            const grid = document.getElementById('important-persons-grid');
-            grid.innerHTML = '<p style="text-align:center; color:#94a3b8">লোড হচ্ছে...</p>';
-            const snaps = await getDocs(query(collection(db, "important_persons"), orderBy("createdAt", "desc")));
-            if (snaps.empty) {
-                grid.innerHTML = '<p style="text-align:center; color:#94a3b8">কোনো ব্যক্তি যোগ করা হয়নি</p>';
-                return;
-            }
-            grid.innerHTML = '';
-            snaps.forEach(doc => {
-                const data = doc.data();
-                const card = document.createElement('div');
-                card.className = 'person-card';
-                card.onclick = () => showImportantPerson(data);
-                let avatarHtml = '';
-                if (data.photoURL) {
-                    avatarHtml = `<img src="${data.photoURL}">`;
-                } else {
-                    avatarHtml = `<span class="material-icons-round">person</span>`;
-                }
-                card.innerHTML = `
-                    <div class="person-avatar">${avatarHtml}</div>
-                    <div class="person-name">${data.name}</div>
-                `;
-                grid.appendChild(card);
-            });
-        }
-
-        function showImportantPerson(person) {
-            document.getElementById('ip-modal-name').innerText = person.name;
-            document.getElementById('ip-modal-details').innerText = person.details || '';
-            document.getElementById('ip-modal-img').src = person.photoURL || '';
-            document.getElementById('ip-modal-call').href = `tel:${person.phone}`;
-            openModal('important-person-modal');
-        }
-
-        // Admin Important Persons
-        document.getElementById('ip-photo')?.addEventListener('change', function(e) {
-            if (e.target.files[0]) {
-                const reader = new FileReader();
-                reader.onload = (event) => {
-                    document.getElementById('ip-preview').src = event.target.result;
-                    document.getElementById('ip-preview').style.display = 'block';
-                };
-                reader.readAsDataURL(e.target.files[0]);
-            }
-        });
-
-        document.getElementById('ip-add').onclick = async () => {
-            const name = document.getElementById('ip-name').value;
-            const phone = document.getElementById('ip-phone').value;
-            const details = document.getElementById('ip-details').value;
-            const file = document.getElementById('ip-photo').files[0];
-            if (!name || !phone || !file) return alert('নাম, মোবাইল ও ছবি আবশ্যক');
-            const finish = showLoading(document.getElementById('ip-add'));
-            try {
-                const photoURL = await uploadToCloudinary(file);
-                await addDoc(collection(db, "important_persons"), {
-                    name, phone, details, photoURL, createdAt: serverTimestamp()
-                });
-                showToast('গুরুত্বপূর্ণ ব্যক্তি যোগ হয়েছে');
-                document.getElementById('ip-name').value = '';
-                document.getElementById('ip-phone').value = '';
-                document.getElementById('ip-details').value = '';
-                document.getElementById('ip-photo').value = '';
-                document.getElementById('ip-preview').style.display = 'none';
-                loadAdminImportantPersons();
-                if (document.getElementById('view-services').style.display === 'block') loadImportantPersons();
-            } catch (err) {
-                alert('আপলোড ব্যর্থ');
-            } finally {
-                finish();
-            }
-        };
-
-        async function loadAdminImportantPersons() {
-            const list = document.getElementById('admin-importantpersons-list');
-            list.innerHTML = 'লোড হচ্ছে...';
-            const snaps = await getDocs(query(collection(db, "important_persons"), orderBy("createdAt", "desc")));
-            list.innerHTML = '';
-            snaps.forEach(doc => {
-                const data = doc.data();
-                list.innerHTML += `
-                    <div class="admin-banner-item">
-                        <div><b>${data.name}</b> - ${data.phone}</div>
-                        <div>
-                            <button onclick="editImportantPerson('${doc.id}', '${data.name}', '${data.phone}', '${data.details || ''}')" class="action-btn" style="background:var(--primary)">Edit</button>
-                            <button onclick="deleteImportantPerson('${doc.id}')" class="action-btn" style="background:var(--danger)">Del</button>
-                        </div>
-                    </div>
-                `;
-            });
-        }
-
-        window.editImportantPerson = (id, name, phone, details) => {
-            const newName = prompt('নাম পরিবর্তন করুন:', name);
-            if (newName === null) return;
-            const newPhone = prompt('মোবাইল নম্বর পরিবর্তন করুন:', phone);
-            if (newPhone === null) return;
-            const newDetails = prompt('বিস্তারিত পরিবর্তন করুন:', details);
-            if (newDetails === null) return;
-            // For simplicity, we don't handle photo edit here; they can delete and re-add.
-            updateDoc(doc(db, "important_persons", id), { name: newName, phone: newPhone, details: newDetails });
-            showToast('আপডেট হয়েছে');
-            loadAdminImportantPersons();
-        };
-
-        window.deleteImportantPerson = async (id) => {
-            if (confirm('ডিলিট করতে চান?')) {
-                await deleteDoc(doc(db, "important_persons", id));
-                loadAdminImportantPersons();
-                if (document.getElementById('view-services').style.display === 'block') loadImportantPersons();
-                showToast('ডিলিট হয়েছে');
-            }
-        };
-
-        // ========== ADMIN PANEL (enhanced) ==========
+        // ========== ADMIN PANEL ==========
         window.openAdminSub = (id) => {
             document.getElementById('admin-main').style.display = 'none';
             document.getElementById('admin-sub-places').style.display = 'none';
@@ -2579,7 +2620,7 @@
             document.getElementById('admin-sub-ambulance').style.display = 'none';
             document.getElementById('admin-sub-police').style.display = 'none';
             document.getElementById('admin-sub-fire').style.display = 'none';
-            document.getElementById('admin-sub-importantpersons').style.display = 'none';
+            document.getElementById('admin-sub-textslide').style.display = 'none';
             document.getElementById('admin-sub-' + id).style.display = 'block';
             if (id === 'gallery') loadAdminGallery();
             if (id === 'theme') renderThemeGrid();
@@ -2592,7 +2633,7 @@
             if (id === 'ambulance') loadAdminAmbulance();
             if (id === 'police') loadAdminPolice();
             if (id === 'fire') loadAdminFire();
-            if (id === 'importantpersons') loadAdminImportantPersons();
+            if (id === 'textslide') loadAdminTextSlides();
         };
 
         window.closeAdminSub = () => {
@@ -2611,7 +2652,7 @@
             document.getElementById('admin-sub-ambulance').style.display = 'none';
             document.getElementById('admin-sub-police').style.display = 'none';
             document.getElementById('admin-sub-fire').style.display = 'none';
-            document.getElementById('admin-sub-importantpersons').style.display = 'none';
+            document.getElementById('admin-sub-textslide').style.display = 'none';
             document.getElementById('admin-main').style.display = 'block';
         };
 
@@ -3029,33 +3070,41 @@
             });
         });
 
-        // ========== WEATHER ==========
+        // ========== WEATHER (Parkhali only) ==========
         window.loadWeather = async function() {
             document.getElementById('weather-loading').style.display = 'block';
             document.getElementById('weather-content').style.display = 'none';
-            const locs = [
-                { name: 'পারখালী', lat: 22.95, lon: 89.68 },
-                { name: 'তেরখাদা', lat: 22.94, lon: 89.67 }
-            ];
+            // Parkhali coordinates (approx)
+            const lat = 22.95;
+            const lon = 89.68;
             try {
-                const promises = locs.map(loc => 
-                    fetch(`https://api.open-meteo.com/v1/forecast?latitude=${loc.lat}&longitude=${loc.lon}&current_weather=true&daily=weathercode,temperature_2m_max,temperature_2m_min&timezone=auto&forecast_days=10`)
-                    .then(res => res.json())
-                );
-                const results = await Promise.all(promises);
-                document.getElementById('weather-parkhali').innerHTML = formatCurrentWeather(locs[0], results[0]);
-                document.getElementById('weather-terokhada').innerHTML = formatCurrentWeather(locs[1], results[1]);
+                const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&daily=weathercode,temperature_2m_max,temperature_2m_min&timezone=auto&forecast_days=10`);
+                const data = await res.json();
                 
-                const forecast = results[0].daily;
+                const current = data.current_weather;
+                const daily = data.daily;
+                
+                // Today
+                document.getElementById('weather-today').innerText = current.temperature + '°C';
+                const todayCondition = getWeatherCondition(current.weathercode);
+                document.getElementById('weather-today-condition').innerText = todayCondition;
+                
+                // Tomorrow (index 1)
+                const tomorrowTemp = daily.temperature_2m_max[1] + '°C';
+                const tomorrowCode = daily.weathercode[1];
+                document.getElementById('weather-tomorrow').innerText = tomorrowTemp;
+                document.getElementById('weather-tomorrow-condition').innerText = getWeatherCondition(tomorrowCode);
+                
+                // 10-day forecast
                 let forecastHtml = '';
-                for (let i = 0; i < forecast.time.length; i++) {
-                    const date = new Date(forecast.time[i]).toLocaleDateString('bn-BD', { weekday: 'short', day: 'numeric', month: 'short' });
-                    const max = forecast.temperature_2m_max[i];
-                    const min = forecast.temperature_2m_min[i];
-                    const weatherCode = forecast.weathercode[i];
-                    const condition = getWeatherCondition(weatherCode);
+                for (let i = 0; i < daily.time.length; i++) {
+                    const date = new Date(daily.time[i]).toLocaleDateString('bn-BD', { weekday: 'short', day: 'numeric', month: 'short' });
+                    const max = daily.temperature_2m_max[i];
+                    const min = daily.temperature_2m_min[i];
+                    const code = daily.weathercode[i];
+                    const condition = getWeatherCondition(code);
                     forecastHtml += `
-                        <div style="display: flex; justify-content: space-between; align-items: center; background: #f8fafc; padding: 10px 15px; border-radius: 15px;">
+                        <div class="weather-forecast-item">
                             <span style="font-weight: 600;">${date}</span>
                             <span>${condition}</span>
                             <span><span style="color:var(--danger);">${max}°</span> / <span style="color:var(--primary);">${min}°</span></span>
@@ -3063,6 +3112,10 @@
                     `;
                 }
                 document.getElementById('weather-forecast').innerHTML = forecastHtml;
+                
+                // Set animation based on current weather
+                setWeatherAnimation(current.weathercode);
+                
                 document.getElementById('weather-loading').style.display = 'none';
                 document.getElementById('weather-content').style.display = 'block';
             } catch (e) {
@@ -3070,15 +3123,27 @@
             }
         };
 
-        function formatCurrentWeather(loc, data) {
-            const current = data.current_weather;
-            const condition = getWeatherCondition(current.weathercode);
-            return `
-                <h4 style="margin:0 0 5px;">${loc.name}</h4>
-                <div style="font-size: 2rem; font-weight: 700;">${current.temperature}°C</div>
-                <div>${condition}</div>
-                <div style="font-size:0.9rem;">বাতাস: ${current.windspeed} km/h</div>
-            `;
+        function setWeatherAnimation(code) {
+            const animDiv = document.getElementById('weather-animation');
+            animDiv.innerHTML = '';
+            if (code >= 51 && code <= 55) {
+                // Light rain
+                animDiv.innerHTML = '<div class="rain"></div>';
+            } else if (code >= 61 && code <= 65) {
+                // Heavy rain
+                animDiv.innerHTML = '<div class="rain heavy"></div>';
+            } else if (code === 1 || code === 2 || code === 3) {
+                // Cloudy
+                animDiv.innerHTML = '<div class="cloud"></div>';
+            } else if (code === 0) {
+                // Sunny
+                animDiv.innerHTML = '<div class="sun"></div>';
+            } else if (code >= 45 && code <= 48) {
+                // Foggy maybe, but we use wind?
+                animDiv.innerHTML = '<div class="wind"></div><div class="wind"></div><div class="wind"></div>';
+            } else {
+                // Default clear
+            }
         }
 
         function getWeatherCondition(code) {
@@ -3217,10 +3282,6 @@
         // ========== INIT ==========
         setupProfessionListeners();
         updateDateTime();
-        // Load ticker initially if on home
-        if (document.getElementById('view-home').style.display === 'block') {
-            loadTicker();
-        }
     </script>
 </body>
-</html>
+                            </html>
