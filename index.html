@@ -6,8 +6,6 @@
     <title>পারখালী স্মার্ট গ্রাম</title>
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
-    <!-- Font Awesome for official social icons (brand colors) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         /* ================== THEME VARIABLES ================== */
         :root {
@@ -47,7 +45,7 @@
         }
         .spinner-small { width: 20px; height: 20px; border: 2px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 0.8s linear infinite; }
 
-        /* ================== HEADER (with text slider - fixed marquee) ================== */
+        /* ================== HEADER (with text slider) ================== */
         header { background: var(--header-grad); color: white; padding: 1rem 1.2rem 1.8rem; border-bottom-left-radius: 25px; border-bottom-right-radius: 25px; position: relative; z-index: 10; transition: var(--transition); }
         .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
         .app-title { font-size: 1.3rem; font-weight: 700; display: flex; align-items: center; gap: 5px; }
@@ -69,7 +67,7 @@
             font-weight: 300;
             opacity: 0.9;
         }
-        /* Premium Text Slider - fixed: now a smooth marquee using CSS animation */
+        /* Premium Text Slider */
         .text-slider {
             margin-top: 8px;
             background: rgba(255,255,255,0.2);
@@ -83,23 +81,24 @@
             display: flex;
             align-items: center;
             position: relative;
-            white-space: nowrap;
         }
         .slider-content {
-            display: inline-block;
-            white-space: nowrap;
-            animation: scrollMarquee 20s linear infinite;
+            display: flex;
+            transition: transform 0.5s ease;
+            width: 100%;
+        }
+        .slider-item {
+            flex: 0 0 100%;
+            text-align: center;
             font-size: 1.3rem;
             font-weight: 600;
-            color: white;
+            color: white; /* default, will be overridden by dynamic color */
             text-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            font-family: 'Hind Siliguri', sans-serif; /* highly readable Bengali */
-            padding-right: 20px; /* space between end and restart */
-        }
-        /* Duplicate content for seamless loop is handled by JS */
-        @keyframes scrollMarquee {
-            0% { transform: translateX(100%); }
-            100% { transform: translateX(-100%); }
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            padding: 0 0.5rem;
+            transition: color 0.3s ease;
         }
         /* Fallback for no texts */
         .slider-placeholder {
@@ -108,8 +107,6 @@
             font-size: 1.2rem;
             width: 100%;
         }
-        /* hide slider on non-home pages */
-        .text-slider.hidden { display: none; }
 
         /* ================== MAIN & CARDS ================== */
         main { padding: 0 1rem; margin-top: -1.5rem; position: relative; z-index: 20; }
@@ -142,51 +139,50 @@
         .banner-img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 1s; }
         .banner-img.active { opacity: 1; }
 
-        /* ================== GLANCE GRID ================== */
-        .glance-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
-        .glance-card { background: white; padding: 12px 5px; border-radius: 16px; text-align: center; box-shadow: var(--shadow); cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; border: 1px solid #f1f5f9; transition: 0.2s; }
-        .glance-card:active { transform: scale(0.95); }
-        .glance-card .material-icons-round { font-size: 26px; padding: 10px; border-radius: 50%; margin-bottom: 2px; }
-        .glance-title { font-size: 0.85rem; font-weight: 600; color: var(--text-main); }
-
-        /* ================== HOME ACTION CARDS (Sports & Group Chat) ================== */
-        .home-action-row {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
+        /* ================== GLANCE GRID (UPDATED - Feature 1) ================== */
+        .glance-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px; /* reduced gap */
+            margin-bottom: 15px;
         }
-        .home-action-card {
-            flex: 1;
+        .glance-card {
             background: white;
-            border-radius: 16px;
-            padding: 15px 5px;
+            padding: 8px 4px; /* more compact */
+            border-radius: 14px; /* slightly smaller radius */
             text-align: center;
-            box-shadow: var(--shadow);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.04), 0 2px 4px rgba(0,0,0,0.02); /* premium shadow */
+            cursor: pointer;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            cursor: pointer;
-            transition: 0.2s;
-            border: 1px solid #f1f5f9;
+            gap: 4px;
+            border: 1px solid rgba(255,255,255,0.5);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
-        .home-action-card:active {
+        .glance-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 20px rgba(0,0,0,0.08);
+        }
+        .glance-card:active {
             transform: scale(0.96);
         }
-        .home-action-card .material-icons-round {
-            font-size: 32px;
-            color: var(--primary);
+        .glance-card .material-icons-round {
+            font-size: 22px; /* slightly smaller */
+            padding: 6px;
+            border-radius: 50%;
         }
-        .home-action-card .glance-title {
-            font-size: 1rem;
+        .glance-title {
+            font-size: 0.8rem;
             font-weight: 600;
+            color: var(--text-main);
         }
 
         /* ================== LISTS & CARDS ================== */
         .list-item { background: white; padding: 15px; border-radius: 16px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border: 1px solid #f1f5f9; cursor: pointer; transition: 0.2s; }
         .list-item:active { background: #f8fafc; }
-        .avatar { width: 45px; height: 45px; background: #eff6ff; color: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: bold; margin-right: 15px; overflow: hidden; cursor: pointer; }
+        .avatar { width: 45px; height: 45px; background: #eff6ff; color: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: bold; margin-right: 15px; overflow: hidden; }
         .avatar img { width: 100%; height: 100%; object-fit: cover; }
         .info h4 { margin: 0 0 3px; font-size: 1.05rem; }
         .info p { margin: 0; font-size: 0.85rem; color: var(--text-sub); }
@@ -199,7 +195,7 @@
         .service-card:active { transform: scale(0.97); }
         .s-icon { width: 55px; height: 55px; margin: 0 auto 10px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 28px; }
 
-        /* ================== GALLERY GRID (also for important persons) ================== */
+        /* ================== GALLERY GRID ================== */
         .gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 10px; }
         .gallery-item { position: relative; aspect-ratio: 1/1; border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); cursor: pointer; }
         .gallery-item img { width: 100%; height: 100%; object-fit: cover; }
@@ -362,21 +358,17 @@
         }
         .info-chip .material-icons-round { font-size: 18px; color: var(--primary); }
 
-        /* Social Icons in Profile (brand colors) */
+        /* Social Icons in Profile */
         .social-icons {
             display: flex; gap: 20px; justify-content: center; margin: 15px 0;
         }
         .social-icons a {
             text-decoration: none;
             transition: transform 0.2s;
-            font-size: 30px;
         }
         .social-icons a:hover {
             transform: scale(1.1);
         }
-        .fa-facebook { color: #1877f2; }
-        .fa-whatsapp { color: #25D366; }
-        .fa-telegram { color: #0088cc; }
 
         /* ================== NOTICE CARD ================== */
         .notice-card {
@@ -665,76 +657,45 @@
             margin-bottom: 10px;
         }
 
-        /* ================== IMPORTANT PERSONS GRID ================== */
-        .imp-person-grid {
+        /* ================== MARKET PRICE CARD (Feature 8) ================== */
+        .market-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
             gap: 12px;
             margin-top: 15px;
         }
-        .imp-person-card {
+        .market-card {
             background: white;
-            border-radius: 16px;
-            padding: 12px 5px;
+            border-radius: 20px;
+            padding: 15px 10px;
             text-align: center;
-            box-shadow: var(--shadow);
-            cursor: pointer;
-            transition: 0.2s;
-            border: 1px solid #f1f5f9;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border: 1px solid #eef2f6;
+            transition: transform 0.2s;
         }
-        .imp-person-card:active {
-            transform: scale(0.95);
+        .market-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
         }
-        .imp-person-avatar {
-            width: 70px;
-            height: 70px;
-            margin: 0 auto 8px;
-            border-radius: 50%;
-            overflow: hidden;
-            background: #eff6ff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 2px solid var(--primary);
-        }
-        .imp-person-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        .imp-person-avatar span {
-            font-size: 28px;
+        .market-card h4 {
+            margin: 0 0 8px;
+            font-size: 1.2rem;
             color: var(--primary);
         }
-        .imp-person-name {
-            font-weight: 600;
-            font-size: 0.9rem;
-            color: var(--text-main);
+        .market-price {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--accent);
+            line-height: 1.2;
         }
-
-        /* ================== USER MODAL LAYOUT FIX (image centered above name) ================== */
-        .um-avatar-large {
-            width: 120px;
-            height: 120px;
-            margin: 0 auto 15px;
-            border-radius: 50%;
-            overflow: hidden;
-            background: #eff6ff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 3px solid var(--primary);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            cursor: pointer;
+        .market-unit {
+            font-size: 0.85rem;
+            color: var(--text-sub);
         }
-        .um-avatar-large img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        .um-avatar-large span {
-            font-size: 48px;
-            color: var(--primary);
+        .market-updated {
+            font-size: 0.7rem;
+            color: #94a3b8;
+            margin-top: 8px;
         }
     </style>
 </head>
@@ -773,10 +734,10 @@
                     <span class="date" id="current-date">---, -- --- ----</span>
                 </div>
             </div>
-            <!-- Premium Text Slider (fixed marquee) - hidden by default, shown only on home -->
-            <div id="text-slider-container" class="text-slider hidden">
+            <!-- Premium Text Slider (replaces static welcome & user name) -->
+            <div id="text-slider-container" class="text-slider">
                 <div id="slider-content" class="slider-content">
-                    <!-- Dynamic items will be inserted here as a single text string -->
+                    <!-- Dynamic items will be inserted here -->
                 </div>
                 <div id="slider-placeholder" class="slider-placeholder" style="display: none;">Welcome to Parkhali</div>
             </div>
@@ -804,7 +765,7 @@
                     <p style="font-size: 0.85rem; color: var(--text-sub); margin-top:-10px; margin-bottom:15px">গ্রামবাসী তালিকায় যুক্ত হতে সঠিক তথ্য দিন</p>
                     <input id="set-name" class="input-box" placeholder="আপনার পূর্ণ নাম">
                     
-                    <!-- Profession Dropdown -->
+                    <!-- Profession Dropdown (UPDATED: added ডাক্তার) -->
                     <select id="set-prof" class="input-box">
                         <option value="">পেশা নির্বাচন করুন</option>
                         <option value="চাষি">চাষি</option>
@@ -813,6 +774,7 @@
                         <option value="ড্রাইভার">ড্রাইভার</option>
                         <option value="প্রবাসী">প্রবাসী</option>
                         <option value="ছাত্র">ছাত্র</option>
+                        <option value="ডাক্তার">ডাক্তার</option>
                         <option value="অন্যান্য">অন্যান্য</option>
                     </select>
                     
@@ -880,17 +842,9 @@
                     </div>
                 </div>
 
-                <!-- Home Action Row: Sports (50%) and Group Chat (50%) -->
-                <div class="home-action-row">
-                    <div class="home-action-card" onclick="switchTab('sports')">
-                        <span class="material-icons-round">sports_soccer</span>
-                        <span class="glance-title">খেলাধুলা</span>
-                    </div>
-                    <div class="home-action-card" onclick="window.open('https://m.me/j/Abaz6EIudL4KyMZP/')">
-                        <span class="material-icons-round">chat</span>
-                        <span class="glance-title">গ্রুপ চ্যাট</span>
-                    </div>
-                </div>
+                <button class="btn btn-outline" onclick="switchTab('sports')" style="margin-bottom: 15px;">
+                    <span class="material-icons-round">sports_soccer</span> খেলাধুলা
+                </button>
 
                 <div class="card" style="padding: 15px 10px;">
                     <div class="title-sec" style="margin-left: 5px;"><span class="material-icons-round">campaign</span> নোটিশ বোর্ড</div>
@@ -964,10 +918,20 @@
                         <div class="s-icon" style="background:#ffedd5; color:var(--warning)"><span class="material-icons-round">fire_truck</span></div>
                         <b>ফায়ার সার্ভিস</b>
                     </div>
-                    <!-- NEW: গুরুত্বপূর্ণ ব্যক্তি card -->
-                    <div class="service-card" onclick="switchTab('importantpersons')">
-                        <div class="s-icon" style="background:#fef9c3; color:#ca8a04"><span class="material-icons-round">star</span></div>
-                        <b>গুরুত্বপূর্ণ ব্যক্তি</b>
+                    <!-- NEW: Doctor card (Feature 4) -->
+                    <div class="service-card" onclick="openModal('doctor-modal'); loadDoctors()">
+                        <div class="s-icon" style="background:#e0f2fe; color:#2563eb"><span class="material-icons-round">medical_services</span></div>
+                        <b>ডাক্তার</b>
+                    </div>
+                    <!-- NEW: Group Chat card (Feature 2) -->
+                    <div class="service-card" onclick="openMessenger()">
+                        <div class="s-icon" style="background:#e0f2fe; color:#2563eb"><span class="material-icons-round">chat</span></div>
+                        <b>গ্রুপ চ্যাট</b>
+                    </div>
+                    <!-- NEW: Market Price card (Feature 8) -->
+                    <div class="service-card" onclick="switchTab('market')">
+                        <div class="s-icon" style="background:#fef9c3; color:#ca8a04"><span class="material-icons-round">shopping_cart</span></div>
+                        <b>বাজারদর</b>
                     </div>
                 </div>
             </div>
@@ -1003,11 +967,11 @@
                     <div class="info-grid" id="profile-info-grid">
                         <!-- Dynamically filled -->
                     </div>
-                    <!-- Social Icons for Profile (brand colors) -->
+                    <!-- Social Icons for Profile -->
                     <div class="social-icons" id="profile-social-icons">
-                        <a id="profile-facebook" href="#" target="_blank" style="display: none;"><i class="fab fa-facebook"></i></a>
-                        <a id="profile-whatsapp" href="#" target="_blank" style="display: none;"><i class="fab fa-whatsapp"></i></a>
-                        <a id="profile-telegram" href="#" target="_blank" style="display: none;"><i class="fab fa-telegram"></i></a>
+                        <a id="profile-facebook" href="#" target="_blank" style="display: none;"><span class="material-icons-round" style="font-size: 30px; color: #1877f2;">thumb_up</span></a>
+                        <a id="profile-whatsapp" href="#" target="_blank" style="display: none;"><span class="material-icons-round" style="font-size: 30px; color: #25D366;">chat</span></a>
+                        <a id="profile-telegram" href="#" target="_blank" style="display: none;"><span class="material-icons-round" style="font-size: 30px; color: #0088cc;">send</span></a>
                     </div>
                     <div style="padding: 0 1.2rem 1.2rem;">
                         <button id="profile-logout" class="btn btn-outline" style="color:var(--danger); border-color:var(--danger);"><span class="material-icons-round">logout</span> লগআউট</button>
@@ -1017,7 +981,7 @@
                     <div class="title-sec">তথ্য আপডেট</div>
                     <input id="up-name" class="input-box" placeholder="নাম">
                     
-                    <!-- Profession dropdown for profile -->
+                    <!-- Profession dropdown for profile (UPDATED: added ডাক্তার) -->
                     <select id="up-prof" class="input-box">
                         <option value="">পেশা নির্বাচন করুন</option>
                         <option value="চাষি">চাষি</option>
@@ -1026,6 +990,7 @@
                         <option value="ড্রাইভার">ড্রাইভার</option>
                         <option value="প্রবাসী">প্রবাসী</option>
                         <option value="ছাত্র">ছাত্র</option>
+                        <option value="ডাক্তার">ডাক্তার</option>
                         <option value="অন্যান্য">অন্যান্য</option>
                     </select>
                     
@@ -1071,12 +1036,13 @@
                 </div>
             </div>
 
-            <!-- NEW: IMPORTANT PERSONS VIEW -->
-            <div id="view-importantpersons" style="display: none;">
-                <div class="title-sec"><span class="material-icons-round" style="cursor:pointer; margin-right:5px" onclick="switchTab('home')">arrow_back</span> গুরুত্বপূর্ণ ব্যক্তি</div>
-                <div id="important-persons-grid" class="imp-person-grid">
+            <!-- NEW: MARKET PRICE VIEW (Feature 8) -->
+            <div id="view-market" style="display: none;">
+                <div class="title-sec"><span class="material-icons-round" style="cursor:pointer; margin-right:5px" onclick="switchTab('services')">arrow_back</span> বাজারদর</div>
+                <div class="market-grid" id="market-list">
                     <p style="text-align:center; color:#94a3b8">লোড হচ্ছে...</p>
                 </div>
+                <p style="font-size:0.8rem; text-align:center; color:#94a3b8;" id="market-updated-time"></p>
             </div>
 
             <!-- ADMIN VIEW -->
@@ -1150,20 +1116,25 @@
                             <span class="material-icons-round">fire_truck</span>
                             <span>ফায়ার সার্ভিস</span>
                         </div>
-                        <!-- Text Slide Admin Card -->
+                        <!-- NEW: Text Slide Admin Card -->
                         <div class="exampro-card" onclick="openAdminSub('textslide')">
                             <span class="material-icons-round">subtitles</span>
                             <span>টেক্সট স্লাইড</span>
                         </div>
-                        <!-- NEW: Important Persons Admin Card -->
-                        <div class="exampro-card" onclick="openAdminSub('importantpersons')">
-                            <span class="material-icons-round">star</span>
-                            <span>গুরুত্বপূর্ণ ব্যক্তি</span>
+                        <!-- NEW: Doctor Admin Card (Feature 4) -->
+                        <div class="exampro-card" onclick="openAdminSub('doctor')">
+                            <span class="material-icons-round">medical_services</span>
+                            <span>ডাক্তার</span>
+                        </div>
+                        <!-- NEW: Market Price Admin Card (Feature 8) -->
+                        <div class="exampro-card" onclick="openAdminSub('market')">
+                            <span class="material-icons-round">shopping_cart</span>
+                            <span>বাজারদর</span>
                         </div>
                     </div>
                 </div>
 
-                <!-- Admin Sub: Places -->
+                <!-- Admin Sub: Places (UPDATED with map link and edit) -->
                 <div id="admin-sub-places" style="display:none;">
                     <div class="title-sec"><span class="material-icons-round" style="cursor:pointer; margin-right:5px" onclick="closeAdminSub()">arrow_back</span> প্রতিষ্ঠান/স্থান যোগ করুন</div>
                     <div class="card">
@@ -1174,12 +1145,14 @@
                         </select>
                         <input id="ap-name" class="input-box" placeholder="প্রতিষ্ঠানের নাম">
                         <textarea id="ap-desc" class="input-box" rows="2" placeholder="বিস্তারিত/ঠিকানা"></textarea>
+                        <input id="ap-maplink" class="input-box" placeholder="গুগল ম্যাপ লিংক (ঐচ্ছিক)">
                         <div class="file-upload-area" id="ap-upload-area">
                             <input type="file" id="ap-image" accept="image/*">
                             <span class="material-icons-round">add_photo_alternate</span>
                             <p>ছবি আপলোড (ঐচ্ছিক)</p>
                         </div>
                         <img id="ap-preview" class="image-preview" style="display:none;">
+                        <input type="hidden" id="ap-edit-id" value="">
                         <button id="ap-btn" class="btn btn-primary" style="background:var(--accent)">যুক্ত করুন</button>
                         
                         <hr style="border:0; border-top:1px solid #e2e8f0; margin:15px 0">
@@ -1193,7 +1166,7 @@
                     </div>
                 </div>
 
-                <!-- Admin Sub: Users -->
+                <!-- Admin Sub: Users (unchanged) -->
                 <div id="admin-sub-users" style="display:none;">
                     <div class="title-sec"><span class="material-icons-round" style="cursor:pointer; margin-right:5px" onclick="closeAdminSub()">arrow_back</span> ইউজার কন্ট্রোল</div>
                     <div class="card">
@@ -1202,7 +1175,7 @@
                     </div>
                 </div>
 
-                <!-- Admin Sub: Notices -->
+                <!-- Admin Sub: Notices (unchanged) -->
                 <div id="admin-sub-notices" style="display:none;">
                     <div class="title-sec"><span class="material-icons-round" style="cursor:pointer; margin-right:5px" onclick="closeAdminSub()">arrow_back</span> নোটিশ ম্যানেজমেন্ট</div>
                     <div class="card">
@@ -1222,7 +1195,7 @@
                     </div>
                 </div>
 
-                <!-- Admin Sub: Banners -->
+                <!-- Admin Sub: Banners (unchanged) -->
                 <div id="admin-sub-banners" style="display:none;">
                     <div class="title-sec"><span class="material-icons-round" style="cursor:pointer; margin-right:5px" onclick="closeAdminSub()">arrow_back</span> ব্যানার ম্যানেজমেন্ট</div>
                     <div class="card">
@@ -1238,7 +1211,7 @@
                     </div>
                 </div>
 
-                <!-- Admin Sub: Gallery -->
+                <!-- Admin Sub: Gallery (unchanged) -->
                 <div id="admin-sub-gallery" style="display:none;">
                     <div class="title-sec"><span class="material-icons-round" style="cursor:pointer; margin-right:5px" onclick="closeAdminSub()">arrow_back</span> গ্যালারি ম্যানেজমেন্ট</div>
                     <div class="card">
@@ -1252,7 +1225,7 @@
                     </div>
                 </div>
 
-                <!-- Admin Sub: Theme -->
+                <!-- Admin Sub: Theme (unchanged) -->
                 <div id="admin-sub-theme" style="display:none;">
                     <div class="title-sec"><span class="material-icons-round" style="cursor:pointer; margin-right:5px" onclick="closeAdminSub()">arrow_back</span> থিম কাস্টমাইজার</div>
                     <div class="card">
@@ -1264,7 +1237,7 @@
                     </div>
                 </div>
 
-                <!-- Admin Sub: Map link -->
+                <!-- Admin Sub: Map link (unchanged) -->
                 <div id="admin-sub-map" style="display:none;">
                     <div class="title-sec"><span class="material-icons-round" style="cursor:pointer; margin-right:5px" onclick="closeAdminSub()">arrow_back</span> ম্যাপ লিংক সেটিংস</div>
                     <div class="card">
@@ -1275,7 +1248,7 @@
                     </div>
                 </div>
 
-                <!-- Admin Sub: Sports -->
+                <!-- Admin Sub: Sports (unchanged) -->
                 <div id="admin-sub-sports" style="display:none;">
                     <div class="title-sec"><span class="material-icons-round" style="cursor:pointer; margin-right:5px" onclick="closeAdminSub()">arrow_back</span> খেলাধুলা ম্যানেজমেন্ট</div>
                     <div class="card">
@@ -1295,7 +1268,7 @@
                     </div>
                 </div>
 
-                <!-- Admin Sub: Blood Donor Management -->
+                <!-- Admin Sub: Blood Donor Management (unchanged) -->
                 <div id="admin-sub-blood" style="display:none;">
                     <div class="title-sec"><span class="material-icons-round" style="cursor:pointer; margin-right:5px" onclick="closeAdminSub()">arrow_back</span> ব্লাড ডোনার ম্যানেজমেন্ট</div>
                     <div class="card">
@@ -1314,7 +1287,7 @@
                     </div>
                 </div>
 
-                <!-- Admin Sub: Emergency Services Management -->
+                <!-- Admin Sub: Emergency Services Management (unchanged) -->
                 <div id="admin-sub-emergency" style="display:none;">
                     <div class="title-sec"><span class="material-icons-round" style="cursor:pointer; margin-right:5px" onclick="closeAdminSub()">arrow_back</span> জরুরী সেবা ম্যানেজমেন্ট</div>
                     <div class="card">
@@ -1328,7 +1301,7 @@
                     </div>
                 </div>
 
-                <!-- Admin Sub: Agriculture Information Management -->
+                <!-- Admin Sub: Agriculture Information Management (unchanged) -->
                 <div id="admin-sub-agri" style="display:none;">
                     <div class="title-sec"><span class="material-icons-round" style="cursor:pointer; margin-right:5px" onclick="closeAdminSub()">arrow_back</span> কৃষি তথ্য ম্যানেজমেন্ট</div>
                     <div class="card">
@@ -1343,7 +1316,7 @@
                     </div>
                 </div>
 
-                <!-- Admin Sub: Transport/Driver Management -->
+                <!-- Admin Sub: Transport/Driver Management (unchanged) -->
                 <div id="admin-sub-transport" style="display:none;">
                     <div class="title-sec"><span class="material-icons-round" style="cursor:pointer; margin-right:5px" onclick="closeAdminSub()">arrow_back</span> যানবাহন ম্যানেজমেন্ট</div>
                     <div class="card">
@@ -1365,7 +1338,7 @@
                     </div>
                 </div>
 
-                <!-- Admin Sub: Ambulance Management -->
+                <!-- Admin Sub: Ambulance Management (unchanged) -->
                 <div id="admin-sub-ambulance" style="display:none;">
                     <div class="title-sec"><span class="material-icons-round" style="cursor:pointer; margin-right:5px" onclick="closeAdminSub()">arrow_back</span> অ্যাম্বুলেন্স ম্যানেজমেন্ট</div>
                     <div class="card">
@@ -1378,7 +1351,7 @@
                     </div>
                 </div>
 
-                <!-- Admin Sub: Police Management -->
+                <!-- Admin Sub: Police Management (unchanged) -->
                 <div id="admin-sub-police" style="display:none;">
                     <div class="title-sec"><span class="material-icons-round" style="cursor:pointer; margin-right:5px" onclick="closeAdminSub()">arrow_back</span> পুলিশ ম্যানেজমেন্ট</div>
                     <div class="card">
@@ -1391,7 +1364,7 @@
                     </div>
                 </div>
 
-                <!-- Admin Sub: Fire Service Management -->
+                <!-- Admin Sub: Fire Service Management (unchanged) -->
                 <div id="admin-sub-fire" style="display:none;">
                     <div class="title-sec"><span class="material-icons-round" style="cursor:pointer; margin-right:5px" onclick="closeAdminSub()">arrow_back</span> ফায়ার সার্ভিস ম্যানেজমেন্ট</div>
                     <div class="card">
@@ -1404,10 +1377,18 @@
                     </div>
                 </div>
 
-                <!-- Admin Sub: Text Slide Management -->
+                <!-- Admin Sub: Text Slide Management (UPDATED with color picker - Feature 6) -->
                 <div id="admin-sub-textslide" style="display:none;">
                     <div class="title-sec"><span class="material-icons-round" style="cursor:pointer; margin-right:5px" onclick="closeAdminSub()">arrow_back</span> টেক্সট স্লাইড ম্যানেজমেন্ট</div>
                     <div class="card">
+                        <div style="margin-bottom:15px;">
+                            <label style="display:block; margin-bottom:5px; font-weight:600;">স্লাইড টেক্সটের রং:</label>
+                            <div style="display:flex; gap:10px; align-items:center;">
+                                <input type="color" id="ts-color" value="#ffffff" style="width:60px; height:40px; border:none; border-radius:8px; cursor:pointer;">
+                                <button id="ts-save-color" class="btn btn-primary" style="width:auto; padding:10px 20px;">রং সংরক্ষণ করুন</button>
+                            </div>
+                        </div>
+                        <hr>
                         <input id="ts-text" class="input-box" placeholder="স্লাইডের টেক্সট লিখুন">
                         <button id="ts-add" class="btn btn-success">টেক্সট যোগ করুন</button>
                         <hr>
@@ -1416,23 +1397,41 @@
                     </div>
                 </div>
 
-                <!-- NEW Admin Sub: Important Persons Management -->
-                <div id="admin-sub-importantpersons" style="display:none;">
-                    <div class="title-sec"><span class="material-icons-round" style="cursor:pointer; margin-right:5px" onclick="closeAdminSub()">arrow_back</span> গুরুত্বপূর্ণ ব্যক্তি ম্যানেজমেন্ট</div>
+                <!-- NEW Admin Sub: Doctor Management (Feature 4) -->
+                <div id="admin-sub-doctor" style="display:none;">
+                    <div class="title-sec"><span class="material-icons-round" style="cursor:pointer; margin-right:5px" onclick="closeAdminSub()">arrow_back</span> ডাক্তার ম্যানেজমেন্ট</div>
                     <div class="card">
-                        <input id="ip-name" class="input-box" placeholder="নাম">
-                        <input id="ip-phone" class="input-box" placeholder="মোবাইল নম্বর (ঐচ্ছিক)">
-                        <textarea id="ip-desc" class="input-box" rows="2" placeholder="বিস্তারিত (পদবী, পরিচিতি)"></textarea>
-                        <div class="file-upload-area" id="ip-upload-area">
-                            <input type="file" id="ip-image" accept="image/*">
+                        <input id="adoc-name" class="input-box" placeholder="ডাক্তারের নাম">
+                        <input id="adoc-phone" class="input-box" placeholder="মোবাইল নম্বর">
+                        <div class="file-upload-area" id="adoc-upload-area">
+                            <input type="file" id="adoc-photo" accept="image/*">
                             <span class="material-icons-round">add_photo_alternate</span>
-                            <p>ছবি আপলোড (ঐচ্ছিক)</p>
+                            <p>প্রোফাইল ছবি (ঐচ্ছিক)</p>
                         </div>
-                        <img id="ip-preview" class="image-preview" style="display:none;">
-                        <button id="ip-add" class="btn btn-success">যোগ করুন</button>
+                        <img id="adoc-preview" class="image-preview" style="display:none;">
+                        <input type="hidden" id="adoc-edit-id" value="">
+                        <button id="adoc-add" class="btn btn-success">ডাক্তার যোগ করুন</button>
+                        
                         <hr>
-                        <div class="title-sec">বর্তমান তালিকা</div>
-                        <div id="admin-importantpersons-list" style="max-height: 300px; overflow-y: auto;"></div>
+                        <div class="title-sec">ডাক্তার তালিকা</div>
+                        <input id="admin-doctor-search" class="input-box" placeholder="🔍 নাম বা নম্বর দিয়ে খুঁজুন">
+                        <div id="admin-doctor-list" style="max-height: 300px; overflow-y: auto;"></div>
+                    </div>
+                </div>
+
+                <!-- NEW Admin Sub: Market Price Management (Feature 8) -->
+                <div id="admin-sub-market" style="display:none;">
+                    <div class="title-sec"><span class="material-icons-round" style="cursor:pointer; margin-right:5px" onclick="closeAdminSub()">arrow_back</span> বাজারদর ম্যানেজমেন্ট</div>
+                    <div class="card">
+                        <input id="am-name" class="input-box" placeholder="পণ্যের নাম (যেমন: চাল)">
+                        <input id="am-price" class="input-box" placeholder="মূল্য" type="number" step="0.01">
+                        <input id="am-unit" class="input-box" placeholder="একক (যেমন: কেজি)">
+                        <button id="am-add" class="btn btn-success">পণ্য যোগ করুন</button>
+                        
+                        <hr>
+                        <div class="title-sec">বর্তমান পণ্যের তালিকা</div>
+                        <input id="admin-market-search" class="input-box" placeholder="🔍 নাম খুঁজুন">
+                        <div id="admin-market-list" style="max-height: 300px; overflow-y: auto;"></div>
                     </div>
                 </div>
             </div>
@@ -1448,43 +1447,45 @@
 
         <!-- MODALS -->
 
-        <!-- User Detail Modal (FIXED: image centered above name) -->
+        <!-- User Detail Modal (unchanged) -->
         <div id="user-modal" class="modal-bg" onclick="if(event.target===this) closeModal('user-modal')">
             <div class="modal-content" style="text-align: center;">
                 <span class="material-icons-round close-icon" onclick="closeModal('user-modal')">close</span>
-                <!-- Large avatar centered above name -->
-                <div class="um-avatar-large" id="um-av-large" onclick="openImageLightbox(getAvatarUrl())">
-                    <img id="um-av-img" src="" style="display:none;">
+                <div id="um-av" style="width:60px; height:60px; background:#eff6ff; color:var(--primary); border-radius:50%; font-size:28px; font-weight:bold; display:flex; align-items:center; justify-content:center; margin: 0 auto 10px; overflow:hidden;">
+                    <img id="um-av-img" src="" style="width:100%; height:100%; object-fit:cover; display:none;">
                     <span id="um-av-text">A</span>
                 </div>
-                <h3 id="um-name" style="margin: 10px 0 5px;">Name</h3>
-                <p id="um-role" style="color:var(--text-sub); margin: 0 0 15px;">Role</p>
+                <h3 id="um-name" style="margin: 0;">Name</h3>
+                <p id="um-role" style="color:var(--text-sub); margin: 5px 0 15px;">Role</p>
                 <div style="background:#f8fafc; padding:15px; border-radius:12px; text-align:left; font-size:0.95rem;">
                     <div style="display:flex; justify-content:space-between; margin-bottom:8px"><span>মোবাইল:</span><b id="um-phone">-</b></div>
                     <div style="display:flex; justify-content:space-between; margin-bottom:8px"><span>রক্তের গ্রুপ:</span><b id="um-blood" style="color:var(--danger)">-</b></div>
                     <div style="display:flex; justify-content:space-between"><span>ঠিকানা:</span><b id="um-addr">-</b></div>
                 </div>
-                <!-- Social Icons in User Modal (brand colors) -->
+                <!-- Social Icons in User Modal -->
                 <div class="social-icons" style="justify-content: center; margin-top: 15px;">
-                    <a id="um-facebook" href="#" target="_blank" style="display: none;"><i class="fab fa-facebook"></i></a>
-                    <a id="um-whatsapp" href="#" target="_blank" style="display: none;"><i class="fab fa-whatsapp"></i></a>
-                    <a id="um-telegram" href="#" target="_blank" style="display: none;"><i class="fab fa-telegram"></i></a>
+                    <a id="um-facebook" href="#" target="_blank" style="display: none;"><span class="material-icons-round" style="font-size: 30px; color: #1877f2;">thumb_up</span></a>
+                    <a id="um-whatsapp" href="#" target="_blank" style="display: none;"><span class="material-icons-round" style="font-size: 30px; color: #25D366;">chat</span></a>
+                    <a id="um-telegram" href="#" target="_blank" style="display: none;"><span class="material-icons-round" style="font-size: 30px; color: #0088cc;">send</span></a>
                 </div>
                 <a id="um-call" href="#" class="btn btn-success" style="margin-top: 15px; text-decoration: none;"><span class="material-icons-round">call</span> সরাসরি কল করুন</a>
             </div>
         </div>
 
-        <!-- Place Detail Modal -->
+        <!-- Place Detail Modal (UPDATED with Map button - Feature 7) -->
         <div id="place-modal" class="modal-bg" onclick="if(event.target===this) closeModal('place-modal')">
             <div class="modal-content">
                 <span class="material-icons-round close-icon" onclick="closeModal('place-modal')">close</span>
                 <img id="place-modal-img" src="" style="width:100%; max-height:200px; object-fit:cover; border-radius:12px; margin-bottom:10px;">
                 <h3 id="place-modal-name" style="margin:0 0 5px;"></h3>
-                <p id="place-modal-desc" style="color:var(--text-sub);"></p>
+                <p id="place-modal-desc" style="color:var(--text-sub); margin-bottom:15px;"></p>
+                <a id="place-modal-map" href="#" target="_blank" class="btn btn-outline" style="display:none; margin-top:10px;">
+                    <span class="material-icons-round">map</span> গুগল ম্যাপে দেখুন
+                </a>
             </div>
         </div>
 
-        <!-- Blood Modal -->
+        <!-- Blood Modal (unchanged) -->
         <div id="blood-modal" class="modal-bg" onclick="if(event.target===this) closeModal('blood-modal')">
             <div class="modal-content">
                 <span class="material-icons-round close-icon" onclick="closeModal('blood-modal')">close</span>
@@ -1500,7 +1501,7 @@
             </div>
         </div>
 
-        <!-- Emergency Modal -->
+        <!-- Emergency Modal (unchanged) -->
         <div id="emergency-modal" class="modal-bg" onclick="if(event.target===this) closeModal('emergency-modal')">
             <div class="modal-content">
                 <span class="material-icons-round close-icon" onclick="closeModal('emergency-modal')">close</span>
@@ -1509,7 +1510,7 @@
             </div>
         </div>
 
-        <!-- Agri Modal -->
+        <!-- Agri Modal (unchanged) -->
         <div id="agri-modal" class="modal-bg" onclick="if(event.target===this) closeModal('agri-modal')">
             <div class="modal-content">
                 <span class="material-icons-round close-icon" onclick="closeModal('agri-modal')">close</span>
@@ -1518,7 +1519,7 @@
             </div>
         </div>
 
-        <!-- Transport Modal -->
+        <!-- Transport Modal (unchanged - driver card already shows photo) -->
         <div id="transport-modal" class="modal-bg" onclick="if(event.target===this) closeModal('transport-modal')">
             <div class="modal-content">
                 <span class="material-icons-round close-icon" onclick="closeModal('transport-modal')">close</span>
@@ -1528,14 +1529,13 @@
             </div>
         </div>
 
-        <!-- Weather Modal -->
+        <!-- Weather Modal (unchanged) -->
         <div id="weather-modal" class="modal-bg" onclick="if(event.target===this) closeModal('weather-modal')">
             <div class="modal-content" style="max-width: 500px;">
                 <span class="material-icons-round close-icon" onclick="closeModal('weather-modal')">close</span>
                 <h3 style="margin:0 0 10px; color:var(--primary);">🌤️ পারখালীর আবহাওয়া</h3>
                 <div id="weather-loading" style="text-align:center;">লোড হচ্ছে...</div>
                 <div id="weather-content" style="display:none;">
-                    <!-- Large Today/Tomorrow Card -->
                     <div id="weather-large" class="weather-large-card">
                         <div id="weather-animation" class="weather-animation"></div>
                         <h3>আজ</h3>
@@ -1553,7 +1553,7 @@
             </div>
         </div>
 
-        <!-- Ambulance Modal -->
+        <!-- Ambulance Modal (unchanged) -->
         <div id="ambulance-modal" class="modal-bg" onclick="if(event.target===this) closeModal('ambulance-modal')">
             <div class="modal-content">
                 <span class="material-icons-round close-icon" onclick="closeModal('ambulance-modal')">close</span>
@@ -1562,7 +1562,7 @@
             </div>
         </div>
 
-        <!-- Police Modal -->
+        <!-- Police Modal (unchanged) -->
         <div id="police-modal" class="modal-bg" onclick="if(event.target===this) closeModal('police-modal')">
             <div class="modal-content">
                 <span class="material-icons-round close-icon" onclick="closeModal('police-modal')">close</span>
@@ -1571,7 +1571,7 @@
             </div>
         </div>
 
-        <!-- Fire Service Modal -->
+        <!-- Fire Service Modal (unchanged) -->
         <div id="fire-modal" class="modal-bg" onclick="if(event.target===this) closeModal('fire-modal')">
             <div class="modal-content">
                 <span class="material-icons-round close-icon" onclick="closeModal('fire-modal')">close</span>
@@ -1580,15 +1580,17 @@
             </div>
         </div>
 
-        <!-- Image Lightbox Modal (for image zoom) -->
-        <div id="image-lightbox-modal" class="modal-bg" onclick="if(event.target===this) closeModal('image-lightbox-modal')">
-            <div class="modal-content" style="text-align: center; background: transparent; box-shadow: none; max-width: 90%;">
-                <span class="material-icons-round close-icon" onclick="closeModal('image-lightbox-modal')" style="background: rgba(255,255,255,0.5); color: black;">close</span>
-                <img id="lightbox-img" src="" style="max-width: 100%; max-height: 80vh; border-radius: 12px; box-shadow: 0 0 20px rgba(0,0,0,0.5);">
+        <!-- NEW Doctor Modal (Feature 4) -->
+        <div id="doctor-modal" class="modal-bg" onclick="if(event.target===this) closeModal('doctor-modal')">
+            <div class="modal-content">
+                <span class="material-icons-round close-icon" onclick="closeModal('doctor-modal')">close</span>
+                <h3 style="color:#2563eb; margin:0 0 15px;">👨‍⚕️ ডাক্তার তালিকা</h3>
+                <input type="text" id="doctor-search" class="input-box" placeholder="🔍 নাম বা নম্বর দিয়ে খুঁজুন..." style="border-radius: 30px;">
+                <div id="doctor-list" style="max-height: 400px; overflow-y: auto;"></div>
             </div>
         </div>
 
-        <!-- Gallery Image Modal (already exists, keep for gallery) -->
+        <!-- Image View Modal for Gallery (unchanged) -->
         <div id="gallery-modal" class="modal-bg" onclick="if(event.target===this) closeModal('gallery-modal')">
             <div class="modal-content" style="text-align: center;">
                 <span class="material-icons-round close-icon" onclick="closeModal('gallery-modal')">close</span>
@@ -1600,30 +1602,13 @@
             </div>
         </div>
 
-        <!-- Notice Detail Modal -->
+        <!-- Notice Detail Modal (unchanged) -->
         <div id="notice-detail-modal" class="modal-bg" onclick="if(event.target===this) closeModal('notice-detail-modal')">
             <div class="modal-content" style="text-align: center;">
                 <span class="material-icons-round close-icon" onclick="closeModal('notice-detail-modal')">close</span>
                 <h3 id="notice-modal-title" style="margin:0 0 10px; color:var(--primary);"></h3>
                 <img id="notice-modal-img" src="" style="width:100%; max-height:250px; object-fit:contain; border-radius:12px; margin-bottom:15px; background:#f8fafc; display:none;">
                 <p id="notice-modal-desc" style="color:var(--text-main); font-size:1rem; text-align:left;"></p>
-            </div>
-        </div>
-
-        <!-- NEW: Important Person Detail Modal -->
-        <div id="important-person-modal" class="modal-bg" onclick="if(event.target===this) closeModal('important-person-modal')">
-            <div class="modal-content" style="text-align: center;">
-                <span class="material-icons-round close-icon" onclick="closeModal('important-person-modal')">close</span>
-                <div class="um-avatar-large" id="ipm-av-large">
-                    <img id="ipm-av-img" src="" style="display:none;">
-                    <span id="ipm-av-text">A</span>
-                </div>
-                <h3 id="ipm-name" style="margin: 10px 0 5px;"></h3>
-                <p id="ipm-desc" style="color:var(--text-sub); margin: 0 0 15px;"></p>
-                <div style="background:#f8fafc; padding:15px; border-radius:12px; text-align:left; font-size:0.95rem;">
-                    <div style="display:flex; justify-content:space-between; margin-bottom:8px"><span>মোবাইল:</span><b id="ipm-phone">-</b></div>
-                </div>
-                <a id="ipm-call" href="#" class="btn btn-success" style="margin-top: 15px; text-decoration: none;"><span class="material-icons-round">call</span> কল করুন</a>
             </div>
         </div>
 
@@ -1695,22 +1680,7 @@
         window.openModal = (id) => { const m=document.getElementById(id); m.style.display='flex'; setTimeout(()=>m.classList.add('show'), 10); }
         window.closeModal = (id) => { const m=document.getElementById(id); m.classList.remove('show'); setTimeout(()=>m.style.display='none', 300); }
 
-        // ========== IMAGE LIGHTBOX (for avatar zoom) ==========
-        function openImageLightbox(imgUrl) {
-            if (!imgUrl) return;
-            document.getElementById('lightbox-img').src = imgUrl;
-            openModal('image-lightbox-modal');
-        }
-        window.openImageLightbox = openImageLightbox;
-
-        // Helper to get avatar URL from current user modal
-        function getAvatarUrl() {
-            const img = document.getElementById('um-av-img');
-            if (img.style.display !== 'none' && img.src) return img.src;
-            return null;
-        }
-
-        // ========== THEME MANAGEMENT (unchanged) ==========
+        // ========== THEME MANAGEMENT (enhanced with animations) ==========
         const themes = [
             { name: 'নীল', primary: '#2563eb', accent: '#10b981', grad: 'linear-gradient(135deg, #2563eb, #0891b2)', themeClass: '' },
             { name: 'সবুজ', primary: '#059669', accent: '#f59e0b', grad: 'linear-gradient(135deg, #059669, #10b981)', themeClass: '' },
@@ -1727,6 +1697,7 @@
             { name: 'শীত', primary: '#0f172a', accent: '#38bdf8', grad: 'linear-gradient(135deg, #0f172a, #38bdf8)', themeClass: '' },
             { name: 'গ্রীষ্ম', primary: '#c2410c', accent: '#fde047', grad: 'linear-gradient(135deg, #c2410c, #fde047)', themeClass: '' },
             { name: 'বর্ষা', primary: '#0284c7', accent: '#22c55e', grad: 'linear-gradient(135deg, #0284c7, #22c55e)', themeClass: '' },
+            // New animated themes
             { name: 'বাংলাদেশ', primary: '#006a4e', accent: '#f42a41', grad: 'linear-gradient(135deg, #006a4e, #f42a41)', themeClass: 'bangladesh-theme' },
             { name: 'নাইট স্কাই', primary: '#0f172a', accent: '#38bdf8', grad: 'linear-gradient(135deg, #0f172a, #1e293b)', themeClass: 'night-theme' },
             { name: 'একুশে ফেব্রুয়ারি', primary: '#b91c1c', accent: '#f59e0b', grad: 'linear-gradient(135deg, #b91c1c, #f97316)', themeClass: 'language-theme' },
@@ -1748,12 +1719,14 @@
             document.documentElement.style.setProperty('--accent', theme.accent);
             document.documentElement.style.setProperty('--header-grad', theme.grad);
             
+            // Update theme animations
             const animContainer = document.getElementById('theme-animation');
             animContainer.innerHTML = '';
             if (theme.themeClass === 'bangladesh-theme') {
                 animContainer.innerHTML = '<div class="flag-bd"><div class="circle"></div></div>';
             } else if (theme.themeClass === 'night-theme') {
                 animContainer.innerHTML = '<div class="moon"></div>';
+                // Add stars
                 for (let i = 0; i < 20; i++) {
                     const star = document.createElement('div');
                     star.className = 'star';
@@ -1833,7 +1806,8 @@
         }
         setInterval(updateDateTime, 1000);
 
-        // ========== TEXT SLIDER MANAGEMENT (fixed marquee) ==========
+        // ========== TEXT SLIDER MANAGEMENT (UPDATED with dynamic color - Feature 6) ==========
+        let sliderInterval;
         let sliderTexts = [];
 
         async function loadTextSlides() {
@@ -1841,6 +1815,13 @@
             sliderTexts = [];
             snap.forEach(doc => sliderTexts.push({ id: doc.id, text: doc.data().text }));
             renderTextSlider();
+            
+            // Load slider color
+            const colorDoc = await getDoc(doc(db, "settings", "textSlideColor"));
+            if (colorDoc.exists()) {
+                const color = colorDoc.data().color;
+                document.querySelectorAll('.slider-item').forEach(el => el.style.color = color);
+            }
         }
 
         function renderTextSlider() {
@@ -1852,16 +1833,28 @@
                 return;
             }
             placeholder.style.display = 'none';
-            // Join texts with a separator and duplicate for seamless loop? We'll just join with " • " and let CSS animation handle infinite scroll.
-            // For seamless loop, we need duplicate content. But simple infinite scroll is fine.
-            const textString = sliderTexts.map(t => t.text).join(' • ');
-            // Add a trailing separator for better effect
-            container.innerText = textString + ' • ';
-            // Duplicate the content to create seamless loop effect? Not necessary with CSS animation that scrolls out.
-            // We'll keep as is.
+            container.innerHTML = '';
+            sliderTexts.forEach((item, index) => {
+                const div = document.createElement('div');
+                div.className = 'slider-item';
+                div.innerText = item.text;
+                container.appendChild(div);
+            });
+            // Start slider if more than one
+            if (sliderInterval) clearInterval(sliderInterval);
+            if (sliderTexts.length > 1) {
+                let current = 0;
+                container.style.transform = `translateX(-${current * 100}%)`;
+                sliderInterval = setInterval(() => {
+                    current = (current + 1) % sliderTexts.length;
+                    container.style.transform = `translateX(-${current * 100}%)`;
+                }, 4000);
+            } else {
+                container.style.transform = 'translateX(0)';
+            }
         }
 
-        // Admin Text Slide Management (unchanged)
+        // Admin Text Slide Management
         async function loadAdminTextSlides() {
             const list = document.getElementById('admin-textslide-list');
             list.innerHTML = 'লোড হচ্ছে...';
@@ -1907,6 +1900,7 @@
         document.getElementById('ts-add').onclick = async () => {
             const text = document.getElementById('ts-text').value;
             if (!text) return alert('টেক্সট দিন');
+            // Get current max order
             const snaps = await getDocs(query(collection(db, "text_slides"), orderBy("order", "desc")));
             let maxOrder = 0;
             if (!snaps.empty) {
@@ -1919,12 +1913,20 @@
             loadTextSlides();
         };
 
+        // Save slider color
+        document.getElementById('ts-save-color').onclick = async () => {
+            const color = document.getElementById('ts-color').value;
+            await setDoc(doc(db, "settings", "textSlideColor"), { color });
+            document.querySelectorAll('.slider-item').forEach(el => el.style.color = color);
+            showToast('রং সংরক্ষিত হয়েছে');
+        };
+
         // ========== NAVIGATION & HISTORY ==========
         const tabs = { 
             home:'view-home', services:'view-services', villagers:'view-villagers', profile:'view-profile', 
             admin:'view-admin', auth:'view-auth', setup:'view-setup', mosque:'view-mosque', school:'view-school', 
             shop:'view-shop', map:'view-map', gallery:'view-gallery', sports:'view-sports',
-            importantpersons:'view-importantpersons' // new tab
+            market:'view-market' // NEW
         };
         const navBtns = { home:'tab-home', services:'tab-services', profile:'tab-profile', admin:'tab-admin' };
         let backCount = 0;
@@ -1939,18 +1941,10 @@
 
             document.getElementById(tabs[tabName]).style.display = 'block';
 
-            if(['villagers', 'mosque', 'school', 'shop', 'map', 'gallery', 'sports', 'importantpersons'].includes(tabName)) { 
+            if(['villagers', 'mosque', 'school', 'shop', 'map', 'gallery', 'sports', 'market'].includes(tabName)) { 
                 document.getElementById('tab-home').classList.add('active'); 
             } else if(navBtns[tabName]) { 
                 document.getElementById(navBtns[tabName]).classList.add('active'); 
-            }
-
-            // Conditional text slider visibility: only on home page
-            const slider = document.getElementById('text-slider-container');
-            if (tabName === 'home') {
-                slider.classList.remove('hidden');
-            } else {
-                slider.classList.add('hidden');
             }
 
             if(tabName === 'home') { 
@@ -1969,12 +1963,6 @@
                 window.closeAdminSub(); 
                 loadAdminData(); 
             }
-            else if(tabName === 'mosque') { 
-            }
-            else if(tabName === 'school') { 
-            }
-            else if(tabName === 'shop') { 
-            }
             else if(tabName === 'map') { 
                 loadMapLink(); 
             }
@@ -1984,8 +1972,8 @@
             else if(tabName === 'sports') { 
                 loadSportsPosts(); 
             }
-            else if(tabName === 'importantpersons') {
-                loadImportantPersons();
+            else if(tabName === 'market') { 
+                loadMarketPrices(); 
             }
 
             if (pushState) {
@@ -2022,7 +2010,7 @@
 
         Object.keys(navBtns).forEach(k => document.getElementById(navBtns[k]).addEventListener('click', () => switchTab(k)));
 
-        // ========== AUTH (unchanged) ==========
+        // ========== AUTH ==========
         onAuthStateChanged(auth, async (user) => {
             setTimeout(() => document.getElementById('splash').style.display = 'none', 1500);
             
@@ -2081,7 +2069,7 @@
 
         document.getElementById('profile-logout').onclick = () => signOut(auth);
 
-        // ========== DYNAMIC FORM HELPERS (unchanged) ==========
+        // ========== DYNAMIC FORM HELPERS ==========
         function setupProfessionListeners() {
             const profSelect = document.getElementById('set-prof');
             const driverField = document.getElementById('driver-field');
@@ -2100,6 +2088,7 @@
                 });
             }
 
+            // For profile update
             const upProf = document.getElementById('up-prof');
             const upDriver = document.getElementById('up-driver-field');
             const upExpat = document.getElementById('up-expat-field');
@@ -2118,7 +2107,7 @@
             }
         }
 
-        // ========== SETUP (unchanged) ==========
+        // ========== SETUP (with conditional fields and driver/doctor logic) ==========
         document.getElementById('setup-photo').addEventListener('change', function(e) {
             if (e.target.files[0]) {
                 const reader = new FileReader();
@@ -2131,6 +2120,7 @@
             }
         });
 
+        // Helper to update driver collection based on user
         async function updateDriverFromUser(userId, userData) {
             if (userData.profession === 'ড্রাইভার') {
                 const driverRef = doc(db, "drivers", userId);
@@ -2145,6 +2135,24 @@
             } else {
                 try {
                     await deleteDoc(doc(db, "drivers", userId));
+                } catch (e) { /* ignore if not exists */ }
+            }
+        }
+
+        // NEW: Helper to update doctor collection based on user (Feature 4)
+        async function updateDoctorFromUser(userId, userData) {
+            if (userData.profession === 'ডাক্তার') {
+                const doctorRef = doc(db, "doctors", userId);
+                await setDoc(doctorRef, {
+                    name: userData.name,
+                    phone: userData.phone,
+                    photoURL: userData.photoURL || '',
+                    userId: userId,
+                    updatedAt: serverTimestamp()
+                }, { merge: true });
+            } else {
+                try {
+                    await deleteDoc(doc(db, "doctors", userId));
                 } catch (e) { /* ignore if not exists */ }
             }
         }
@@ -2187,12 +2195,13 @@
             await updateDoc(doc(db, "users", auth.currentUser.uid), userData);
             
             await updateDriverFromUser(auth.currentUser.uid, userData);
+            await updateDoctorFromUser(auth.currentUser.uid, userData); // NEW
 
             showSuccessFull();
             setTimeout(() => { document.getElementById('b-nav').style.display='flex'; switchTab('home'); }, 2000);
         };
 
-        // ========== BANNERS (unchanged) ==========
+        // ========== BANNERS ==========
         document.getElementById('banner-image')?.addEventListener('change', function(e) {
             if (e.target.files[0]) {
                 const reader = new FileReader();
@@ -2239,7 +2248,7 @@
             }, 3500);
         }
 
-        // ========== NOTICES (unchanged) ==========
+        // ========== NOTICES ==========
         document.getElementById('an-image')?.addEventListener('change', function(e) {
             if (e.target.files[0]) {
                 const reader = new FileReader();
@@ -2312,7 +2321,7 @@
             });
         }
 
-        // ========== PLACES (unchanged) ==========
+        // ========== PLACES (UPDATED with map link and edit) ==========
         window.loadPlaces = async (collectionName, listId) => {
             const l = document.getElementById(listId);
             l.innerHTML = "<p style='text-align:center;color:#94a3b8'>লোড হচ্ছে...</p>";
@@ -2346,10 +2355,17 @@
             } else {
                 imgEl.style.display = 'none';
             }
+            const mapBtn = document.getElementById('place-modal-map');
+            if (place.mapLink) {
+                mapBtn.href = place.mapLink;
+                mapBtn.style.display = 'block';
+            } else {
+                mapBtn.style.display = 'none';
+            }
             openModal('place-modal');
         };
 
-        // ========== VILLAGERS (unchanged but added click on avatar for lightbox) ==========
+        // ========== VILLAGERS ==========
         let cachedV = [];
         async function loadVillagers() {
             const l = document.getElementById('villager-list');
@@ -2366,7 +2382,7 @@
             if(v.length===0) { l.innerHTML = "<p style='text-align:center'>কাউকে পাওয়া যায়নি</p>"; return; }
             v.forEach(u => {
                 const sData = encodeURIComponent(JSON.stringify(u));
-                const avatarHtml = u.photoURL ? `<img src="${u.photoURL}" onclick="event.stopPropagation(); openImageLightbox('${u.photoURL}')">` : u.name.charAt(0);
+                const avatarHtml = u.photoURL ? `<img src="${u.photoURL}">` : u.name.charAt(0);
                 l.innerHTML += `
                 <div class="list-item" onclick="window.showU('${sData}')">
                     <div style="display:flex;align-items:center"><div class="avatar">${avatarHtml}</div><div class="info"><h4>${u.name}</h4><p>${u.profession||'পেশা নেই'}</p></div></div>
@@ -2397,7 +2413,7 @@
             document.getElementById('um-addr').innerText = u.address||'-';
             document.getElementById('um-call').href = `tel:${u.phone}`;
             
-            // Social links in user modal (brand colors)
+            // Social links in user modal
             const fbLink = document.getElementById('um-facebook');
             const waLink = document.getElementById('um-whatsapp');
             const tgLink = document.getElementById('um-telegram');
@@ -2408,7 +2424,7 @@
             openModal('user-modal');
         };
 
-        // ========== SOCIAL MEDIA LINK FORMATTING (unchanged) ==========
+        // ========== SOCIAL MEDIA LINK FORMATTING ==========
         function formatFacebook(input) {
             if (!input) return '#';
             if (input.startsWith('http')) return input;
@@ -2428,7 +2444,7 @@
             return `https://t.me/${username}`;
         }
 
-        // ========== BLOOD DONORS (unchanged) ==========
+        // ========== BLOOD DONORS ==========
         window.loadDonors = async (filter) => {
             const list = document.getElementById('bd-list');
             list.innerHTML = 'লোড হচ্ছে...';
@@ -2456,7 +2472,7 @@
             loadDonors(document.getElementById('bd-filter').value);
         };
 
-        // ========== EMERGENCY SERVICES (unchanged) ==========
+        // ========== EMERGENCY SERVICES ==========
         async function loadEmergencyContacts() {
             const list = document.getElementById('emergency-list');
             list.innerHTML = 'লোড হচ্ছে...';
@@ -2477,7 +2493,7 @@
             });
         }
 
-        // ========== AGRICULTURE INFO (unchanged) ==========
+        // ========== AGRICULTURE INFO ==========
         async function loadAgriInfo() {
             const list = document.getElementById('agri-list');
             list.innerHTML = 'লোড হচ্ছে...';
@@ -2499,7 +2515,7 @@
             });
         }
 
-        // ========== TRANSPORT/DRIVER MODULE (unchanged) ==========
+        // ========== TRANSPORT/DRIVER MODULE (already shows photo) ==========
         async function loadDrivers(search = '') {
             const list = document.getElementById('driver-list');
             list.innerHTML = 'লোড হচ্ছে...';
@@ -2543,7 +2559,7 @@
             loadDrivers(e.target.value);
         });
 
-        // ========== PROFILE (updated social icons to brand colors) ==========
+        // ========== PROFILE ==========
         async function loadProfile() {
             if(!auth.currentUser) return;
             const d = await getDoc(doc(db,"users",auth.currentUser.uid));
@@ -2558,14 +2574,17 @@
                 document.getElementById('up-blood').value = u.bloodGroup || '';
                 document.getElementById('up-addr').value = u.address || '';
 
+                // Social media fields in profile update
                 document.getElementById('up-facebook').value = u.facebook || '';
                 document.getElementById('up-whatsapp').value = u.whatsapp || '';
                 document.getElementById('up-telegram').value = u.telegram || '';
 
+                // Conditional fields
                 document.getElementById('up-vehicle').value = u.vehicleType || '';
                 document.getElementById('up-country').value = u.country || '';
                 document.getElementById('up-institution').value = u.institution || '';
 
+                // Show correct conditional field based on profession
                 const prof = u.profession;
                 document.getElementById('up-driver-field').classList.toggle('show', prof === 'ড্রাইভার');
                 document.getElementById('up-expat-field').classList.toggle('show', prof === 'প্রবাসী');
@@ -2586,7 +2605,7 @@
                     <div class="info-chip"><span class="material-icons-round">location_on</span> ${u.address || 'নেই'}</div>
                 `;
 
-                // Social icons in profile view (brand colors)
+                // Social icons in profile view
                 const fbLink = document.getElementById('profile-facebook');
                 const waLink = document.getElementById('profile-whatsapp');
                 const tgLink = document.getElementById('profile-telegram');
@@ -2639,6 +2658,7 @@
             await updateDoc(doc(db, "users", auth.currentUser.uid), updates);
             
             await updateDriverFromUser(auth.currentUser.uid, updates);
+            await updateDoctorFromUser(auth.currentUser.uid, updates); // NEW
 
             showToast('প্রোফাইল আপডেট হয়েছে');
             loadProfile();
@@ -2646,7 +2666,7 @@
             fileInput.value = '';
         };
 
-        // ========== GALLERY (unchanged) ==========
+        // ========== GALLERY ==========
         window.viewGalleryImage = (url) => {
             document.getElementById('gallery-modal-img').src = url;
             let downloadUrl = url;
@@ -2676,7 +2696,7 @@
             });
         }
 
-        // ========== SPORTS (unchanged) ==========
+        // ========== SPORTS ==========
         document.getElementById('sports-image')?.addEventListener('change', function(e) {
             if (e.target.files[0]) {
                 const reader = new FileReader();
@@ -2770,7 +2790,7 @@
             });
         }
 
-        // ========== MAP LINK (unchanged) ==========
+        // ========== MAP LINK ==========
         async function loadMapLink() {
             const mapDoc = await getDoc(doc(db, "settings", "map"));
             let mapUrl = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3690.697669145946!2d91.78287341535794!3d22.32712954756306!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30acd8000676fef3%3A0x6d9f8df5b6d519ff!2sChittagong!5e0!3m2!1sen!2sbd!4v1708240000000!5m2!1sen!2sbd";
@@ -2790,7 +2810,7 @@
             closeAdminSub();
         });
 
-        // ========== ADMIN PANEL (with new important persons sub) ==========
+        // ========== ADMIN PANEL ==========
         window.openAdminSub = (id) => {
             document.getElementById('admin-main').style.display = 'none';
             document.getElementById('admin-sub-places').style.display = 'none';
@@ -2809,7 +2829,8 @@
             document.getElementById('admin-sub-police').style.display = 'none';
             document.getElementById('admin-sub-fire').style.display = 'none';
             document.getElementById('admin-sub-textslide').style.display = 'none';
-            document.getElementById('admin-sub-importantpersons').style.display = 'none';
+            document.getElementById('admin-sub-doctor').style.display = 'none'; // NEW
+            document.getElementById('admin-sub-market').style.display = 'none'; // NEW
             document.getElementById('admin-sub-' + id).style.display = 'block';
             if (id === 'gallery') loadAdminGallery();
             if (id === 'theme') renderThemeGrid();
@@ -2823,7 +2844,8 @@
             if (id === 'police') loadAdminPolice();
             if (id === 'fire') loadAdminFire();
             if (id === 'textslide') loadAdminTextSlides();
-            if (id === 'importantpersons') loadAdminImportantPersons();
+            if (id === 'doctor') loadAdminDoctors(); // NEW
+            if (id === 'market') loadAdminMarketPrices(); // NEW
         };
 
         window.closeAdminSub = () => {
@@ -2843,7 +2865,8 @@
             document.getElementById('admin-sub-police').style.display = 'none';
             document.getElementById('admin-sub-fire').style.display = 'none';
             document.getElementById('admin-sub-textslide').style.display = 'none';
-            document.getElementById('admin-sub-importantpersons').style.display = 'none';
+            document.getElementById('admin-sub-doctor').style.display = 'none';
+            document.getElementById('admin-sub-market').style.display = 'none';
             document.getElementById('admin-main').style.display = 'block';
         };
 
@@ -2895,7 +2918,8 @@
             }
         };
 
-        // Admin Places (unchanged)
+        // Admin Places (UPDATED with map link and edit)
+        let currentEditPlaceId = null;
         document.getElementById('ap-image').addEventListener('change', function(e) {
             if (e.target.files[0]) {
                 const reader = new FileReader();
@@ -2907,10 +2931,21 @@
             }
         });
 
+        function resetPlaceForm() {
+            document.getElementById('ap-name').value = '';
+            document.getElementById('ap-desc').value = '';
+            document.getElementById('ap-maplink').value = '';
+            document.getElementById('ap-image').value = '';
+            document.getElementById('ap-preview').style.display = 'none';
+            document.getElementById('ap-edit-id').value = '';
+            document.getElementById('ap-btn').innerText = 'যুক্ত করুন';
+        }
+
         document.getElementById('ap-btn').onclick = async () => {
             const col = document.getElementById('ap-col').value;
             const name = document.getElementById('ap-name').value;
             const desc = document.getElementById('ap-desc').value;
+            const mapLink = document.getElementById('ap-maplink').value;
             if(!name) return alert("প্রতিষ্ঠানের নাম আবশ্যক!");
             
             let imageUrl = "";
@@ -2927,11 +2962,17 @@
                 finish();
             }
 
-            await addDoc(collection(db, col), { name: name, desc: desc, imageUrl: imageUrl, createdAt: serverTimestamp() });
-            document.getElementById('ap-name').value = ""; document.getElementById('ap-desc').value = "";
-            document.getElementById('ap-image').value = "";
-            document.getElementById('ap-preview').style.display = 'none';
-            showToast('প্রতিষ্ঠান যুক্ত হয়েছে');
+            const editId = document.getElementById('ap-edit-id').value;
+            if (editId) {
+                // Update
+                await updateDoc(doc(db, col, editId), { name, desc, mapLink, imageUrl: imageUrl || undefined });
+                showToast('আপডেট হয়েছে');
+            } else {
+                // Add new
+                await addDoc(collection(db, col), { name, desc, mapLink, imageUrl, createdAt: serverTimestamp() });
+                showToast('প্রতিষ্ঠান যুক্ত হয়েছে');
+            }
+            resetPlaceForm();
             document.getElementById('ad-view-col').value = col;
             loadAdminPlaces();
         };
@@ -2944,11 +2985,25 @@
             l.innerHTML = "";
             if(d.empty) { l.innerHTML = "<p style='text-align:center; color:#94a3b8; font-size:0.9rem;'>কোনো ডাটা নেই</p>"; return; }
             d.forEach(doc => {
+                const data = doc.data();
                 l.innerHTML += `<div class="list-item" style="padding:10px; cursor:default;">
-                    <div><b style="font-size:0.95rem">${doc.data().name}</b></div>
-                    <button onclick="window.delPlace('${col}', '${doc.id}')" class="action-btn" style="background:var(--danger)">Delete</button>
+                    <div><b style="font-size:0.95rem">${data.name}</b></div>
+                    <div>
+                        <button onclick="editPlace('${col}', '${doc.id}', '${data.name}', '${data.desc || ''}', '${data.mapLink || ''}')" class="action-btn" style="background:var(--primary)">Edit</button>
+                        <button onclick="window.delPlace('${col}', '${doc.id}')" class="action-btn" style="background:var(--danger)">Delete</button>
+                    </div>
                 </div>`;
             });
+        };
+
+        window.editPlace = (col, id, name, desc, mapLink) => {
+            document.getElementById('ap-col').value = col;
+            document.getElementById('ap-name').value = name;
+            document.getElementById('ap-desc').value = desc;
+            document.getElementById('ap-maplink').value = mapLink;
+            document.getElementById('ap-edit-id').value = id;
+            document.getElementById('ap-preview').style.display = 'none'; // keep existing image, but can change
+            document.getElementById('ap-btn').innerText = 'আপডেট করুন';
         };
 
         window.delPlace = async (col, id) => {
@@ -2963,7 +3018,7 @@
         window.delU=async(id)=>{if(confirm('ইউজারকে ডিলিট করতে চান?')){await deleteDoc(doc(db,"users",id)); loadAdminData(); showToast('ইউজার ডিলিট');}};
         window.delB=async(id)=>{if(confirm('ব্যানারটি ডিলিট করতে চান?')){await deleteDoc(doc(db,"banners",id)); loadAdminData(); showToast('ব্যানার ডিলিট');}};
 
-        // Admin Gallery (unchanged)
+        // Admin Gallery
         async function loadAdminGallery() {
             const listDiv = document.getElementById('admin-gallery-list');
             listDiv.innerHTML = '<p style="text-align:center; color:#94a3b8;">লোড হচ্ছে...</p>';
@@ -3014,7 +3069,7 @@
             if (document.getElementById('view-gallery').style.display === 'block') loadGallery();
         };
 
-        // Admin Blood (unchanged)
+        // ========== ADMIN BLOOD DONOR MANAGEMENT (unchanged) ==========
         async function loadAdminBloodDonors() {
             const list = document.getElementById('admin-blood-list');
             list.innerHTML = 'লোড হচ্ছে...';
@@ -3067,7 +3122,7 @@
             loadAdminBloodDonors();
         };
 
-        // Admin Emergency (unchanged)
+        // ========== ADMIN EMERGENCY MANAGEMENT (unchanged) ==========
         async function loadAdminEmergency() {
             const list = document.getElementById('admin-emergency-list');
             list.innerHTML = 'লোড হচ্ছে...';
@@ -3116,7 +3171,7 @@
             loadAdminEmergency();
         };
 
-        // Admin Agri (unchanged)
+        // ========== ADMIN AGRICULTURE MANAGEMENT (unchanged) ==========
         async function loadAdminAgri() {
             const list = document.getElementById('admin-agri-list');
             list.innerHTML = 'লোড হচ্ছে...';
@@ -3169,7 +3224,7 @@
             loadAdminAgri();
         };
 
-        // Admin Transport (unchanged)
+        // ========== ADMIN TRANSPORT/DRIVER MANAGEMENT (unchanged) ==========
         document.getElementById('ad-photo')?.addEventListener('change', function(e) {
             if (e.target.files[0]) {
                 const reader = new FileReader();
@@ -3252,6 +3307,7 @@
             loadAdminDrivers();
         };
 
+        // Search in admin driver list
         document.getElementById('admin-driver-search')?.addEventListener('input', function(e) {
             const q = e.target.value.toLowerCase();
             document.querySelectorAll('#admin-driver-list .admin-banner-item').forEach(el => {
@@ -3260,10 +3316,11 @@
             });
         });
 
-        // ========== WEATHER (unchanged) ==========
+        // ========== WEATHER ==========
         window.loadWeather = async function() {
             document.getElementById('weather-loading').style.display = 'block';
             document.getElementById('weather-content').style.display = 'none';
+            // Parkhali coordinates (approx)
             const lat = 22.95;
             const lon = 89.68;
             try {
@@ -3273,15 +3330,18 @@
                 const current = data.current_weather;
                 const daily = data.daily;
                 
+                // Today
                 document.getElementById('weather-today').innerText = current.temperature + '°C';
                 const todayCondition = getWeatherCondition(current.weathercode);
                 document.getElementById('weather-today-condition').innerText = todayCondition;
                 
+                // Tomorrow (index 1)
                 const tomorrowTemp = daily.temperature_2m_max[1] + '°C';
                 const tomorrowCode = daily.weathercode[1];
                 document.getElementById('weather-tomorrow').innerText = tomorrowTemp;
                 document.getElementById('weather-tomorrow-condition').innerText = getWeatherCondition(tomorrowCode);
                 
+                // 10-day forecast
                 let forecastHtml = '';
                 for (let i = 0; i < daily.time.length; i++) {
                     const date = new Date(daily.time[i]).toLocaleDateString('bn-BD', { weekday: 'short', day: 'numeric', month: 'short' });
@@ -3299,6 +3359,7 @@
                 }
                 document.getElementById('weather-forecast').innerHTML = forecastHtml;
                 
+                // Set animation based on current weather
                 setWeatherAnimation(current.weathercode);
                 
                 document.getElementById('weather-loading').style.display = 'none';
@@ -3312,16 +3373,22 @@
             const animDiv = document.getElementById('weather-animation');
             animDiv.innerHTML = '';
             if (code >= 51 && code <= 55) {
+                // Light rain
                 animDiv.innerHTML = '<div class="rain"></div>';
             } else if (code >= 61 && code <= 65) {
+                // Heavy rain
                 animDiv.innerHTML = '<div class="rain heavy"></div>';
             } else if (code === 1 || code === 2 || code === 3) {
+                // Cloudy
                 animDiv.innerHTML = '<div class="cloud"></div>';
             } else if (code === 0) {
+                // Sunny
                 animDiv.innerHTML = '<div class="sun"></div>';
             } else if (code >= 45 && code <= 48) {
+                // Foggy maybe, but we use wind?
                 animDiv.innerHTML = '<div class="wind"></div><div class="wind"></div><div class="wind"></div>';
             } else {
+                // Default clear
             }
         }
 
@@ -3458,76 +3525,117 @@
             loadAdminFire();
         };
 
-        // ========== NEW: IMPORTANT PERSONS ==========
-        // Admin Management
-        document.getElementById('ip-image')?.addEventListener('change', function(e) {
+        // ========== NEW: DOCTOR FUNCTIONS (Feature 4) ==========
+        // Load doctors in user modal
+        window.loadDoctors = async function(search = '') {
+            const list = document.getElementById('doctor-list');
+            list.innerHTML = 'লোড হচ্ছে...';
+            const snaps = await getDocs(query(collection(db, "doctors"), orderBy("updatedAt", "desc")));
+            let doctors = [];
+            snaps.forEach(doc => doctors.push({ id: doc.id, ...doc.data() }));
+
+            if (search) {
+                const q = search.toLowerCase();
+                doctors = doctors.filter(d => 
+                    d.name?.toLowerCase().includes(q) || 
+                    d.phone?.includes(q)
+                );
+            }
+
+            list.innerHTML = '';
+            if (doctors.length === 0) {
+                list.innerHTML = '<p style="text-align:center; color:#94a3b8">কোনো ডাক্তার পাওয়া যায়নি</p>';
+                return;
+            }
+            doctors.forEach(d => {
+                const card = document.createElement('div');
+                card.className = 'driver-card'; // reuse driver card style
+                card.innerHTML = `
+                    <div class="driver-avatar">
+                        ${d.photoURL ? `<img src="${d.photoURL}">` : '<span class="material-icons-round" style="font-size:40px; line-height:60px; text-align:center; width:100%; color:#94a3b8">person</span>'}
+                    </div>
+                    <div class="driver-info">
+                        <h4>${d.name}</h4>
+                        <p><span class="material-icons-round" style="font-size:16px; vertical-align:middle;">phone</span> ${d.phone}</p>
+                    </div>
+                    <a href="tel:${d.phone}" class="driver-call"><span class="material-icons-round">call</span> কল</a>
+                `;
+                list.appendChild(card);
+            });
+        };
+
+        document.getElementById('doctor-search')?.addEventListener('input', (e) => {
+            loadDoctors(e.target.value);
+        });
+
+        // Admin doctor management
+        document.getElementById('adoc-photo')?.addEventListener('change', function(e) {
             if (e.target.files[0]) {
                 const reader = new FileReader();
                 reader.onload = (event) => {
-                    document.getElementById('ip-preview').src = event.target.result;
-                    document.getElementById('ip-preview').style.display = 'block';
+                    document.getElementById('adoc-preview').src = event.target.result;
+                    document.getElementById('adoc-preview').style.display = 'block';
                 };
                 reader.readAsDataURL(e.target.files[0]);
             }
         });
 
-        async function loadAdminImportantPersons() {
-            const list = document.getElementById('admin-importantpersons-list');
+        let currentEditDoctorId = null;
+
+        function resetDoctorForm() {
+            document.getElementById('adoc-name').value = '';
+            document.getElementById('adoc-phone').value = '';
+            document.getElementById('adoc-photo').value = '';
+            document.getElementById('adoc-preview').style.display = 'none';
+            document.getElementById('adoc-edit-id').value = '';
+            document.getElementById('adoc-add').innerText = 'ডাক্তার যোগ করুন';
+        }
+
+        async function loadAdminDoctors() {
+            const list = document.getElementById('admin-doctor-list');
             list.innerHTML = 'লোড হচ্ছে...';
-            const snaps = await getDocs(query(collection(db, "important_persons"), orderBy("createdAt", "desc")));
+            const snaps = await getDocs(query(collection(db, "doctors"), orderBy("updatedAt", "desc")));
             list.innerHTML = '';
-            if (snaps.empty) {
-                list.innerHTML = '<p style="text-align:center; color:#94a3b8;">কোনো ব্যক্তি নেই</p>';
-                return;
-            }
             snaps.forEach(doc => {
-                const data = doc.data();
+                const d = doc.data();
                 list.innerHTML += `
                     <div class="admin-banner-item">
-                        <div style="flex:1"><b>${data.name}</b> ${data.phone ? '- ' + data.phone : ''}</div>
+                        <div><b>${d.name}</b> - ${d.phone}</div>
                         <div>
-                            <button onclick="editImportantPerson('${doc.id}', '${data.name}', '${data.phone || ''}', '${data.description || ''}', '${data.imageUrl || ''}')" class="action-btn" style="background:var(--primary)">Edit</button>
-                            <button onclick="deleteImportantPerson('${doc.id}')" class="action-btn" style="background:var(--danger)">Del</button>
+                            <button onclick="editAdminDoctor('${doc.id}', '${d.name}', '${d.phone}')" class="action-btn" style="background:var(--primary)">Edit</button>
+                            <button onclick="deleteAdminDoctor('${doc.id}')" class="action-btn" style="background:var(--danger)">Del</button>
                         </div>
                     </div>
                 `;
             });
         }
 
-        window.editImportantPerson = (id, name, phone, desc, img) => {
-            const newName = prompt('নাম পরিবর্তন করুন:', name);
-            if (newName === null) return;
-            const newPhone = prompt('মোবাইল নম্বর পরিবর্তন করুন:', phone);
-            if (newPhone === null) return;
-            const newDesc = prompt('বিস্তারিত পরিবর্তন করুন:', desc);
-            if (newDesc === null) return;
-            // For simplicity, we don't change image via edit. Could add image upload but keep as is.
-            updateDoc(doc(db, "important_persons", id), { name: newName, phone: newPhone, description: newDesc });
-            showToast('আপডেট হয়েছে');
-            loadAdminImportantPersons();
-            loadImportantPersons();
+        window.editAdminDoctor = (id, name, phone) => {
+            document.getElementById('adoc-name').value = name;
+            document.getElementById('adoc-phone').value = phone;
+            document.getElementById('adoc-edit-id').value = id;
+            document.getElementById('adoc-add').innerText = 'আপডেট করুন';
         };
 
-        window.deleteImportantPerson = async (id) => {
-            if (confirm('ডিলিট করতে চান?')) {
-                await deleteDoc(doc(db, "important_persons", id));
+        window.deleteAdminDoctor = async (id) => {
+            if (confirm('ডাক্তার ডিলিট করতে চান?')) {
+                await deleteDoc(doc(db, "doctors", id));
+                loadAdminDoctors();
                 showToast('ডিলিট হয়েছে');
-                loadAdminImportantPersons();
-                loadImportantPersons();
             }
         };
 
-        document.getElementById('ip-add').onclick = async () => {
-            const name = document.getElementById('ip-name').value;
-            const phone = document.getElementById('ip-phone').value;
-            const desc = document.getElementById('ip-desc').value;
-            if (!name) return alert('নাম দিন');
-            let imageUrl = '';
-            const file = document.getElementById('ip-image').files[0];
+        document.getElementById('adoc-add').onclick = async () => {
+            const name = document.getElementById('adoc-name').value;
+            const phone = document.getElementById('adoc-phone').value;
+            if (!name || !phone) return alert('নাম ও মোবাইল নম্বর দিন');
+            
+            let photoURL = '';
+            const file = document.getElementById('adoc-photo').files[0];
             if (file) {
-                const finish = showLoading(document.getElementById('ip-add'));
+                const finish = showLoading(document.getElementById('adoc-add'));
                 try {
-                    imageUrl = await uploadToCloudinary(file);
+                    photoURL = await uploadToCloudinary(file);
                 } catch (err) {
                     finish();
                     alert('ছবি আপলোড ব্যর্থ');
@@ -3535,70 +3643,160 @@
                 }
                 finish();
             }
-            await addDoc(collection(db, "important_persons"), {
-                name,
-                phone,
-                description: desc,
-                imageUrl,
-                createdAt: serverTimestamp()
-            });
-            showToast('গুরুত্বপূর্ণ ব্যক্তি যোগ হয়েছে');
-            document.getElementById('ip-name').value = '';
-            document.getElementById('ip-phone').value = '';
-            document.getElementById('ip-desc').value = '';
-            document.getElementById('ip-image').value = '';
-            document.getElementById('ip-preview').style.display = 'none';
-            loadAdminImportantPersons();
+
+            const editId = document.getElementById('adoc-edit-id').value;
+            if (editId) {
+                await updateDoc(doc(db, "doctors", editId), { name, phone, photoURL: photoURL || undefined, updatedAt: serverTimestamp() });
+                showToast('আপডেট হয়েছে');
+            } else {
+                await addDoc(collection(db, "doctors"), { name, phone, photoURL, createdAt: serverTimestamp(), updatedAt: serverTimestamp() });
+                showToast('ডাক্তার যোগ হয়েছে');
+            }
+            resetDoctorForm();
+            loadAdminDoctors();
         };
 
-        // Frontend display
-        async function loadImportantPersons() {
-            const grid = document.getElementById('important-persons-grid');
-            grid.innerHTML = '<p style="text-align:center; color:#94a3b8">লোড হচ্ছে...</p>';
-            const snaps = await getDocs(query(collection(db, "important_persons"), orderBy("createdAt", "desc")));
-            if (snaps.empty) {
-                grid.innerHTML = '<p style="text-align:center; color:#94a3b8">কোনো তথ্য নেই</p>';
-                return;
-            }
-            grid.innerHTML = '';
-            snaps.forEach(doc => {
-                const data = doc.data();
-                const id = doc.id;
-                const card = document.createElement('div');
-                card.className = 'imp-person-card';
-                card.onclick = () => showImportantPerson(data);
-                const avatarHtml = data.imageUrl ? `<img src="${data.imageUrl}">` : `<span class="material-icons-round">person</span>`;
-                card.innerHTML = `
-                    <div class="imp-person-avatar">${avatarHtml}</div>
-                    <div class="imp-person-name">${data.name}</div>
-                `;
-                grid.appendChild(card);
+        // Search in admin doctor list
+        document.getElementById('admin-doctor-search')?.addEventListener('input', function(e) {
+            const q = e.target.value.toLowerCase();
+            document.querySelectorAll('#admin-doctor-list .admin-banner-item').forEach(el => {
+                const text = el.innerText.toLowerCase();
+                el.style.display = text.includes(q) ? 'flex' : 'none';
+            });
+        });
+
+        // ========== NEW: MARKET PRICE FUNCTIONS (Feature 8) ==========
+        let marketUnsubscribe = null;
+
+        async function loadMarketPrices() {
+            const list = document.getElementById('market-list');
+            const timeEl = document.getElementById('market-updated-time');
+            list.innerHTML = '<p style="text-align:center; color:#94a3b8">লোড হচ্ছে...</p>';
+            
+            if (marketUnsubscribe) marketUnsubscribe();
+            
+            const q = query(collection(db, "market_prices"), orderBy("name"));
+            marketUnsubscribe = onSnapshot(q, (snapshot) => {
+                if (snapshot.empty) {
+                    list.innerHTML = '<p style="text-align:center; color:#94a3b8">কোনো পণ্যের তথ্য নেই</p>';
+                    timeEl.innerText = '';
+                    return;
+                }
+                let html = '';
+                let latest = null;
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    html += `
+                        <div class="market-card">
+                            <h4>${data.name}</h4>
+                            <div class="market-price">${data.price}</div>
+                            <div class="market-unit">${data.unit || 'কেজি'}</div>
+                            <div class="market-updated">${data.updatedAt ? new Date(data.updatedAt.toDate()).toLocaleString('bn-BD') : ''}</div>
+                        </div>
+                    `;
+                    if (!latest || (data.updatedAt && data.updatedAt > latest)) latest = data.updatedAt;
+                });
+                list.innerHTML = html;
+                if (latest) {
+                    timeEl.innerText = 'সর্বশেষ আপডেট: ' + new Date(latest.toDate()).toLocaleString('bn-BD');
+                } else {
+                    timeEl.innerText = '';
+                }
             });
         }
 
-        function showImportantPerson(data) {
-            document.getElementById('ipm-name').innerText = data.name;
-            document.getElementById('ipm-desc').innerText = data.description || '';
-            document.getElementById('ipm-phone').innerText = data.phone || '-';
-            const avImg = document.getElementById('ipm-av-img');
-            const avText = document.getElementById('ipm-av-text');
-            if (data.imageUrl) {
-                avImg.src = data.imageUrl;
-                avImg.style.display = 'block';
-                avText.style.display = 'none';
-            } else {
-                avImg.style.display = 'none';
-                avText.innerText = data.name.charAt(0);
-                avText.style.display = 'block';
+        // Admin market price management
+        async function loadAdminMarketPrices() {
+            const list = document.getElementById('admin-market-list');
+            list.innerHTML = 'লোড হচ্ছে...';
+            const snaps = await getDocs(query(collection(db, "market_prices"), orderBy("name")));
+            list.innerHTML = '';
+            snaps.forEach(doc => {
+                const data = doc.data();
+                list.innerHTML += `
+                    <div class="admin-banner-item">
+                        <div><b>${data.name}</b> - ${data.price} ${data.unit || ''}</div>
+                        <div>
+                            <button onclick="editMarketPrice('${doc.id}', '${data.name}', '${data.price}', '${data.unit || ''}')" class="action-btn" style="background:var(--primary)">Edit</button>
+                            <button onclick="deleteMarketPrice('${doc.id}')" class="action-btn" style="background:var(--danger)">Del</button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        window.editMarketPrice = (id, name, price, unit) => {
+            const newName = prompt('পণ্যের নাম পরিবর্তন করুন:', name);
+            if (newName === null) return;
+            const newPrice = prompt('মূল্য পরিবর্তন করুন:', price);
+            if (newPrice === null) return;
+            const newUnit = prompt('একক পরিবর্তন করুন (যেমন: কেজি):', unit);
+            if (newUnit === null) return;
+            updateDoc(doc(db, "market_prices", id), { name: newName, price: newPrice, unit: newUnit, updatedAt: serverTimestamp() });
+            showToast('আপডেট হয়েছে');
+            loadAdminMarketPrices();
+        };
+
+        window.deleteMarketPrice = async (id) => {
+            if (confirm('পণ্যটি ডিলিট করতে চান?')) {
+                await deleteDoc(doc(db, "market_prices", id));
+                loadAdminMarketPrices();
+                showToast('ডিলিট হয়েছে');
             }
-            const callBtn = document.getElementById('ipm-call');
-            if (data.phone) {
-                callBtn.href = `tel:${data.phone}`;
-                callBtn.style.display = 'flex';
-            } else {
-                callBtn.style.display = 'none';
-            }
-            openModal('important-person-modal');
+        };
+
+        document.getElementById('am-add').onclick = async () => {
+            const name = document.getElementById('am-name').value;
+            const price = document.getElementById('am-price').value;
+            const unit = document.getElementById('am-unit').value;
+            if (!name || !price) return alert('নাম ও মূল্য দিন');
+            await addDoc(collection(db, "market_prices"), {
+                name,
+                price,
+                unit,
+                createdAt: serverTimestamp(),
+                updatedAt: serverTimestamp()
+            });
+            showToast('পণ্য যোগ হয়েছে');
+            document.getElementById('am-name').value = '';
+            document.getElementById('am-price').value = '';
+            document.getElementById('am-unit').value = '';
+            loadAdminMarketPrices();
+        };
+
+        // Search in admin market list
+        document.getElementById('admin-market-search')?.addEventListener('input', function(e) {
+            const q = e.target.value.toLowerCase();
+            document.querySelectorAll('#admin-market-list .admin-banner-item').forEach(el => {
+                const text = el.innerText.toLowerCase();
+                el.style.display = text.includes(q) ? 'flex' : 'none';
+            });
+        });
+
+        // ========== FEATURE 2: Messenger Deep Link ==========
+        window.openMessenger = () => {
+            // Use deep link for Messenger; fallback to web if not installed
+            const intentUrl = 'fb-messenger://user-thread/yourpage'; // Replace with actual group/page ID
+            const webUrl = 'https://m.me/yourpage'; // Replace with actual page
+            window.location.href = intentUrl;
+            setTimeout(() => {
+                window.location.href = webUrl;
+            }, 500);
+        };
+
+        // ========== FEATURE 3: Service Worker Registration for Offline ==========
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js').then(reg => {
+                    console.log('Service Worker registered');
+                }).catch(err => console.log('SW registration failed', err));
+            });
+
+            // Auto-reload when back online
+            window.addEventListener('online', () => {
+                showToast('ইন্টারনেট সংযোগ পুনরুদ্ধার হয়েছে, পৃষ্ঠা রিফ্রেশ হচ্ছে...', 'wifi');
+                setTimeout(() => location.reload(), 1500);
+            });
         }
 
         // ========== INIT ==========
