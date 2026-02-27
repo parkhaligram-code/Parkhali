@@ -2687,8 +2687,9 @@
         }
 
         // ========== TRANSPORT/DRIVER MODULE ==========
-        async function loadDrivers(search = '') {
-            const list = document.getElementById('driver-list');
+        window.loadDrivers = async function(search = '') {
+    const list = document.getElementById('driver-list');
+
             list.innerHTML = 'লোড হচ্ছে...';
             const snaps = await getDocs(query(collection(db, "drivers"), orderBy("updatedAt", "desc")));
             let drivers = [];
